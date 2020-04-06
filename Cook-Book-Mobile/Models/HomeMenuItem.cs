@@ -7,7 +7,8 @@ namespace Cook_Book_Mobile.Models
     public enum MenuItemType
     {
         Browse,
-        About
+        About,
+        Register
     }
     public class HomeMenuItem
     {
