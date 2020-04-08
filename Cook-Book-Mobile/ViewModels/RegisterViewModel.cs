@@ -1,10 +1,12 @@
-﻿using Cook_Book_Client_Desktop_Library.API;
-using Cook_Book_Client_Desktop_Library.API.Interfaces;
-using Cook_Book_Client_Desktop_Library.Models;
+﻿using Cook_Book_Mobile.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -19,13 +21,17 @@ namespace Cook_Book_Mobile.ViewModels
 
         private bool _duringOperation;
 
-        private IAPIHelper _apiHelper;
+        public ICommand InfoCommand { get; set; }
+
+        //APIHelper _APIHelper;
 
         //public RegisterViewModel(IAPIHelper apiHelper)
         public RegisterViewModel()
         {
             Title = "Rejestracja";
-            _apiHelper = new APIHelper(new LoggedUser());
+            InfoCommand = new Command(async () => await Register());
+
+            //_APIHelper = new APIHelper(new LoggedUser());
         }
 
         #region Props
@@ -75,44 +81,86 @@ namespace Cook_Book_Mobile.ViewModels
 
         #endregion
 
-        public Command InfoCommand
+
+        private async Task Register()
         {
-            get
+            //await Application.Current.MainPage.DisplayAlert("Informacja", UserName + " " + Password + " " + PasswordRepeat + " " + Email, "Ok");
+
+            try
             {
-                return new Command(async () =>
+                _duringOperation = true;
+                // NotifyOfPropertyChange(() => CanRegister);
+
+                RegisterModel user = new RegisterModel
                 {
-                    await Application.Current.MainPage.DisplayAlert("Informacja", UserName + " " + Password + " " + PasswordRepeat + " " + Email, "Ok");
+                    UserName = "Arnold",
+                    Email = "Wor@wwww.com",
+                    Password = "Pwd12345.",
+                    ConfirmPassword = "Pwd12345."
+                };
 
-                    try
+
+                //string api = ConfigurationManager.AppSettings["api"];
+                string api = "https://10.0.2.2:44342";
+
+                HttpClient _apiClient;
+
+                HttpClientHandler handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
+
+                _apiClient = new HttpClient(handler);
+                _apiClient.BaseAddress = new Uri(api);
+                _apiClient.DefaultRequestHeaders.Accept.Clear();
+                _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                using (HttpResponseMessage response = await _apiClient.PostAsJsonAsync("/api/Account/register", user))
+                {
+                    if (response.IsSuccessStatusCode)
                     {
-                        _duringOperation = true;
-                        // NotifyOfPropertyChange(() => CanRegister);
-
-                        RegisterModel user = new RegisterModel
-                        {
-                            UserName = UserName,
-                            Email = Email,
-                            Password = Password,
-                            ConfirmPassword = PasswordRepeat
-                        };
-
-                        var result = await _apiHelper.Register(user);
-                        //RegisterInfoMessage = "Rejestracja pomyślna. Możesz się teraz zalogować";
-
-                        Clear();
-                        _duringOperation = false;
-                        // NotifyOfPropertyChange(() => CanRegister);
+                        //return response.IsSuccessStatusCode;
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        _duringOperation = false;
-                        //  NotifyOfPropertyChange(() => CanRegister);
-                        //  _logger.Error("Got exception", ex);
-                        //  RegisterInfoMessage = ex.Message;
+                        var info = ErrorMessageFromResponse(response);
+                        await Application.Current.MainPage.DisplayAlert("ERROR",info, "Ok");
                     }
+                }
 
-                });
+
+              
+                //RegisterInfoMessage = "Rejestracja pomyślna. Możesz się teraz zalogować";
+
+                Clear();
+                _duringOperation = false;
+                // NotifyOfPropertyChange(() => CanRegister);
             }
+            catch (Exception ex)
+            {
+                _duringOperation = false;
+                //  NotifyOfPropertyChange(() => CanRegister);
+                //  _logger.Error("Got exception", ex);
+                //  RegisterInfoMessage = ex.Message;
+            }
+        }
+
+
+        public static string ErrorMessageFromResponse(HttpResponseMessage response)
+        {
+            string output = "";
+            try
+            {
+                var jsonMsg = JsonConvert.DeserializeObject<dynamic>(response.Content.ReadAsStringAsync().Result);
+                output = jsonMsg["message"];
+
+            }
+            catch (System.Exception ex)
+            {
+               // _logger.Error("Got exception", ex);
+                throw;
+            }
+            return output;
         }
 
         private void Clear()
