@@ -1,4 +1,5 @@
-﻿using Cook_Book_Mobile.Models;
+﻿using Cook_Book_Mobile.API;
+using Cook_Book_Mobile.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Cook_Book_Mobile.ViewModels
 
         public ICommand InfoCommand { get; set; }
 
-        //APIHelper _APIHelper;
+        APIHelper _APIHelper;
 
         //public RegisterViewModel(IAPIHelper apiHelper)
         public RegisterViewModel()
@@ -31,7 +32,7 @@ namespace Cook_Book_Mobile.ViewModels
             Title = "Rejestracja";
             InfoCommand = new Command(async () => await Register());
 
-            //_APIHelper = new APIHelper(new LoggedUser());
+            _APIHelper = new APIHelper(new LoggedUser());
         }
 
         #region Props
@@ -99,38 +100,9 @@ namespace Cook_Book_Mobile.ViewModels
                     ConfirmPassword = "Pwd12345."
                 };
 
+                var result = await _APIHelper.Register(user);
+              //  RegisterInfoMessage = "Rejestracja pomyślna. Możesz się teraz zalogować";
 
-                //string api = ConfigurationManager.AppSettings["api"];
-                string api = "https://10.0.2.2:44342";
-
-                HttpClient _apiClient;
-
-                HttpClientHandler handler = new HttpClientHandler();
-                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
-
-
-                _apiClient = new HttpClient(handler);
-                _apiClient.BaseAddress = new Uri(api);
-                _apiClient.DefaultRequestHeaders.Accept.Clear();
-                _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-
-                using (HttpResponseMessage response = await _apiClient.PostAsJsonAsync("/api/Account/register", user))
-                {
-                    if (response.IsSuccessStatusCode)
-                    {
-                        //return response.IsSuccessStatusCode;
-                    }
-                    else
-                    {
-                        var info = ErrorMessageFromResponse(response);
-                        await Application.Current.MainPage.DisplayAlert("ERROR",info, "Ok");
-                    }
-                }
-
-
-              
-                //RegisterInfoMessage = "Rejestracja pomyślna. Możesz się teraz zalogować";
 
                 Clear();
                 _duringOperation = false;
@@ -141,26 +113,8 @@ namespace Cook_Book_Mobile.ViewModels
                 _duringOperation = false;
                 //  NotifyOfPropertyChange(() => CanRegister);
                 //  _logger.Error("Got exception", ex);
-                //  RegisterInfoMessage = ex.Message;
+                await Application.Current.MainPage.DisplayAlert("ERROR", ex.Message, "Ok");
             }
-        }
-
-
-        public static string ErrorMessageFromResponse(HttpResponseMessage response)
-        {
-            string output = "";
-            try
-            {
-                var jsonMsg = JsonConvert.DeserializeObject<dynamic>(response.Content.ReadAsStringAsync().Result);
-                output = jsonMsg["message"];
-
-            }
-            catch (System.Exception ex)
-            {
-               // _logger.Error("Got exception", ex);
-                throw;
-            }
-            return output;
         }
 
         private void Clear()
