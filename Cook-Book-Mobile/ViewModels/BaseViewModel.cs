@@ -7,12 +7,14 @@ using Xamarin.Forms;
 
 using Cook_Book_Mobile.Models;
 using Cook_Book_Mobile.Services;
+using Cook_Book_Mobile.Helpers;
 
 namespace Cook_Book_Mobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+        public IMessage MessageShort => DependencyService.Get<IMessage>();
 
         bool isBusy = false;
         public bool IsBusy
