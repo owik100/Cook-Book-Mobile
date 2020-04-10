@@ -8,7 +8,8 @@ namespace Cook_Book_Mobile.Models
     {
         Browse,
         About,
-        Register
+        Register,
+        Login
     }
     public class HomeMenuItem
     {

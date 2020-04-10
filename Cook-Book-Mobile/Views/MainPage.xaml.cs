@@ -39,6 +39,9 @@ namespace Cook_Book_Mobile.Views
                     case (int)MenuItemType.Register:
                         MenuPages.Add(id, new NavigationPage(new RegisterPage()));
                         break;
+                    case (int)MenuItemType.Login:
+                        MenuPages.Add(id, new NavigationPage(new LoginPage()));
+                        break;
                 }
             }
 

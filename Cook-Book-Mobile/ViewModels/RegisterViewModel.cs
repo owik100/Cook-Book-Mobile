@@ -144,7 +144,8 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 //  _logger.Error("Got exception", ex);
                 await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
-                
+                Clear();
+
             }
             finally
             {
@@ -155,10 +156,10 @@ namespace Cook_Book_Mobile.ViewModels
 
         private void Clear()
         {
-            UserName = "";
-            Password = "";
-            Email = "";
-            PasswordRepeat = "";
+            UserName = string.Empty;
+            Password = string.Empty;
+            Email = string.Empty;
+            PasswordRepeat = string.Empty;
         }
 
 

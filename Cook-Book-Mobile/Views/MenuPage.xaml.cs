@@ -23,6 +23,7 @@ namespace Cook_Book_Mobile.Views
                 new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About" },
                 new HomeMenuItem {Id = MenuItemType.Register, Title="Rejestracja" },
+                new HomeMenuItem {Id = MenuItemType.Login, Title="Logowanie" },
             };
 
             ListViewMenu.ItemsSource = menuItems;

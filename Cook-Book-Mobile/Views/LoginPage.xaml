@@ -4,19 +4,17 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="Cook_Book_Mobile.Views.RegisterPage"
+             x:Class="Cook_Book_Mobile.Views.LoginPage"
              xmlns:vm="clr-namespace:Cook_Book_Mobile.ViewModels"
              Title="{Binding Title}">
 
     <ContentPage.BindingContext>
-        <vm:RegisterViewModel />
+        <vm:LoginViewModel />
     </ContentPage.BindingContext>
+
 
     <ContentPage.Content>
         <StackLayout  Spacing="10" Padding="10">
-
-            <Label Text="Email:" HorizontalOptions="Center" FontSize="Medium"/>
-            <Entry Placeholder="Podaj adres email" Keyboard="Email" Text="{Binding Email, Mode=TwoWay}"/>
 
             <Label Text="Login:" HorizontalOptions="Center" FontSize="Medium"/>
             <Entry Placeholder="Podaj login" Text="{Binding UserName}"/>
@@ -24,15 +22,13 @@
             <Label Text="Hasło:" HorizontalOptions="Center" FontSize="Medium"/>
             <Entry Placeholder="Podaj hasło" IsPassword="True" Text="{Binding Password}"/>
 
-            <Label Text="Powtórz hasło:" HorizontalOptions="Center" FontSize="Medium"/>
-            <Entry Placeholder="Powtórz hasło" IsPassword="True" Text="{Binding PasswordRepeat}"/>
+            <Label Text="Zapamiętaj mnie:" HorizontalOptions="Start" FontSize="Medium"/>
+            <CheckBox IsChecked="{Binding Remember}"/>
 
-            <Button Text="Zarejestruj" Margin="15" Command="{Binding InfoCommand}" IsEnabled="{Binding CanRegister}" />
+            <Button Text="Zaloguj" Margin="15" Command="{Binding InfoCommand}" IsEnabled="{Binding CanLogin}" />
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" />
         </StackLayout>
-
-
 
     </ContentPage.Content>
 </ContentPage>
