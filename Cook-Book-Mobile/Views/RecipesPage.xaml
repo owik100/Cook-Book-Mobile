@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+              x:Class="Cook_Book_Mobile.Views.RecipesPage"
              xmlns:vm="clr-namespace:Cook_Book_Mobile.ViewModels"
              Title="{Binding Title}">
 

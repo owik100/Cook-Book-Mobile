@@ -124,7 +124,7 @@ namespace Cook_Book_Mobile.ViewModels
                 }
 
                 Clear();
-                await Application.Current.MainPage.Navigation.PushAsync(new Page(), true);
+                await (Application.Current.MainPage as MainPage).NavigateFromMenu((int)MenuItemType.Recipes);
             }
             catch (Exception ex)
             {
