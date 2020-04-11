@@ -1,7 +1,6 @@
-﻿using Cook_Book_Mobile.API.Interfaces;
-using Cook_Book_Mobile.Helpers;
-using Cook_Book_Mobile.Models;
-using Cook_Book_Mobile.Models.Interfaces;
+﻿using Cook_Book_Mobile.Helpers;
+using Cook_Book_Shared_Code.API;
+using Cook_Book_Shared_Code.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

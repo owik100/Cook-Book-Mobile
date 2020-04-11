@@ -1,5 +1,4 @@
 ﻿using Cook_Book_Mobile.API;
-using Cook_Book_Mobile.API.Interfaces;
 using Cook_Book_Mobile.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,8 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using Cook_Book_Mobile.Views;
+using Cook_Book_Shared_Code.API;
+using Cook_Book_Shared_Code.Models;
 
 namespace Cook_Book_Mobile.ViewModels
 {
