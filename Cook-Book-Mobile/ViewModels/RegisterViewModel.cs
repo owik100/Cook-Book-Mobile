@@ -23,16 +23,15 @@ namespace Cook_Book_Mobile.ViewModels
 
         public ICommand InfoCommand { get; set; }
 
-        IAPIHelper _APIHelper;
+        private IAPIHelper _apiHelper;
 
-        public RegisterViewModel()
+        public RegisterViewModel(IAPIHelper APIHelper)
         {
             Title = "Rejestracja";
             InfoCommand = new Command(async () => await Register());
 
-            //IsBusy = true;
+            _apiHelper = APIHelper;
 
-            _APIHelper = new APIHelper(new LoggedUser());
         }
 
         #region Props
@@ -133,7 +132,7 @@ namespace Cook_Book_Mobile.ViewModels
                     ConfirmPassword = PasswordRepeat
                 };
 
-                var result = await _APIHelper.Register(user);
+                var result = await _apiHelper.Register(user);
 
                 await Application.Current.MainPage.DisplayAlert("Sukces", "Rejestracja pomyślna. Możesz się teraz zalogować","Ok");
 

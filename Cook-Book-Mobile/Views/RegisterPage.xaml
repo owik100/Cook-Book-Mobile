@@ -6,11 +6,8 @@
              mc:Ignorable="d"
              x:Class="Cook_Book_Mobile.Views.RegisterPage"
              xmlns:vm="clr-namespace:Cook_Book_Mobile.ViewModels"
+             BindingContext="{Binding Reg, Source={StaticResource Locator}}"
              Title="{Binding Title}">
-
-    <ContentPage.BindingContext>
-        <vm:RegisterViewModel />
-    </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <StackLayout  Spacing="10" Padding="10">

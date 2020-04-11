@@ -21,14 +21,14 @@ namespace Cook_Book_Mobile.ViewModels
 
         public ICommand InfoCommand { get; set; }
 
-        IAPIHelper _APIHelper;
+        private IAPIHelper _apiHelper;
 
-        public LoginViewModel()
+        public LoginViewModel(IAPIHelper APIHelper)
         {
             Title = "Logowanie";
             InfoCommand = new Command(async () => await Login());
 
-            _APIHelper = new APIHelper(new LoggedUser());
+            _apiHelper = APIHelper;
 
             TryLoginOnStart();
 
@@ -111,9 +111,9 @@ namespace Cook_Book_Mobile.ViewModels
                 IsBusy = true;
                 OnPropertyChanged(nameof(CanLogin));
 
-                AuthenticatedUser user = await _APIHelper.Authenticate(UserName, Password);
+                AuthenticatedUser user = await _apiHelper.Authenticate(UserName, Password);
 
-                await _APIHelper.GetLoggedUserData(user.Access_Token);
+                await _apiHelper.GetLoggedUserData(user.Access_Token);
 
                 if (Remember)
                 {
