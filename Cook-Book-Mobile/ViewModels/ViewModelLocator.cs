@@ -14,26 +14,22 @@ namespace Cook_Book_Mobile.ViewModels
 
         public RegisterViewModel Reg
         {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<RegisterViewModel>();
-            }
+            get => ServiceLocator.Current.GetInstance<RegisterViewModel>();
         }
 
         public LoginViewModel Log
         {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<LoginViewModel>();
-            }
+            get => ServiceLocator.Current.GetInstance<LoginViewModel>();
         }
 
         public RecipesViewModel Recipes
         {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<RecipesViewModel>();
-            }
+            get => ServiceLocator.Current.GetInstance<RecipesViewModel>();
+        }
+
+        public MenuViewModel Menu
+        {
+            get => ServiceLocator.Current.GetInstance<MenuViewModel>();
         }
     }
 }

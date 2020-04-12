@@ -10,6 +10,7 @@ using Xamarin.Essentials;
 using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
+using Cook_Book_Mobile.Helpers;
 
 namespace Cook_Book_Mobile.ViewModels
 {
@@ -135,6 +136,7 @@ namespace Cook_Book_Mobile.ViewModels
                 }
 
                 Clear();
+                MessagingCenter.Send(this, EventMessages.LogOnOffEvent);
                 await (Application.Current.MainPage as MainPage).NavigateFromMenu((int)MenuItemType.Recipes);
             }
             catch (Exception ex)

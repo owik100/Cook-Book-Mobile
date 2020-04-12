@@ -5,12 +5,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Cook_Book_Mobile.Views.MenuPage"
+             BindingContext="{Binding Menu, Source={StaticResource Locator}}"
              Title="Menu">
              
     <StackLayout VerticalOptions="FillAndExpand">
-        <Button Text="Hohohoh"/>
+        <Button Text="Wyloguj" IsVisible="{Binding Logged}" Command="{Binding LogOutCommand}"/>
         <ListView x:Name="ListViewMenu"
-                    HasUnevenRows="True">
+                    HasUnevenRows="True"
+                    ItemsSource="{Binding MenuItems}"
+                    SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
             <d:ListView.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
                     <x:String>Item 1</x:String>

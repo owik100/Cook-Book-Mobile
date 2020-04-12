@@ -19,6 +19,7 @@ namespace Cook_Book_Mobile
             builder.RegisterType<RegisterViewModel>().AsSelf();
             builder.RegisterType<LoginViewModel>().AsSelf();
             builder.RegisterType<RecipesViewModel>().AsSelf();
+            builder.RegisterType<MenuViewModel>().AsSelf();
 
             builder.RegisterType<LoggedUser>().As<ILoggedUser>().SingleInstance();
             builder.RegisterType<APIHelper>().As<IAPIHelper>().SingleInstance();
