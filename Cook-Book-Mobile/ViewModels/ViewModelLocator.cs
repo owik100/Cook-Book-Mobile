@@ -27,5 +27,13 @@ namespace Cook_Book_Mobile.ViewModels
                 return ServiceLocator.Current.GetInstance<LoginViewModel>();
             }
         }
+
+        public RecipesViewModel Recipes
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<RecipesViewModel>();
+            }
+        }
     }
 }

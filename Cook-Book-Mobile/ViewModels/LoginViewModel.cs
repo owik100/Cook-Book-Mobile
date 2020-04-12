@@ -41,9 +41,12 @@ namespace Cook_Book_Mobile.ViewModels
                 UserName = await SecureStorage.GetAsync("userLogin");
                 Password = await SecureStorage.GetAsync("userPassword");
 
-                Remember = true;
+                if(UserName?.Length > 0 && Password?.Length > 0)
+                {
+                    Remember = true;
 
-                await Login();
+                    await Login();
+                }    
             }
             catch (Exception ex)
             {

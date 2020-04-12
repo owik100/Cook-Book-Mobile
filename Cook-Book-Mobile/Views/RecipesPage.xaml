@@ -5,13 +5,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
               x:Class="Cook_Book_Mobile.Views.RecipesPage"
-             xmlns:vm="clr-namespace:Cook_Book_Mobile.ViewModels"
+             BindingContext="{Binding Recipes, Source={StaticResource Locator}}"
              Title="{Binding Title}">
 
-    <ContentPage.BindingContext>
-        <vm:RecipesViewModel />
-    </ContentPage.BindingContext>
-    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Wyloguj" Command="{Binding LogOutCommand}"/>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Jesteś zalogowany!"
