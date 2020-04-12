@@ -8,6 +8,7 @@
              Title="Menu">
              
     <StackLayout VerticalOptions="FillAndExpand">
+        <Button Text="Hohohoh"/>
         <ListView x:Name="ListViewMenu"
                     HasUnevenRows="True">
             <d:ListView.ItemsSource>

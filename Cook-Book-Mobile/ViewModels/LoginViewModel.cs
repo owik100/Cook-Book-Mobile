@@ -20,6 +20,7 @@ namespace Cook_Book_Mobile.ViewModels
         private bool _remember;
 
         public ICommand InfoCommand { get; set; }
+        public ICommand RegisterCommand { get; set; }
 
         private IAPIHelper _apiHelper;
 
@@ -27,11 +28,17 @@ namespace Cook_Book_Mobile.ViewModels
         {
             Title = "Logowanie";
             InfoCommand = new Command(async () => await Login());
+            RegisterCommand = new Command(async () => await GoRegister());
 
             _apiHelper = APIHelper;
 
             TryLoginOnStart();
 
+        }
+
+        private async Task GoRegister()
+        {
+            await(Application.Current.MainPage as MainPage).NavigateFromMenu((int)MenuItemType.Register);
         }
 
         private async Task TryLoginOnStart()
@@ -134,8 +141,6 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 //  _logger.Error("Got exception", ex);
                 await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
-                Clear();
-
             }
             finally
             {

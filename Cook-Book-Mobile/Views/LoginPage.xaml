@@ -22,8 +22,23 @@
             <CheckBox IsChecked="{Binding Remember}"/>
 
             <Button Text="Zaloguj" Margin="15" Command="{Binding InfoCommand}" IsEnabled="{Binding CanLogin}" />
-
+            
             <ActivityIndicator IsRunning="{Binding IsBusy}" />
+            
+            <Label Text="Nie masz jeszcze konta? Zarejestruj się!" HorizontalOptions="Center" FontSize="Small" Margin="0,40,0,0">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Nie masz jeszcze konta? "/>
+                        <Span Text="Zarejestruj się!" FontAttributes="Bold" TextColor="Blue" >
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding RegisterCommand}" />
+                            </Span.GestureRecognizers>
+                        </Span>
+                    </FormattedString>
+                    </Label.FormattedText>
+            </Label>
+
+           
         </StackLayout>
 
     </ContentPage.Content>
