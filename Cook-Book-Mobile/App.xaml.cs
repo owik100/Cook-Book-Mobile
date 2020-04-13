@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Cook_Book_Mobile.Services;
 using Cook_Book_Mobile.Views;
+using Cook_Book_Mobile.Helpers;
 
 namespace Cook_Book_Mobile
 {
@@ -15,6 +16,8 @@ namespace Cook_Book_Mobile
 
             DependencyService.Register<MockDataStore>();
             MainPage = new MainPage();
+
+            MessagingCenter.Send(this, EventMessages.AppStartEvent);
         }
 
         protected override void OnStart()

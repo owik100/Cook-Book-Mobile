@@ -29,37 +29,14 @@ namespace Cook_Book_Mobile.ViewModels
         {
             Title = "Logowanie";
             InfoCommand = new Command(async () => await Login());
-            RegisterCommand = new Command(async () => await GoRegister());
+            RegisterCommand = new Command(() => GoRegister());
 
             _apiHelper = APIHelper;
 
-            TryLoginOnStart();
-
-        }
-
-        private async Task GoRegister()
-        {
-            MessagingCenter.Send(this, EventMessages.NavigationEvent, MenuItemType.Register);
-        }
-
-        private async Task TryLoginOnStart()
-        {
-            try
+            MessagingCenter.Subscribe<App>(this, EventMessages.AppStartEvent, async (sender) =>
             {
-                UserName = await SecureStorage.GetAsync("userLogin");
-                Password = await SecureStorage.GetAsync("userPassword");
-
-                if(UserName?.Length > 0 && Password?.Length > 0)
-                {
-                    Remember = true;
-
-                    await Login();
-                }    
-            }
-            catch (Exception ex)
-            {
-                // Possible that device doesn't support secure storage on device.
-            }
+                await TryLoginOnStart();
+            });
         }
 
         #region Props
@@ -94,6 +71,7 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 _remember = value;
                 //SetProperty(ref _remember, value);
+                OnPropertyChanged(nameof(Remember));
             }
         }
 
@@ -150,6 +128,31 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 IsBusy = false;
                 OnPropertyChanged(nameof(CanLogin));
+            }
+        }
+
+        private void GoRegister()
+        {
+            MessagingCenter.Send(this, EventMessages.NavigationEvent, MenuItemType.Register);
+        }
+
+        private async Task TryLoginOnStart()
+        {
+            try
+            {
+                UserName = await SecureStorage.GetAsync("userLogin");
+                Password = await SecureStorage.GetAsync("userPassword");
+
+                if (UserName?.Length > 0 && Password?.Length > 0)
+                {
+                    Remember = true;
+
+                    await Login();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Possible that device doesn't support secure storage on device.
             }
         }
 
