@@ -13,7 +13,7 @@
         <Button Text="Wyloguj" IsVisible="{Binding Logged}" Command="{Binding LogOutCommand}"/>
         <ListView x:Name="ListViewMenu"
                     HasUnevenRows="True"
-                    ItemsSource="{Binding MenuItems}"
+                    ItemsSource="{Binding MenuItems, Mode=TwoWay}"
                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
             <d:ListView.ItemsSource>
                 <x:Array Type="{x:Type x:String}">

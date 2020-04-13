@@ -17,9 +17,9 @@ namespace Cook_Book_Mobile.ViewModels
 {
     public class MenuViewModel : BaseViewModel
     {
-        public ObservableCollection<HomeMenuItem> MenuItems { get; set; }   
         public ICommand LogOutCommand { get; set; }
 
+        private ObservableCollection<HomeMenuItem> _menuItems;
         private HomeMenuItem _selectedItem;
         private ILoggedUser _loggedUser;
         private IAPIHelper _apiHelper;
@@ -31,19 +31,15 @@ namespace Cook_Book_Mobile.ViewModels
             _apiHelper = apiHelper;
             LogOutCommand = new Command(() => LogOut());
 
-            MenuItems = new ObservableCollection<HomeMenuItem>
-            {
-                new HomeMenuItem {Id = MenuItemType.Login, Title="Logowanie" },
-                new HomeMenuItem {Id = MenuItemType.Register, Title="Rejestracja" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" },
-            };
+            NotLoggedMenu();
 
             SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Login).FirstOrDefault();
 
             MessagingCenter.Subscribe<LoginViewModel>(this, EventMessages.LogOnEvent, (sender) =>
             {
                 OnPropertyChanged(nameof(Logged));
-                SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Recipes).FirstOrDefault();             
+                LoggedMenu();
+                SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Recipes).FirstOrDefault();
             });
 
             MessagingCenter.Subscribe<LoginViewModel, MenuItemType>(this, EventMessages.NavigationEvent, (sender, arg) =>
@@ -59,13 +55,26 @@ namespace Cook_Book_Mobile.ViewModels
         {
             get
             {
-                return  _helloText;
+                return _helloText;
             }
             set
             {
                 _helloText = "Witaj " + value;
                 //SetProperty(ref _helloText, value);
                 OnPropertyChanged(nameof(HelloText));
+            }
+        }
+
+        public ObservableCollection<HomeMenuItem> MenuItems
+        {
+            get
+            {
+                return _menuItems;
+            }
+            set
+            {
+                _menuItems = value;
+                OnPropertyChanged(nameof(MenuItems));
             }
         }
 
@@ -92,16 +101,40 @@ namespace Cook_Book_Mobile.ViewModels
                 if (string.IsNullOrWhiteSpace(_loggedUser.Token) == false)
                 {
                     output = true;
-                    HelloText = _loggedUser.UserName;
+                    HelloText = _loggedUser.UserName;             
                 }
                 else
                 {
                     HelloText = "";
-                }     
+                }
                 return output;
             }
         }
+
+
         #endregion
+
+        private void NotLoggedMenu()
+        {
+            MenuItems = new ObservableCollection<HomeMenuItem>
+            {
+                new HomeMenuItem {Id = MenuItemType.Login, Title="Logowanie" },
+                new HomeMenuItem {Id = MenuItemType.Register, Title="Rejestracja" },
+                new HomeMenuItem {Id = MenuItemType.About, Title="About" },
+            };
+            OnPropertyChanged(nameof(MenuItems));
+        }
+
+        private void LoggedMenu()
+        {
+            MenuItems = new ObservableCollection<HomeMenuItem>
+            {
+                new HomeMenuItem {Id = MenuItemType.Recipes, Title="Przepisy" },
+                new HomeMenuItem {Id = MenuItemType.AddRecipe, Title="Dodaj przepis" },
+                new HomeMenuItem {Id = MenuItemType.About, Title="About" },
+            };
+            OnPropertyChanged(nameof(MenuItems));
+        }
 
         private void LogOut()
         {
@@ -110,6 +143,7 @@ namespace Cook_Book_Mobile.ViewModels
             SecureStorage.RemoveAll();
             OnPropertyChanged(nameof(Logged));
 
+            NotLoggedMenu();
             SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Login).FirstOrDefault();
         }
     }
