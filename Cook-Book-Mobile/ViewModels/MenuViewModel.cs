@@ -40,6 +40,8 @@ namespace Cook_Book_Mobile.ViewModels
                 OnPropertyChanged(nameof(Logged));
                 LoggedMenu();
                 SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Recipes).FirstOrDefault();
+
+                MessagingCenter.Send(this, EventMessages.ReloadRecipesEvent);
             });
 
             MessagingCenter.Subscribe<LoginViewModel, MenuItemType>(this, EventMessages.NavigationEvent, (sender, arg) =>

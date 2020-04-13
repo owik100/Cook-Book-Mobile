@@ -10,9 +10,27 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Jesteś zalogowany!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <ListView x:Name="ListViewRecipes"
+                    HasUnevenRows="True"
+                    ItemsSource="{Binding Recipes, Mode=TwoWay}"
+                    SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+                <d:ListView.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Item 1</x:String>
+                        <x:String>Item 2</x:String>
+                    </x:Array>
+                </d:ListView.ItemsSource>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Label Text="{Binding Name}" d:Text="{Binding .}" FontSize="20"/>
+                                <Image Source="{Binding ImagePath}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

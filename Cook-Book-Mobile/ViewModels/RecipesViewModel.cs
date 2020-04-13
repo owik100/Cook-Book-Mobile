@@ -1,9 +1,11 @@
-﻿using Cook_Book_Mobile.Models;
+﻿using Cook_Book_Mobile.Helpers;
+using Cook_Book_Mobile.Models;
 using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -13,11 +15,92 @@ using Xamarin.Forms;
 namespace Cook_Book_Mobile.ViewModels
 {
     public class RecipesViewModel : BaseViewModel
-    {     
-        public RecipesViewModel(ILoggedUser loggedUser, IAPIHelper helper)
+    {
+        private IRecipesEndPointAPI _recipesEndPointAPI;
+        private ObservableCollection<RecipeModel> _recipes;
+
+        public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI)
         {
             Title = "Twoje przepisy";
+
+            _recipesEndPointAPI = RecipesEndPointAPI;
+
+            MessagingCenter.Subscribe<MenuViewModel>(this, EventMessages.ReloadRecipesEvent, async (sender) =>
+            {
+                await LoadRecipes();
+                await LoadImages();
+            });
+
         }
-  
+
+        #region Props
+        public ObservableCollection<RecipeModel> Recipes
+        {
+            get { return _recipes; }
+            set
+            {
+                _recipes = value;
+                OnPropertyChanged(nameof(Recipes));
+            }
+        }
+        #endregion
+
+        private async Task LoadRecipes()
+        {
+            try
+            {
+                var x = await _recipesEndPointAPI.GetAllRecipesLoggedUser();
+                Recipes = new ObservableCollection<RecipeModel>(x);
+            }
+            catch (Exception ex)
+            {
+                //_logger.Error("Got exception", ex);
+                await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+            }
+        }
+
+        private async Task LoadImages()
+        {
+            try
+            {
+                List<string> DontDeletetheseImages = new List<string>();
+
+                foreach (var item in tempRecipes)
+                {
+                    if (item.NameOfImage == null)
+                    {
+                        item.ImagePath = "pack://application:,,,/Resources/food template.png";
+                        continue;
+                    }
+
+                    if (TempData.ImageExistOnDisk(item.NameOfImage))
+                    {
+                        item.ImagePath = TempData.GetImagePath(item.NameOfImage);
+                        DontDeletetheseImages.Add(item.NameOfImage);
+                        continue;
+                    }
+
+                    var downloadStatus = await _recipesEndPointAPI.DownloadImage(item.NameOfImage);
+
+                    if (downloadStatus)
+                    {
+                        item.ImagePath = TempData.GetImagePath(item.NameOfImage);
+                        DontDeletetheseImages.Add(item.NameOfImage);
+                    }
+
+                }
+
+                TempData.DeleteUnusedImages(DontDeletetheseImages);
+
+                Recipes = new BindingList<RecipeModel>(tempRecipes);
+            }
+            catch (Exception ex)
+            {
+                //_logger.Error("Got exception", ex);
+                await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+            }
+
+        }
+
     }
 }

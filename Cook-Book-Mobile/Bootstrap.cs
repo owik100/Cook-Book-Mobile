@@ -23,6 +23,7 @@ namespace Cook_Book_Mobile
 
             builder.RegisterType<LoggedUser>().As<ILoggedUser>().SingleInstance();
             builder.RegisterType<APIHelper>().As<IAPIHelper>().SingleInstance();
+            builder.RegisterType<RecipesEndPointAPI>().As<IRecipesEndPointAPI>().SingleInstance();
 
             IContainer container = builder.Build();
 
