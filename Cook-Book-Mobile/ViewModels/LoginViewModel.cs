@@ -39,7 +39,8 @@ namespace Cook_Book_Mobile.ViewModels
 
         private async Task GoRegister()
         {
-            await(Application.Current.MainPage as MainPage).NavigateFromMenu((int)MenuItemType.Register);
+            MessagingCenter.Send(this, EventMessages.NavigationEvent, MenuItemType.Register);
+            await (Application.Current.MainPage as MainPage).NavigateFromMenu((int)MenuItemType.Register);
         }
 
         private async Task TryLoginOnStart()
@@ -69,8 +70,9 @@ namespace Cook_Book_Mobile.ViewModels
             set
             {
                 _userName = value;
-                SetProperty(ref _userName, value);
-                OnPropertyChanged("CanLogin");
+                //SetProperty(ref _userName, value);
+                OnPropertyChanged(nameof(UserName));
+                OnPropertyChanged(nameof(CanLogin));             
             }
         }
 
@@ -80,8 +82,9 @@ namespace Cook_Book_Mobile.ViewModels
             set
             {
                 _password = value;
-                SetProperty(ref _password, value);
-                OnPropertyChanged("CanLogin");
+                //SetProperty(ref _password, value);
+                OnPropertyChanged(nameof(Password));
+                OnPropertyChanged(nameof(CanLogin));
             }
         }
 
@@ -91,7 +94,7 @@ namespace Cook_Book_Mobile.ViewModels
             set
             {
                 _remember = value;
-                SetProperty(ref _remember, value);
+                //SetProperty(ref _remember, value);
             }
         }
 

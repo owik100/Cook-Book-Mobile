@@ -41,8 +41,9 @@ namespace Cook_Book_Mobile.ViewModels
             set
             {
                 _userName = value;
-                SetProperty(ref _userName, value);
-                OnPropertyChanged("CanRegister");
+                //SetProperty(ref _userName, value);
+                OnPropertyChanged(nameof(UserName));
+                OnPropertyChanged(nameof(CanRegister));
             }
         }
 
@@ -52,8 +53,9 @@ namespace Cook_Book_Mobile.ViewModels
             set
             {
                 _password = value;
-                SetProperty(ref _password, value);
-                OnPropertyChanged("CanRegister");
+                //SetProperty(ref _password, value);
+                OnPropertyChanged(nameof(Password));
+                OnPropertyChanged(nameof(CanRegister));
             }
         }
 
@@ -63,8 +65,9 @@ namespace Cook_Book_Mobile.ViewModels
             set
             {
                 _passwordRepeat = value;
-                SetProperty(ref _passwordRepeat, value);
-                OnPropertyChanged("CanRegister");
+                //SetProperty(ref _passwordRepeat, value);
+                OnPropertyChanged(nameof(PasswordRepeat));
+                OnPropertyChanged(nameof(CanRegister));
             }
         }
 
@@ -74,8 +77,9 @@ namespace Cook_Book_Mobile.ViewModels
             set
             {
                 _email = value;
-                SetProperty(ref _email, value);
-                OnPropertyChanged("CanRegister");
+                //SetProperty(ref _email, value);
+                OnPropertyChanged(nameof(Email));
+                OnPropertyChanged(nameof(CanRegister));
             }
         }
 
@@ -122,7 +126,7 @@ namespace Cook_Book_Mobile.ViewModels
                 }
 
                 IsBusy = true;
-                OnPropertyChanged("CanRegister");
+                OnPropertyChanged(nameof(CanRegister));
 
                 RegisterModel user = new RegisterModel
                 {
@@ -142,13 +146,12 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 //  _logger.Error("Got exception", ex);
                 await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
-                Clear();
 
             }
             finally
             {
                 IsBusy = false;
-                OnPropertyChanged("CanRegister");
+                OnPropertyChanged(nameof(CanRegister));
             }
         }
 
@@ -159,8 +162,5 @@ namespace Cook_Book_Mobile.ViewModels
             Email = string.Empty;
             PasswordRepeat = string.Empty;
         }
-
-
-
     }
 }

@@ -13,22 +13,10 @@ namespace Cook_Book_Mobile.Views
     public partial class MenuPage : ContentPage
     {
         MainPage RootPage { get => Application.Current.MainPage as MainPage; }
-        //List<HomeMenuItem> menuItems;
         public MenuPage()
         {
             InitializeComponent();
 
-            //menuItems = new List<HomeMenuItem>
-            //{
-            //    new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },                         
-            //    new HomeMenuItem {Id = MenuItemType.Login, Title="Logowanie" },
-            //     new HomeMenuItem {Id = MenuItemType.Register, Title="Rejestracja" },
-            //    new HomeMenuItem {Id = MenuItemType.About, Title="About" },
-            //};
-
-            //ListViewMenu.ItemsSource = menuItems;
-
-            //ListViewMenu.SelectedItem = menuItems[0];
             ListViewMenu.ItemSelected += async (sender, e) =>
             {
                 if (e.SelectedItem == null)

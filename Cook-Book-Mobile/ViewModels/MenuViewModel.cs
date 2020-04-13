@@ -6,6 +6,7 @@ using Cook_Book_Shared_Code.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -27,18 +28,11 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 return _selectedItem;
             }
-
             set
             {
                 _selectedItem = value;
-               // OnPropertyChanged("YourSelectedItem");
-                SetProperty(ref _selectedItem, value);
-
-                if (SelectedItem == null)
-                    return;
-
-                //var id = (int)((HomeMenuItem)value).Id;
-                //await RootPage.NavigateFromMenu(id);
+                //SetProperty(ref _selectedItem, value);
+                OnPropertyChanged(nameof(SelectedItem));
             }
         }
 
@@ -62,8 +56,6 @@ namespace Cook_Book_Mobile.ViewModels
             }
         }
 
-
-
         public MenuViewModel(ILoggedUser loggedUser, IAPIHelper apiHelper)
         {
             _loggedUser = loggedUser;
@@ -82,6 +74,11 @@ namespace Cook_Book_Mobile.ViewModels
             MessagingCenter.Subscribe<LoginViewModel>(this, EventMessages.LogOnOffEvent, (sender) =>
             {
                 OnPropertyChanged(nameof(Logged));
+            });
+
+            MessagingCenter.Subscribe<LoginViewModel, MenuItemType>(this, EventMessages.NavigationEvent, (sender, arg) =>
+            {
+                 SelectedItem = MenuItems.Where(x => x.Id == arg).FirstOrDefault();
             });
         }
 
