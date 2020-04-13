@@ -40,7 +40,6 @@ namespace Cook_Book_Mobile.ViewModels
         private async Task GoRegister()
         {
             MessagingCenter.Send(this, EventMessages.NavigationEvent, MenuItemType.Register);
-            await (Application.Current.MainPage as MainPage).NavigateFromMenu((int)MenuItemType.Register);
         }
 
         private async Task TryLoginOnStart()
@@ -139,7 +138,7 @@ namespace Cook_Book_Mobile.ViewModels
                 }
 
                 Clear();
-                MessagingCenter.Send(this, EventMessages.LogOnOffEvent);
+                MessagingCenter.Send(this, EventMessages.LogOnEvent);
                 await (Application.Current.MainPage as MainPage).NavigateFromMenu((int)MenuItemType.Recipes);
             }
             catch (Exception ex)

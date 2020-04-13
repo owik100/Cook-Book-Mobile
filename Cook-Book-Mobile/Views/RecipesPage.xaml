@@ -8,10 +8,6 @@
              BindingContext="{Binding Recipes, Source={StaticResource Locator}}"
              Title="{Binding Title}">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Wyloguj" Command="{Binding LogOutCommand}"/>
-    </ContentPage.ToolbarItems>
-
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Jesteś zalogowany!"

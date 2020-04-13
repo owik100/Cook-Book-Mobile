@@ -9,6 +9,7 @@
              Title="Menu">
              
     <StackLayout VerticalOptions="FillAndExpand">
+        <Label Text="{Binding HelloText}" IsVisible="{Binding Logged}" FontSize="Large" Margin="10,10,0,0"/>
         <Button Text="Wyloguj" IsVisible="{Binding Logged}" Command="{Binding LogOutCommand}"/>
         <ListView x:Name="ListViewMenu"
                     HasUnevenRows="True"

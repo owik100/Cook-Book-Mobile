@@ -19,9 +19,56 @@ namespace Cook_Book_Mobile.ViewModels
     {
         public ObservableCollection<HomeMenuItem> MenuItems { get; set; }   
         public ICommand LogOutCommand { get; set; }
-        MainPage RootPage { get => Application.Current.MainPage as MainPage; }
 
-        HomeMenuItem _selectedItem;
+        private HomeMenuItem _selectedItem;
+        private ILoggedUser _loggedUser;
+        private IAPIHelper _apiHelper;
+        private string _helloText;
+
+        public MenuViewModel(ILoggedUser loggedUser, IAPIHelper apiHelper)
+        {
+            _loggedUser = loggedUser;
+            _apiHelper = apiHelper;
+            LogOutCommand = new Command(() => LogOut());
+
+            MenuItems = new ObservableCollection<HomeMenuItem>
+            {
+                new HomeMenuItem {Id = MenuItemType.Login, Title="Logowanie" },
+                new HomeMenuItem {Id = MenuItemType.Register, Title="Rejestracja" },
+                new HomeMenuItem {Id = MenuItemType.About, Title="About" },
+            };
+
+            SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Login).FirstOrDefault();
+
+            MessagingCenter.Subscribe<LoginViewModel>(this, EventMessages.LogOnEvent, (sender) =>
+            {
+                OnPropertyChanged(nameof(Logged));
+                SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Recipes).FirstOrDefault();             
+            });
+
+            MessagingCenter.Subscribe<LoginViewModel, MenuItemType>(this, EventMessages.NavigationEvent, (sender, arg) =>
+            {
+                SelectedItem = MenuItems.Where(x => x.Id == arg).FirstOrDefault();
+                //Wywola sie event w code behind, przekierowujacy do wybranej strony
+            });
+        }
+
+        #region props
+
+        public string HelloText
+        {
+            get
+            {
+                return  _helloText;
+            }
+            set
+            {
+                _helloText = "Witaj " + value;
+                //SetProperty(ref _helloText, value);
+                OnPropertyChanged(nameof(HelloText));
+            }
+        }
+
         public HomeMenuItem SelectedItem
         {
             get
@@ -36,11 +83,6 @@ namespace Cook_Book_Mobile.ViewModels
             }
         }
 
-
-        private ILoggedUser _loggedUser;
-        private IAPIHelper _apiHelper;
-
-        bool _logged;
         public bool Logged
         {
             get
@@ -50,46 +92,25 @@ namespace Cook_Book_Mobile.ViewModels
                 if (string.IsNullOrWhiteSpace(_loggedUser.Token) == false)
                 {
                     output = true;
+                    HelloText = _loggedUser.UserName;
                 }
-
+                else
+                {
+                    HelloText = "";
+                }     
                 return output;
             }
         }
+        #endregion
 
-        public MenuViewModel(ILoggedUser loggedUser, IAPIHelper apiHelper)
-        {
-            _loggedUser = loggedUser;
-            _apiHelper = apiHelper;
-            LogOutCommand = new Command(async () => await LogOut());
-
-            MenuItems = new ObservableCollection<HomeMenuItem>
-            {
-                new HomeMenuItem {Id = MenuItemType.Login, Title="Logowanie" },
-                new HomeMenuItem {Id = MenuItemType.Register, Title="Rejestracja" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" },
-            };
-
-            SelectedItem = MenuItems[0];
-
-            MessagingCenter.Subscribe<LoginViewModel>(this, EventMessages.LogOnOffEvent, (sender) =>
-            {
-                OnPropertyChanged(nameof(Logged));
-            });
-
-            MessagingCenter.Subscribe<LoginViewModel, MenuItemType>(this, EventMessages.NavigationEvent, (sender, arg) =>
-            {
-                 SelectedItem = MenuItems.Where(x => x.Id == arg).FirstOrDefault();
-            });
-        }
-
-        private async Task LogOut()
+        private void LogOut()
         {
             _loggedUser.LogOffUser();
             _apiHelper.LogOffUser();
             SecureStorage.RemoveAll();
             OnPropertyChanged(nameof(Logged));
 
-            await (Application.Current.MainPage as MainPage).NavigateFromMenu((int)MenuItemType.Login);
+            SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Login).FirstOrDefault();
         }
     }
 }
