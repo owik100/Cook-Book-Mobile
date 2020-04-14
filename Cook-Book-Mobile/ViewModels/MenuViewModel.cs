@@ -18,7 +18,6 @@ namespace Cook_Book_Mobile.ViewModels
     public class MenuViewModel : BaseViewModel
     {
         public ICommand LogOutCommand { get; set; }
-
         private ObservableCollection<HomeMenuItem> _menuItems;
         private HomeMenuItem _selectedItem;
         private ILoggedUser _loggedUser;
@@ -44,7 +43,7 @@ namespace Cook_Book_Mobile.ViewModels
                 MessagingCenter.Send(this, EventMessages.ReloadRecipesEvent);
             });
 
-            MessagingCenter.Subscribe<LoginViewModel, MenuItemType>(this, EventMessages.NavigationEvent, (sender, arg) =>
+            MessagingCenter.Subscribe<LoginViewModel, MenuItemType>(this, EventMessages.BasicNavigationEvent, (sender, arg) =>
             {
                 SelectedItem = MenuItems.Where(x => x.Id == arg).FirstOrDefault();
                 //Wywola sie event w code behind, przekierowujacy do wybranej strony
@@ -132,7 +131,7 @@ namespace Cook_Book_Mobile.ViewModels
             MenuItems = new ObservableCollection<HomeMenuItem>
             {
                 new HomeMenuItem {Id = MenuItemType.Recipes, Title="Przepisy" },
-                new HomeMenuItem {Id = MenuItemType.AddRecipe, Title="Dodaj przepis" },
+                new HomeMenuItem {Id = MenuItemType.AddEditRecipe, Title="Dodaj przepis" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About" },
             };
             OnPropertyChanged(nameof(MenuItems));

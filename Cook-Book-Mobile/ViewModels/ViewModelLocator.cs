@@ -31,5 +31,9 @@ namespace Cook_Book_Mobile.ViewModels
         {
             get => ServiceLocator.Current.GetInstance<MenuViewModel>();
         }
+        public RecipePreviewViewModel RecipePreview
+        {
+            get => ServiceLocator.Current.GetInstance<RecipePreviewViewModel>();
+        }
     }
 }

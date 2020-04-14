@@ -133,7 +133,7 @@ namespace Cook_Book_Mobile.ViewModels
 
         private void GoRegister()
         {
-            MessagingCenter.Send(this, EventMessages.NavigationEvent, MenuItemType.Register);
+            MessagingCenter.Send(this, EventMessages.BasicNavigationEvent, MenuItemType.Register);
         }
 
         private async Task TryLoginOnStart()
