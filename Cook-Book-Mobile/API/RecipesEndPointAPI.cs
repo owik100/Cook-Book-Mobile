@@ -1,4 +1,5 @@
-﻿using Cook_Book_Shared_Code.API;
+﻿using Cook_Book_Mobile.Helpers;
+using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
 using System;
 using System.Collections.Generic;
@@ -45,8 +46,8 @@ namespace Cook_Book_Mobile.API
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string tempFolderPath = Path.GetTempPath();
-                    ImagePath = tempFolderPath + id;
+                    string tempFolderPath = TempData.GetTempFolderPath();
+                    ImagePath = TempData.GetImagePath(id);
 
                     var result = await response.Content.ReadAsStreamAsync();
 

@@ -72,23 +72,23 @@ namespace Cook_Book_Mobile.ViewModels
                 {
                     if (item.NameOfImage == null)
                     {
-                        item.ImagePath = "local:ImageResource Cook-Book-Mobile.Images.food template.png";
+                        item.ImagePath = "Cook_Book_Mobile.Images.foodtemplate.png";
                         continue;
                     }
 
-                    //if (TempData.ImageExistOnDisk(item.NameOfImage))
-                    //{
-                    //    item.ImagePath = TempData.GetImagePath(item.NameOfImage);
-                    //    DontDeletetheseImages.Add(item.NameOfImage);
-                    //    continue;
-                    //}
+                    if (TempData.ImageExistOnDisk(item.NameOfImage))
+                    {
+                        item.ImagePath = TempData.GetImagePath(item.NameOfImage);
+                        DontDeletetheseImages.Add(item.NameOfImage);
+                        continue;
+                    }
 
                     var downloadStatus = await _recipesEndPointAPI.DownloadImage(item.NameOfImage);
 
                     if (downloadStatus)
                     {
-                       var tempFolderPath =  Path.GetTempPath();
-                        item.ImagePath =  tempFolderPath + item.NameOfImage;
+
+                        item.ImagePath = TempData.GetImagePath(item.NameOfImage);
                         DontDeletetheseImages.Add(item.NameOfImage);
                     }
 
@@ -97,6 +97,7 @@ namespace Cook_Book_Mobile.ViewModels
                 // TempData.DeleteUnusedImages(DontDeletetheseImages);
 
                 Recipes = new ObservableCollection<RecipeModel>(tempRecipes);
+                OnPropertyChanged(nameof(Recipes));
             }
             catch (Exception ex)
             {
