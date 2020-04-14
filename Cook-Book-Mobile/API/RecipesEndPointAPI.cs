@@ -45,23 +45,23 @@ namespace Cook_Book_Mobile.API
 
                 if (response.IsSuccessStatusCode)
                 {
-                    //string tempFolderPath = TempData.GetTempFolderPathOrCreate();
-                    //ImagePath = TempData.GetImagePath(id);
+                    string tempFolderPath = Path.GetTempPath();
+                    ImagePath = tempFolderPath + id;
 
-                    //var result = await response.Content.ReadAsStreamAsync();
+                    var result = await response.Content.ReadAsStreamAsync();
 
-                    //MemoryStream memoryStream = result as MemoryStream;
+                    MemoryStream memoryStream = result as MemoryStream;
 
-                    //FileStream file = new FileStream($@"{tempFolderPath}\{id}", FileMode.Create, FileAccess.Write);
+                    FileStream file = new FileStream($@"{tempFolderPath}\{id}", FileMode.Create, FileAccess.Write);
 
-                    //memoryStream.WriteTo(file);
+                    memoryStream.WriteTo(file);
 
-                    //file.Close();
-                    //file.Dispose();
-                    //memoryStream.Close();
-                    //memoryStream.Dispose();
-                    //result.Close();
-                    //result.Dispose();
+                    file.Close();
+                    file.Dispose();
+                    memoryStream.Close();
+                    memoryStream.Dispose();
+                    result.Close();
+                    result.Dispose();
                 }
                 else
                 {

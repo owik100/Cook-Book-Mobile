@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-              x:Class="Cook_Book_Mobile.Views.RecipesPage"
+             x:Class="Cook_Book_Mobile.Views.RecipesPage"
              BindingContext="{Binding Recipes, Source={StaticResource Locator}}"
              Title="{Binding Title}">
 
@@ -23,10 +23,10 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid Padding="10">
+                            <StackLayout Orientation="Horizontal">
                                 <Label Text="{Binding Name}" d:Text="{Binding .}" FontSize="20"/>
-                                <Image Source="{Binding ImagePath}"/>
-                            </Grid>
+                                <Image Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"  />
+                            </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

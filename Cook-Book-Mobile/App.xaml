@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Cook_Book_Mobile.ViewModels"
+             xmlns:hp="clr-namespace:Cook_Book_Mobile.Helpers"
              mc:Ignorable="d"
              x:Class="Cook_Book_Mobile.App">
 
@@ -17,6 +18,8 @@
             </Style>
 
             <vm:ViewModelLocator x:Key="Locator" />
+
+            <hp:ImageFileToImageSourceConverter x:Key="ImageFileToImageSourceConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

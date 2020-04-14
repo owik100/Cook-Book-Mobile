@@ -6,6 +6,7 @@ using Cook_Book_Shared_Code.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -18,6 +19,8 @@ namespace Cook_Book_Mobile.ViewModels
     {
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private ObservableCollection<RecipeModel> _recipes;
+
+        List<RecipeModel> tempRecipes = new List<RecipeModel>();
 
         public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI)
         {
@@ -49,8 +52,8 @@ namespace Cook_Book_Mobile.ViewModels
         {
             try
             {
-                var x = await _recipesEndPointAPI.GetAllRecipesLoggedUser();
-                Recipes = new ObservableCollection<RecipeModel>(x);
+                tempRecipes = await _recipesEndPointAPI.GetAllRecipesLoggedUser();
+              
             }
             catch (Exception ex)
             {
@@ -69,30 +72,31 @@ namespace Cook_Book_Mobile.ViewModels
                 {
                     if (item.NameOfImage == null)
                     {
-                        item.ImagePath = "pack://application:,,,/Resources/food template.png";
+                        item.ImagePath = "local:ImageResource Cook-Book-Mobile.Images.food template.png";
                         continue;
                     }
 
-                    if (TempData.ImageExistOnDisk(item.NameOfImage))
-                    {
-                        item.ImagePath = TempData.GetImagePath(item.NameOfImage);
-                        DontDeletetheseImages.Add(item.NameOfImage);
-                        continue;
-                    }
+                    //if (TempData.ImageExistOnDisk(item.NameOfImage))
+                    //{
+                    //    item.ImagePath = TempData.GetImagePath(item.NameOfImage);
+                    //    DontDeletetheseImages.Add(item.NameOfImage);
+                    //    continue;
+                    //}
 
                     var downloadStatus = await _recipesEndPointAPI.DownloadImage(item.NameOfImage);
 
                     if (downloadStatus)
                     {
-                        item.ImagePath = TempData.GetImagePath(item.NameOfImage);
+                       var tempFolderPath =  Path.GetTempPath();
+                        item.ImagePath =  tempFolderPath + item.NameOfImage;
                         DontDeletetheseImages.Add(item.NameOfImage);
                     }
 
                 }
 
-                TempData.DeleteUnusedImages(DontDeletetheseImages);
+                // TempData.DeleteUnusedImages(DontDeletetheseImages);
 
-                Recipes = new BindingList<RecipeModel>(tempRecipes);
+                Recipes = new ObservableCollection<RecipeModel>(tempRecipes);
             }
             catch (Exception ex)
             {

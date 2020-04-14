@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -13,10 +13,12 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Images\food template.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="appsettings.json" />
+    <EmbeddedResource Include="Images\food template.png" />
   </ItemGroup>
 
   <ItemGroup>
