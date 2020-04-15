@@ -19,19 +19,28 @@ namespace Cook_Book_Mobile.ViewModels
     {
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private ObservableCollection<RecipeModel> _recipes;
+        private bool _isRefreshing;
 
         List<RecipeModel> tempRecipes = new List<RecipeModel>();
+
+        public ICommand RefreshCommand { get; set; }
 
         public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI)
         {
             Title = "Twoje przepisy";
 
+            RefreshCommand = new Command(async () => await RefreshData());
+
             _recipesEndPointAPI = RecipesEndPointAPI;
 
             MessagingCenter.Subscribe<MenuViewModel>(this, EventMessages.ReloadRecipesEvent, async (sender) =>
             {
-                await LoadRecipes();
-                await LoadImages();
+                await RefreshData();
+            });
+
+            MessagingCenter.Subscribe<RecipePreviewPage>(this, EventMessages.ReloadRecipesEvent, async (sender) =>
+            {
+                await RefreshData();
             });
 
         }
@@ -46,7 +55,29 @@ namespace Cook_Book_Mobile.ViewModels
                 OnPropertyChanged(nameof(Recipes));
             }
         }
+
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                _isRefreshing = value;
+                OnPropertyChanged(nameof(IsRefreshing));
+            }
+        }
         #endregion
+
+        private async Task RefreshData()
+        {
+
+           // IsRefreshing = true;
+            await LoadRecipes();
+             await LoadImages();
+
+          //  await Task.WhenAll(LoadRecipes(), LoadImages());
+
+            IsRefreshing = false;
+        }
 
         private async Task LoadRecipes()
         {

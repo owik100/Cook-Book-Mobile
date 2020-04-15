@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Cook_Book_Mobile.Helpers;
+using Cook_Book_Mobile.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,12 @@ namespace Cook_Book_Mobile.Views
         public RecipePreviewPage()
         {
             InitializeComponent();
+
+            MessagingCenter.Subscribe<RecipePreviewViewModel>(this, EventMessages.BasicNavigationEvent, async (sender) =>
+            {
+                await Navigation.PopAsync();
+                MessagingCenter.Send(this, EventMessages.ReloadRecipesEvent);
+            });
         }
     }
 }
