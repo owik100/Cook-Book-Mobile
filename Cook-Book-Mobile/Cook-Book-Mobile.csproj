@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AI.Xamarin.Forms.Bullet.List" Version="1.0.0-beta5" />
     <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Autofac.Extras.CommonServiceLocator" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />

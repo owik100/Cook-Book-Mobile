@@ -3,16 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:customControls="clr-namespace:AurisIdeas.Controls;assembly=AurisIdeas.Controls"
              mc:Ignorable="d"
-             BindingContext="{Binding RecipePreview, Source={StaticResource Locator}}"
              x:Class="Cook_Book_Mobile.Views.RecipePreviewPage"
+             BindingContext="{Binding RecipePreview, Source={StaticResource Locator}}" 
+             xmlns:hp="clr-namespace:Cook_Book_Mobile.Helpers"
              Title="{Binding Title}">
-    
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Edytuj" Command="{Binding EditCommand}" />
+        <ToolbarItem Text="Usuń" Command="{Binding DeleteCommand}"/>
+    </ContentPage.ToolbarItems>
+
+
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
+        <ScrollView>
+
+
+            <StackLayout>
+
+                <Image Margin="0,5,0,0" HeightRequest="60" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"  />
+
+                <Label Text="{Binding RecipeInstructions}"
+                FontSize="Medium"
                 HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+
+                <Label Text="Składniki:"
+                FontSize="Medium"
+                HorizontalOptions="Start"  Margin="15,20,15,0"  />
+                    
+                <customControls:BulletListControl ListItemFontSize="15" Items="{Binding RecipeIngredients}" Margin="15,0,15,5" />
+
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

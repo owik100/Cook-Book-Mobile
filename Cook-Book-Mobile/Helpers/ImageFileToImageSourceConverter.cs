@@ -10,19 +10,22 @@ namespace Cook_Book_Mobile.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            ImageSource output;
-            var path = (string)value;
+            ImageSource output = ImageSource.FromResource("");
 
-            if (path.Contains("/data/user/"))
-            {          
-                output = ImageSource.FromFile(path);
-            }
-            else
+            if (value!= null)
             {
-                output = ImageSource.FromResource(path);
-            }
+                var path = (string)value;
 
-            
+                if (path.Contains("/data/user/"))
+                {
+                    output = ImageSource.FromFile(path);
+                }
+                else
+                {
+                    output = ImageSource.FromResource(path);
+                }
+            }
+          
             return output;
         }
 

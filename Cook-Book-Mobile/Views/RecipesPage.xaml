@@ -25,7 +25,7 @@
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="{Binding Name}" d:Text="{Binding .}" FontSize="20"/>
-                                <Image HeightRequest="50" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"  />
+                                <Image HeightRequest="40" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"  />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

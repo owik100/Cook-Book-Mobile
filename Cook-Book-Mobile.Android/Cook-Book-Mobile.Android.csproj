@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AI.Xamarin.Forms.Bullet.List">
+      <Version>1.0.0-beta5</Version>
+    </PackageReference>
     <PackageReference Include="Autofac">
       <Version>5.1.2</Version>
     </PackageReference>
