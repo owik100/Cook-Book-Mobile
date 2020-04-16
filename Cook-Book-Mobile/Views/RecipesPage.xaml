@@ -8,6 +8,11 @@
              BindingContext="{Binding Recipes, Source={StaticResource Locator}}"
              Title="{Binding Title}">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Dodaj przepis"  Clicked="AddRecipe_Clicked" />
+    </ContentPage.ToolbarItems>
+
+
     <ContentPage.Content>
         <StackLayout>
             <RefreshView IsRefreshing="{Binding IsRefreshing}"

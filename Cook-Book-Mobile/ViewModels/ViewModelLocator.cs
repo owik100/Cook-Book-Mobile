@@ -34,6 +34,10 @@ namespace Cook_Book_Mobile.ViewModels
         public RecipePreviewViewModel RecipePreview
         {
             get => ServiceLocator.Current.GetInstance<RecipePreviewViewModel>();
+        } 
+        public AddOrEditViewModel AddOrEdit
+        {
+            get => ServiceLocator.Current.GetInstance<AddOrEditViewModel>();
         }
     }
 }

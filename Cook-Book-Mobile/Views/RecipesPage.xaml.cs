@@ -32,5 +32,11 @@ namespace Cook_Book_Mobile.Views
 
             MessagingCenter.Send(this, EventMessages.RecipesPreviewEvent, item);
         }
+
+        private async void AddRecipe_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new AddOrEditPage(), true);
+           // MessagingCenter.Send(this, EventMessages.AddOrEditEvent);
+        }
     }
 }
