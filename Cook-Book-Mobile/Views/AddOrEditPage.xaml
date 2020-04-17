@@ -45,9 +45,11 @@
             <Label Text="Przepis:" HorizontalOptions="Center" FontSize="Medium"/>
             <Editor HeightRequest="100" Placeholder="Podaj przepis" Text="{Binding RecipeInstructions}"/>
 
-
-            <Button Text="wczytaj obrazek" Command="{Binding SelectImageCommand}" />
-
+            <StackLayout Orientation="Horizontal">
+                <Button HorizontalOptions="FillAndExpand" Text="Wczytaj obrazek" Command="{Binding SelectImageCommand}" />
+                <Button HorizontalOptions="FillAndExpand" Text="Usuń obrazek" Command="{Binding DeleteImageCommand}" IsEnabled="{Binding CanDeleteImage}" />
+            </StackLayout>
+            <Image HeightRequest="30" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"  />
             <Button Text="Dodaj" Command="{Binding SubmitCommand}" IsEnabled="{Binding CanRecipeSubmit}" />
 
         </StackLayout>

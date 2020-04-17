@@ -1,9 +1,11 @@
 ﻿using Cook_Book_Mobile.Helpers;
+using Cook_Book_Mobile.Services;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +20,7 @@ namespace Cook_Book_Mobile.ViewModels
         public ICommand AddIngredientCommand { get; set; }
         public ICommand DeleteIngredientCommand { get; set; }
         public ICommand SelectImageCommand { get; set; }
+        public ICommand DeleteImageCommand { get; set; }
 
 
         private string _recipeName;
@@ -35,6 +38,8 @@ namespace Cook_Book_Mobile.ViewModels
 
         private bool reloadNeeded = false;
 
+        Image image = new Image();
+
         public AddOrEditViewModel(IRecipesEndPointAPI RecipesEndPointAPI)
         {
             _recipesEndPointAPI = RecipesEndPointAPI;
@@ -43,6 +48,7 @@ namespace Cook_Book_Mobile.ViewModels
             AddIngredientCommand = new Command (async () => await AddIngredient());
             DeleteIngredientCommand = new Command (async () => await DeleteIngredient());
             SelectImageCommand = new Command (async () => await OpenFile());
+            DeleteImageCommand = new Command (async () => await DeleteFile());
 
             Title = "Dodaj";
             ImagePath = "Cook_Book_Mobile.Images.foodtemplate.png";
@@ -157,7 +163,7 @@ namespace Cook_Book_Mobile.ViewModels
 
         }
 
-        public bool CanDeleteFileModel
+        public bool CanDeleteImage
         {
             get
             {
@@ -221,7 +227,41 @@ namespace Cook_Book_Mobile.ViewModels
 
         async Task OpenFile()
         {
+            try
+            {
+                Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
+                if (stream != null)
+                {
+                    image.Source = ImageSource.FromStream(() => stream);
+                    ImagePath = "123.jpeg";
+                    OnPropertyChanged(nameof(ImagePath));
+                    OnPropertyChanged(nameof(CanDeleteImage));
+                }
+            }
+            catch(Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+            }
+        }
 
+        async Task DeleteFile()
+        {
+            bool answer;
+
+            try
+            {
+                answer = await Application.Current.MainPage.DisplayAlert(RecipeName, "Na pewno chcesz usunąć obrazek?", "Tak", "Nie");
+                if (answer)
+                {
+                    ImagePath = "Cook_Book_Mobile.Images.foodtemplate.png";
+                    OnPropertyChanged(nameof(ImagePath));
+                    OnPropertyChanged(nameof(CanDeleteImage));
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+            }
         }
 
         public async Task Submit()
@@ -262,7 +302,7 @@ namespace Cook_Book_Mobile.ViewModels
                         }
 
                         OnPropertyChanged(nameof(ImagePath));
-                        OnPropertyChanged(nameof(CanDeleteFileModel));
+                        OnPropertyChanged(nameof(CanDeleteImage));
 
                         reloadNeeded = true;
                         await Application.Current.MainPage.DisplayAlert("Zaktualizowano pomyślnie!", "Zaktualizowano", "Ok");
