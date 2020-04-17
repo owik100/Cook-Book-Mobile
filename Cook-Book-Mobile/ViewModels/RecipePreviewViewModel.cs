@@ -73,6 +73,7 @@ namespace Cook_Book_Mobile.ViewModels
         private void Edit()
         {
             throw new NotImplementedException();
+           // MessagingCenter.Send(this, EventMessages.EditRecipeEvent);
         }
 
         #region Props

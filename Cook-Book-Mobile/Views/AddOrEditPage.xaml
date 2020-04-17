@@ -11,9 +11,14 @@
     
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Label Text="Nazwa:" HorizontalOptions="Center" FontSize="Medium"/>
+            <Entry Placeholder="Nazwa przepisu" Text="{Binding RecipeName}"/>
+
+            <Label Text="Przepis:" HorizontalOptions="Center" FontSize="Medium"/>
+            <Entry Placeholder="Podaj przepis" Text="{Binding RecipeInstructions}"/>
+
+            <Button Text="Dodaj" Command="{Binding SubmitCommand}" IsEnabled="{Binding CanRecipeSubmit}" />
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

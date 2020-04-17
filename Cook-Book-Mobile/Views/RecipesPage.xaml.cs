@@ -35,8 +35,7 @@ namespace Cook_Book_Mobile.Views
 
         private async void AddRecipe_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new AddOrEditPage(), true);
-           // MessagingCenter.Send(this, EventMessages.AddOrEditEvent);
+            await Navigation.PushAsync(new AddOrEditPage(), true);        
         }
     }
 }
