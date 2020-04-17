@@ -50,7 +50,7 @@
                 <Button HorizontalOptions="FillAndExpand" Text="Usuń obrazek" Command="{Binding DeleteImageCommand}" IsEnabled="{Binding CanDeleteImage}" />
             </StackLayout>
             <Image HeightRequest="30" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"  />
-            <Button Text="Dodaj" Command="{Binding SubmitCommand}" IsEnabled="{Binding CanRecipeSubmit}" />
+            <Button Text="{Binding SubmitText}" Command="{Binding SubmitCommand}" IsEnabled="{Binding CanRecipeSubmit}" />
 
         </StackLayout>
     </ContentPage.Content>

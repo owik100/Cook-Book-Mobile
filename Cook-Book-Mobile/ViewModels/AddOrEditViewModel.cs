@@ -1,5 +1,6 @@
 ﻿using Cook_Book_Mobile.Helpers;
 using Cook_Book_Mobile.Services;
+using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
 using System;
@@ -36,8 +37,6 @@ namespace Cook_Book_Mobile.ViewModels
         private string _submitText;
         private int _recipeId;
 
-        private bool reloadNeeded = false;
-
         Image image = new Image();
 
         public AddOrEditViewModel(IRecipesEndPointAPI RecipesEndPointAPI)
@@ -52,7 +51,24 @@ namespace Cook_Book_Mobile.ViewModels
 
             Title = "Dodaj";
             ImagePath = "Cook_Book_Mobile.Images.foodtemplate.png";
+            SubmitText = "Dodaj";
+
+            MessagingCenter.Subscribe<RecipePreviewPage, RecipeModel>(this, EventMessages.EditRecipeEvent, (sender, arg) =>
+            {
+                Title = "Edytuj";
+                _addOrEdit = AddOrEdit.Edit;
+                _recipeId = arg.RecipeId;
+                SubmitText = "Zaktualizuj";
+
+                RecipeName = arg.Name;
+                RecipeIngredients = new ObservableCollection<string>(arg.Ingredients.ToList());
+                RecipeInstructions = arg.Instruction;
+                ImagePath = arg.ImagePath;
+
+            });
+    
         }
+
 
         #region Props
         public string SubmitText
@@ -284,7 +300,6 @@ namespace Cook_Book_Mobile.ViewModels
                 if (_addOrEdit == AddOrEdit.Add)
                 {
                     await _recipesEndPointAPI.InsertRecipe(recipeModel);
-                    reloadNeeded = true;
                     MessagingCenter.Send(this, EventMessages.BasicNavigationEvent);
 
                     //await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded), new CancellationToken());
@@ -304,8 +319,8 @@ namespace Cook_Book_Mobile.ViewModels
                         OnPropertyChanged(nameof(ImagePath));
                         OnPropertyChanged(nameof(CanDeleteImage));
 
-                        reloadNeeded = true;
                         await Application.Current.MainPage.DisplayAlert("Zaktualizowano pomyślnie!", "Zaktualizowano", "Ok");
+                        MessagingCenter.Send(this, EventMessages.BasicNavigationEvent);
                     }
                 }
             }
