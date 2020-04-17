@@ -15,8 +15,13 @@ namespace Cook_Book_Mobile.ViewModels
     public class AddOrEditViewModel : BaseViewModel
     {
         public ICommand SubmitCommand { get; set; }
+        public ICommand AddIngredientCommand { get; set; }
+        public ICommand DeleteIngredientCommand { get; set; }
+        public ICommand SelectImageCommand { get; set; }
+
+
         private string _recipeName;
-        private ObservableCollection<string> _recipeIntegradts = new ObservableCollection<string>();
+        private ObservableCollection<string> _recipeIngredients = new ObservableCollection<string>();
         private string _selectedIngredient;
         private string _ingredientInsert;
         private string _recipeInstructions;
@@ -35,6 +40,9 @@ namespace Cook_Book_Mobile.ViewModels
             _recipesEndPointAPI = RecipesEndPointAPI;
 
             SubmitCommand = new Command (async () => await Submit());
+            AddIngredientCommand = new Command (async () => await AddIngredient());
+            DeleteIngredientCommand = new Command (async () => await DeleteIngredient());
+            SelectImageCommand = new Command (async () => await OpenFile());
 
             Title = "Dodaj";
             ImagePath = "Cook_Book_Mobile.Images.foodtemplate.png";
@@ -74,10 +82,10 @@ namespace Cook_Book_Mobile.ViewModels
 
         public ObservableCollection<string> RecipeIngredients
         {
-            get { return _recipeIntegradts; }
+            get { return _recipeIngredients; }
             set
             {
-                _recipeIntegradts = value;
+                _recipeIngredients = value;
                 OnPropertyChanged(nameof(RecipeIngredients));
                 OnPropertyChanged(nameof(CanRecipeSubmit));
             }
@@ -113,11 +121,11 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 _ingredientInsert = value;
                 OnPropertyChanged(nameof(IngredientInsert));
-                OnPropertyChanged(nameof(CanAddIngredientTextBox));
+                OnPropertyChanged(nameof(CanAddIngredient));
             }
         }
 
-        public bool CanAddIngredientTextBox
+        public bool CanAddIngredient
         {
             get
             {
@@ -170,7 +178,7 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 bool output = false;
 
-                if (!string.IsNullOrWhiteSpace(RecipeName) && !string.IsNullOrWhiteSpace(RecipeInstructions) && RecipeIngredients.Count >= 0)
+                if (!string.IsNullOrWhiteSpace(RecipeName) && !string.IsNullOrWhiteSpace(RecipeInstructions) && RecipeIngredients.Count > 0)
                 {
                     output = true;
                 }
@@ -180,6 +188,41 @@ namespace Cook_Book_Mobile.ViewModels
         }
 
         #endregion
+
+        async Task AddIngredient()
+        {
+            try
+            {
+                RecipeIngredients.Add(IngredientInsert);
+                IngredientInsert = "";
+                OnPropertyChanged(nameof(CanRecipeSubmit));
+            }
+            catch (Exception ex)
+            {
+                //_logger.Error("Got exception", ex);
+                await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+            }
+
+        }
+
+        async Task DeleteIngredient()
+        {
+            try
+            {
+                RecipeIngredients.Remove(SelectedIngredient);
+                OnPropertyChanged(nameof(CanRecipeSubmit));
+            }
+            catch (Exception ex)
+            {
+                //_logger.Error("Got exception", ex);
+                await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+            }
+        }
+
+        async Task OpenFile()
+        {
+
+        }
 
         public async Task Submit()
         {
