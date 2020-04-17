@@ -38,6 +38,11 @@ namespace Cook_Book_Mobile.ViewModels
                 await RefreshData();
             });
 
+            MessagingCenter.Subscribe<AddOrEditPage>(this, EventMessages.ReloadRecipesEvent, async (sender) =>
+            {
+                await RefreshData();
+            });
+
             MessagingCenter.Subscribe<RecipePreviewPage>(this, EventMessages.ReloadRecipesEvent, async (sender) =>
             {
                 await RefreshData();

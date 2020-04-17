@@ -1,4 +1,5 @@
-﻿using Cook_Book_Shared_Code.API;
+﻿using Cook_Book_Mobile.Helpers;
+using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
 using System;
 using System.Collections.Generic;
@@ -201,6 +202,7 @@ namespace Cook_Book_Mobile.ViewModels
                 {
                     await _recipesEndPointAPI.InsertRecipe(recipeModel);
                     reloadNeeded = true;
+                    MessagingCenter.Send(this, EventMessages.BasicNavigationEvent);
 
                     //await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded), new CancellationToken());
                 }

@@ -20,7 +20,7 @@ namespace Cook_Book_Mobile.Views
 
             MessagingCenter.Subscribe<RecipePreviewViewModel>(this, EventMessages.BasicNavigationEvent, async (sender) =>
             {
-                await Navigation.PopAsync();
+                await Navigation.PopAsync(true);
                 MessagingCenter.Send(this, EventMessages.ReloadRecipesEvent);
             });
         }
