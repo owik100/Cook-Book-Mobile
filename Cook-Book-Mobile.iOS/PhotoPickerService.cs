@@ -84,6 +84,11 @@ namespace Cook_Book_Mobile.iOS
             imagePicker.FinishedPickingMedia -= OnImagePickerFinishedPickingMedia;
             imagePicker.Canceled -= OnImagePickerCancelled;
         }
+
+        public Task<string> GetImagePathAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
     

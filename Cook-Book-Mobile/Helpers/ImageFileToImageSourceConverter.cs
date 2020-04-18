@@ -16,13 +16,13 @@ namespace Cook_Book_Mobile.Helpers
             {
                 var path = (string)value;
 
-                if (path.Contains("/data/user"))
+                if (path.Contains("load default"))
                 {
-                    output = ImageSource.FromFile(path);
+                    output = ImageSource.FromResource("Cook_Book_Mobile.Images.foodtemplate.png");
                 }
                 else
                 {
-                    output = ImageSource.FromResource(path);
+                    output = ImageSource.FromFile(path);      
                 }
             }
           

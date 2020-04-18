@@ -3,6 +3,8 @@ using Cook_Book_Mobile.Services;
 using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -50,7 +52,7 @@ namespace Cook_Book_Mobile.ViewModels
             DeleteImageCommand = new Command (async () => await DeleteFile());
 
             Title = "Dodaj";
-            ImagePath = "Cook_Book_Mobile.Images.foodtemplate.png";
+            ImagePath = "load default";
             SubmitText = "Dodaj";
 
             MessagingCenter.Subscribe<RecipePreviewPage, RecipeModel>(this, EventMessages.EditRecipeEvent, (sender, arg) =>
@@ -185,7 +187,7 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 bool output = false;
 
-                if (!string.IsNullOrWhiteSpace(ImagePath) && ImagePath != "Cook_Book_Mobile.Images.foodtemplate.png")
+                if (!string.IsNullOrWhiteSpace(ImagePath) && ImagePath != "load default")
                 {
                     output = true;
                 }
@@ -245,14 +247,38 @@ namespace Cook_Book_Mobile.ViewModels
         {
             try
             {
-                Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
-                if (stream != null)
+                PermissionStatus status = await CrossPermissions.Current.CheckPermissionStatusAsync<StoragePermission>();
+
+                if (status == PermissionStatus.Granted)
                 {
-                    image.Source = ImageSource.FromStream(() => stream);
-                    ImagePath = "123.jpeg";
-                    OnPropertyChanged(nameof(ImagePath));
-                    OnPropertyChanged(nameof(CanDeleteImage));
+                    string path = await DependencyService.Get<IPhotoPickerService>().GetImagePathAsync();
+                    if (path != null)
+                    {
+
+                        ImagePath = path;
+                        OnPropertyChanged(nameof(ImagePath));
+                        OnPropertyChanged(nameof(CanDeleteImage));
+                    }
                 }
+                else
+                {
+                    status = await CrossPermissions.Current.RequestPermissionAsync<StoragePermission>();
+                    status = await CrossPermissions.Current.CheckPermissionStatusAsync<StoragePermission>();
+
+                    if (status == PermissionStatus.Granted)
+                    {
+                        string path = await DependencyService.Get<IPhotoPickerService>().GetImagePathAsync();
+                        if (path != null)
+                        {
+
+                            ImagePath = path;
+                            OnPropertyChanged(nameof(ImagePath));
+                            OnPropertyChanged(nameof(CanDeleteImage));
+                        }
+                    }
+
+                }
+                          
             }
             catch(Exception ex)
             {
@@ -269,7 +295,7 @@ namespace Cook_Book_Mobile.ViewModels
                 answer = await Application.Current.MainPage.DisplayAlert(RecipeName, "Na pewno chcesz usunąć obrazek?", "Tak", "Nie");
                 if (answer)
                 {
-                    ImagePath = "Cook_Book_Mobile.Images.foodtemplate.png";
+                    ImagePath = "load default";
                     OnPropertyChanged(nameof(ImagePath));
                     OnPropertyChanged(nameof(CanDeleteImage));
                 }
@@ -292,7 +318,7 @@ namespace Cook_Book_Mobile.ViewModels
                     NameOfImage = ImagePath
                 };
 
-                if (recipeModel.NameOfImage == "Cook_Book_Mobile.Images.foodtemplate.png")
+                if (recipeModel.NameOfImage == "load default")
                 {
                     recipeModel.NameOfImage = "";
                 }
@@ -313,7 +339,7 @@ namespace Cook_Book_Mobile.ViewModels
                     {
                         if (recipeModel.NameOfImage == "")
                         {
-                            recipeModel.NameOfImage = "Cook_Book_Mobile.Images.foodtemplate.png";
+                            recipeModel.NameOfImage = "load default";
                         }
 
                         OnPropertyChanged(nameof(ImagePath));

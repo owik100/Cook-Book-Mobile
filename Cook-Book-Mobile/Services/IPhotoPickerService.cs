@@ -8,6 +8,6 @@ namespace Cook_Book_Mobile.Services
 {
     public interface IPhotoPickerService
     {
-        Task<Stream> GetImageStreamAsync();
+        Task<string> GetImagePathAsync();
     }
 }
