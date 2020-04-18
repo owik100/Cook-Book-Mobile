@@ -42,18 +42,15 @@ namespace Cook_Book_Mobile.API
         {
             using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync($"/api/Recipes/GetPhoto/{id}"))
             {
-                string ImagePath = "";
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string tempFolderPath = TempData.GetTempFolderPath();
-                    ImagePath = TempData.GetImagePath(id);
 
                     var result = await response.Content.ReadAsStreamAsync();
 
                     MemoryStream memoryStream = result as MemoryStream;
 
-                    FileStream file = new FileStream($@"{tempFolderPath}\{id}", FileMode.Create, FileAccess.Write);
+                    FileStream file = new FileStream(TempData.GetImagePath(id), FileMode.Create, FileAccess.Write);
 
                     memoryStream.WriteTo(file);
 

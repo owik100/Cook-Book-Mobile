@@ -10,8 +10,10 @@ namespace Cook_Book_Mobile.Helpers
         public static string GetTempFolderPath()
         {
             try
-            {         
+            {
                 return Path.GetTempPath();
+               // string directory = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Android.OS.Environment.DirectoryDownloads);
+               // return directory;
             }
             catch (Exception ex)
             {
@@ -25,7 +27,7 @@ namespace Cook_Book_Mobile.Helpers
             string path = "";
             try
             {
-                path = Path.GetTempPath() + $@"{name}";
+                path = GetTempFolderPath() + $@"{name}";
                 return path;
             }
             catch (Exception ex)
@@ -62,7 +64,7 @@ namespace Cook_Book_Mobile.Helpers
 
             try
             {
-                string[] fileArray = Directory.GetFiles(Path.GetTempPath() + @"Cook Book\");
+                string[] fileArray = Directory.GetFiles(Path.GetTempPath());
 
                 foreach (var item in fileArray)
                 {

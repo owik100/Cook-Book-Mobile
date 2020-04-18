@@ -16,7 +16,7 @@ namespace Cook_Book_Mobile.Helpers
             {
                 var path = (string)value;
 
-                if (path.Contains("/data/user/"))
+                if (path.Contains("/data/user"))
                 {
                     output = ImageSource.FromFile(path);
                 }
