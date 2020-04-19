@@ -15,6 +15,8 @@ namespace Cook_Book_Mobile
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
+            DependencyService.Register<IMessage>();
+
             MainPage = new MainPage();
 
             MessagingCenter.Send(this, EventMessages.AppStartEvent);

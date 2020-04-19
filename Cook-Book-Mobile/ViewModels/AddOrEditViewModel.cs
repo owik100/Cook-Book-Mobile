@@ -309,9 +309,8 @@ namespace Cook_Book_Mobile.ViewModels
                 if (_addOrEdit == AddOrEdit.Add)
                 {
                     await _recipesEndPointAPI.InsertRecipe(recipeModel);
+                    DependencyService.Get<IMessage>().LongAlert("Dodano pomyślnie!");
                     MessagingCenter.Send(this, EventMessages.BasicNavigationEvent);
-
-                    //await _eventAggregator.PublishOnUIThreadAsync(new LogOnEvent(reloadNeeded), new CancellationToken());
                 }
                 else if (_addOrEdit == AddOrEdit.Edit)
                 {
@@ -328,7 +327,7 @@ namespace Cook_Book_Mobile.ViewModels
                         OnPropertyChanged(nameof(ImagePath));
                         OnPropertyChanged(nameof(CanDeleteImage));
 
-                        await Application.Current.MainPage.DisplayAlert("Zaktualizowano pomyślnie!", "Zaktualizowano", "Ok");
+                        DependencyService.Get<IMessage>().LongAlert("Zaktualizowano pomyślnie!");
                         MessagingCenter.Send(this, EventMessages.BasicNavigationEvent);
                     }
                 }
