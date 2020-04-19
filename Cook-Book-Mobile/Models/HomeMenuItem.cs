@@ -12,7 +12,6 @@ namespace Cook_Book_Mobile.Models
         Login,
         Recipes,
         RecipePreview,
-        AddEditRecipe
     }
     public class HomeMenuItem
     {

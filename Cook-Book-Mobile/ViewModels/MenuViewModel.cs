@@ -130,7 +130,6 @@ namespace Cook_Book_Mobile.ViewModels
             MenuItems = new ObservableCollection<HomeMenuItem>
             {
                 new HomeMenuItem {Id = MenuItemType.Recipes, Title="Przepisy" },
-                new HomeMenuItem {Id = MenuItemType.AddEditRecipe, Title="Dodaj przepis" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About" },
             };
             OnPropertyChanged(nameof(MenuItems));
