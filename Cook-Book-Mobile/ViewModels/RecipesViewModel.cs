@@ -108,7 +108,7 @@ namespace Cook_Book_Mobile.ViewModels
                 {
                     if (item.NameOfImage == null)
                     {
-                        item.ImagePath = "load default";
+                        item.ImagePath = ImageConstants.LoadDefaultImage;
                         continue;
                     }
 

@@ -52,7 +52,7 @@ namespace Cook_Book_Mobile.ViewModels
             DeleteImageCommand = new Command (async () => await DeleteFile());
 
             Title = "Dodaj";
-            ImagePath = "load default";
+            ImagePath = ImageConstants.LoadDefaultImage;
             SubmitText = "Dodaj";
 
             MessagingCenter.Subscribe<RecipePreviewPage, RecipeModel>(this, EventMessages.EditRecipeEvent, (sender, arg) =>
@@ -187,7 +187,7 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 bool output = false;
 
-                if (!string.IsNullOrWhiteSpace(ImagePath) && ImagePath != "load default")
+                if (!string.IsNullOrWhiteSpace(ImagePath) && ImagePath != ImageConstants.LoadDefaultImage)
                 {
                     output = true;
                 }
@@ -295,7 +295,7 @@ namespace Cook_Book_Mobile.ViewModels
                 answer = await Application.Current.MainPage.DisplayAlert(RecipeName, "Na pewno chcesz usunąć obrazek?", "Tak", "Nie");
                 if (answer)
                 {
-                    ImagePath = "load default";
+                    ImagePath = ImageConstants.LoadDefaultImage;
                     OnPropertyChanged(nameof(ImagePath));
                     OnPropertyChanged(nameof(CanDeleteImage));
                 }
@@ -318,7 +318,7 @@ namespace Cook_Book_Mobile.ViewModels
                     NameOfImage = ImagePath
                 };
 
-                if (recipeModel.NameOfImage == "load default")
+                if (recipeModel.NameOfImage == ImageConstants.LoadDefaultImage)
                 {
                     recipeModel.NameOfImage = "";
                 }
@@ -339,7 +339,7 @@ namespace Cook_Book_Mobile.ViewModels
                     {
                         if (recipeModel.NameOfImage == "")
                         {
-                            recipeModel.NameOfImage = "load default";
+                            recipeModel.NameOfImage = ImageConstants.LoadDefaultImage;
                         }
 
                         OnPropertyChanged(nameof(ImagePath));

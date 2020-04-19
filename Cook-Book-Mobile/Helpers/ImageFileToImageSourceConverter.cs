@@ -16,9 +16,9 @@ namespace Cook_Book_Mobile.Helpers
             {
                 var path = (string)value;
 
-                if (path.Contains("load default"))
+                if (path.Contains(ImageConstants.LoadDefaultImage))
                 {
-                    output = ImageSource.FromResource("Cook_Book_Mobile.Images.foodtemplate.png");
+                    output = ImageSource.FromResource(ImageConstants.DefaultImagePath);
                 }
                 else
                 {
