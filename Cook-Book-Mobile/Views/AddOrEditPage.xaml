@@ -14,10 +14,8 @@
 
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
 
-            <Label Text="Nazwa:" HorizontalOptions="Center" FontSize="Medium"/>
             <Entry Placeholder="Nazwa przepisu" Text="{Binding RecipeName}"/>
 
-            <Label Text="Składniki:" HorizontalOptions="Center" FontSize="Medium"/>
             <Entry Placeholder="Nazwa składniku" Text="{Binding IngredientInsert}"/>
             <StackLayout Orientation="Horizontal">
                 <Button HorizontalOptions="FillAndExpand" Text="Dodaj składnik" Command="{Binding AddIngredientCommand}" IsEnabled="{Binding CanAddIngredient}" />
@@ -44,8 +42,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
-            <Label Text="Przepis:" HorizontalOptions="Center" FontSize="Medium"/>
+            
             <Editor HeightRequest="100" Placeholder="Podaj przepis" Text="{Binding RecipeInstructions}"/>
 
             <StackLayout Orientation="Horizontal">
