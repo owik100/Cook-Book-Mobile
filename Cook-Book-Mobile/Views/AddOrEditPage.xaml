@@ -11,6 +11,9 @@
     
     <ContentPage.Content>
         <StackLayout Spacing="10" Padding="10">
+
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+
             <Label Text="Nazwa:" HorizontalOptions="Center" FontSize="Medium"/>
             <Entry Placeholder="Nazwa przepisu" Text="{Binding RecipeName}"/>
 

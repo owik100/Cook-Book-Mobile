@@ -61,7 +61,6 @@ namespace Cook_Book_Mobile.ViewModels
             set
             {
                 _helloText = "Witaj " + value;
-                //SetProperty(ref _helloText, value);
                 OnPropertyChanged(nameof(HelloText));
             }
         }

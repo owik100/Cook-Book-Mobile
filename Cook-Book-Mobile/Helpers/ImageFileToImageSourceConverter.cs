@@ -11,21 +11,26 @@ namespace Cook_Book_Mobile.Helpers
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             ImageSource output = ImageSource.FromResource("");
-
-            if (value!= null)
-            {
-                var path = (string)value;
-
-                if (path.Contains(ImageConstants.LoadDefaultImage))
+            try
+            {            
+                if (value != null)
                 {
-                    output = ImageSource.FromResource(ImageConstants.DefaultImagePath);
-                }
-                else
-                {
-                    output = ImageSource.FromFile(path);      
+                    var path = (string)value;
+
+                    if (path.Contains(ImageConstants.LoadDefaultImage))
+                    {
+                        output = ImageSource.FromResource(ImageConstants.DefaultImagePath);
+                    }
+                    else
+                    {
+                        output = ImageSource.FromFile(path);
+                    }
                 }
             }
-          
+            catch (Exception ex)
+            {
+                //_logger.Error("Got exception", ex);
+            }
             return output;
         }
 

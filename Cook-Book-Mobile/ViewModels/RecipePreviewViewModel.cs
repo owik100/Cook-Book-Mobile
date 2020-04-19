@@ -60,7 +60,6 @@ namespace Cook_Book_Mobile.ViewModels
                      var result = await _recipesEndPointAPI.DeleteRecipe(currentRecipe.RecipeId.ToString());
 
                     MessagingCenter.Send(this, EventMessages.BasicNavigationEvent);
-
                 }
             }
             catch (Exception ex)

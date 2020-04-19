@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Cook_Book_Mobile.Helpers
 {
-    public static class GetMessage
+    public static class GetMessageResponse
     {
         public static string ErrorMessageFromResponse(HttpResponseMessage response)
         {

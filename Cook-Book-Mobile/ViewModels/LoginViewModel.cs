@@ -114,10 +114,8 @@ namespace Cook_Book_Mobile.ViewModels
                 {
                     SecureStorage.RemoveAll();
                 }
-
-                
+               
                 MessagingCenter.Send(this, EventMessages.LogOnEvent);
-                // await (Application.Current.MainPage as MainPage).NavigateFromMenu((int)MenuItemType.Recipes);
                 Clear();
             }
             catch (Exception ex)

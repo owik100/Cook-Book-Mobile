@@ -39,8 +39,6 @@ namespace Cook_Book_Mobile.ViewModels
         private string _submitText;
         private int _recipeId;
 
-        Image image = new Image();
-
         public AddOrEditViewModel(IRecipesEndPointAPI RecipesEndPointAPI)
         {
             _recipesEndPointAPI = RecipesEndPointAPI;
@@ -70,7 +68,6 @@ namespace Cook_Book_Mobile.ViewModels
             });
     
         }
-
 
         #region Props
         public string SubmitText
@@ -202,7 +199,7 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 bool output = false;
 
-                if (!string.IsNullOrWhiteSpace(RecipeName) && !string.IsNullOrWhiteSpace(RecipeInstructions) && RecipeIngredients.Count > 0)
+                if (!string.IsNullOrWhiteSpace(RecipeName) && !string.IsNullOrWhiteSpace(RecipeInstructions) && RecipeIngredients.Count > 0 && !IsBusy)
                 {
                     output = true;
                 }
@@ -226,7 +223,6 @@ namespace Cook_Book_Mobile.ViewModels
                 //_logger.Error("Got exception", ex);
                 await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
             }
-
         }
 
         async Task DeleteIngredient()
@@ -263,20 +259,6 @@ namespace Cook_Book_Mobile.ViewModels
                 else
                 {
                     status = await CrossPermissions.Current.RequestPermissionAsync<StoragePermission>();
-                    status = await CrossPermissions.Current.CheckPermissionStatusAsync<StoragePermission>();
-
-                    if (status == PermissionStatus.Granted)
-                    {
-                        string path = await DependencyService.Get<IPhotoPickerService>().GetImagePathAsync();
-                        if (path != null)
-                        {
-
-                            ImagePath = path;
-                            OnPropertyChanged(nameof(ImagePath));
-                            OnPropertyChanged(nameof(CanDeleteImage));
-                        }
-                    }
-
                 }
                           
             }
@@ -289,7 +271,6 @@ namespace Cook_Book_Mobile.ViewModels
         async Task DeleteFile()
         {
             bool answer;
-
             try
             {
                 answer = await Application.Current.MainPage.DisplayAlert(RecipeName, "Na pewno chcesz usunąć obrazek?", "Tak", "Nie");
@@ -310,6 +291,8 @@ namespace Cook_Book_Mobile.ViewModels
         {
             try
             {
+                IsBusy = true;
+
                 RecipeModel recipeModel = new RecipeModel
                 {
                     Name = RecipeName,
@@ -354,6 +337,10 @@ namespace Cook_Book_Mobile.ViewModels
             {
               // _logger.Error("Got exception", ex);
                 await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 

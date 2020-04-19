@@ -129,7 +129,6 @@ namespace Cook_Book_Mobile.ViewModels
                     }
 
                 }
-
                  TempData.DeleteUnusedImages(DontDeletetheseImages);
 
                 Recipes = new ObservableCollection<RecipeModel>(tempRecipes);

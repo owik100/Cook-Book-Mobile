@@ -69,7 +69,7 @@ namespace Cook_Book_Mobile.API
                     }
                     else
                     {
-                        string message = GetMessage.ErrorMessageFromResponse(response);
+                        string message = GetMessageResponse.ErrorMessageFromResponse(response);
 
                         if (!string.IsNullOrEmpty(message))
                         {
@@ -129,7 +129,7 @@ namespace Cook_Book_Mobile.API
                 }
                 else
                 {
-                    string message = GetMessage.ErrorMessageFromResponse(response);
+                    string message = GetMessageResponse.ErrorMessageFromResponse(response);
 
                     if (!string.IsNullOrEmpty(message))
                     {

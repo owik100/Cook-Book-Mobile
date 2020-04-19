@@ -84,7 +84,6 @@ namespace Cook_Book_Mobile.Helpers
             }
             catch (IOException ex)
             {
-                //Spodziewany błąd. Przy kolejnym uruchomieniu aplikacji zasoby będa odblokowane i problem nie wystąpi
                // _logger.Warn("Cannot delete images", ex);
             }
 
