@@ -19,10 +19,10 @@ namespace Cook_Book_Mobile.Views
             InitializeComponent();
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        async void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            var item = args.SelectedItem as RecipeModel;
+            var item = e.CurrentSelection.FirstOrDefault() as RecipeModel;
             if (item == null)
                 return;
 

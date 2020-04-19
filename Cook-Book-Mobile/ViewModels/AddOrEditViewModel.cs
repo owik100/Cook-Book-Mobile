@@ -264,7 +264,7 @@ namespace Cook_Book_Mobile.ViewModels
             }
             catch(Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+                //_logger.Error("Got exception", ex);
             }
         }
 

@@ -14,31 +14,39 @@
 
 
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Spacing="10" Padding="10">
             <RefreshView IsRefreshing="{Binding IsRefreshing}"
              Command="{Binding RefreshCommand}">
 
-                <ListView x:Name="ListViewRecipes"
-                    HasUnevenRows="True"
+                <CollectionView  x:Name="ListViewRecipes"
                     ItemsSource="{Binding Recipes, Mode=TwoWay}"
-                    ItemSelected="OnItemSelected">
+                    SelectionMode="Single"
+                    SelectionChanged="OnCollectionViewSelectionChanged">
+
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"/>
+                    </CollectionView.ItemsLayout>
+
                     <d:ListView.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>Item 1</x:String>
                             <x:String>Item 2</x:String>
                         </x:Array>
                     </d:ListView.ItemsSource>
-                    <ListView.ItemTemplate>
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding Name}" d:Text="{Binding .}" FontSize="20"/>
-                                    <Image HeightRequest="40" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"  />
-                                </StackLayout>
-                            </ViewCell>
+                            <Grid Padding="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Image WidthRequest="60" HeightRequest="60" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"/>
+                                <Label Grid.Column="1"   Text="{Binding Name}" d:Text="{Binding .}" FontSize="20"/>
+                            </Grid>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
             </RefreshView>
         </StackLayout>
     </ContentPage.Content>
