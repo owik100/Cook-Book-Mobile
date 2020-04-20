@@ -178,7 +178,7 @@ namespace Cook_Book_Mobile.API
 
         public async Task<List<RecipeModel>> GetPublicRecipes()
         {
-            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/GetPublicRecipes"))
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/Recipes/GetPublicRecipes"))
             {
                 if (response.IsSuccessStatusCode)
                 {
