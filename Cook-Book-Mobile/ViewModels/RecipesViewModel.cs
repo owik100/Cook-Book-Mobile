@@ -88,7 +88,7 @@ namespace Cook_Book_Mobile.ViewModels
         {
             try
             {
-                tempRecipes = await _recipesEndPointAPI.GetAllRecipesLoggedUser();
+                tempRecipes = await _recipesEndPointAPI.GetRecipesLoggedUser();
               
             }
             catch (Exception ex)

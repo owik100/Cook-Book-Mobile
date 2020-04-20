@@ -20,7 +20,7 @@ namespace Cook_Book_Mobile.API
             _apiHelper = apiHelper;
         }
 
-        public async Task<List<RecipeModel>> GetAllRecipesLoggedUser()
+        public async Task<List<RecipeModel>> GetRecipesLoggedUser()
         {
             using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/Recipes/CurrentUserRecipes"))
             {
@@ -89,6 +89,7 @@ namespace Cook_Book_Mobile.API
                 multiForm.Add(new StringContent(recipeModel.Name), "Name");
                 multiForm.Add(new StringContent(ingredients), "Ingredients");
                 multiForm.Add(new StringContent(recipeModel.Instruction), "Instruction");
+                multiForm.Add(new StringContent(recipeModel.IsPublic.ToString()), "IsPublic");
 
                 using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsync("/api/Recipes", multiForm))
                 {
@@ -151,6 +152,7 @@ namespace Cook_Book_Mobile.API
                 multiForm.Add(new StringContent(recipeModel.Instruction), "Instruction");
                 multiForm.Add(new StringContent(recipeModel.RecipeId.ToString()), "RecipeId");
                 multiForm.Add(new StringContent(fileName), "NameOfImage");
+                multiForm.Add(new StringContent(recipeModel.IsPublic.ToString()), "IsPublic");
 
                 using (HttpResponseMessage response = await _apiHelper.ApiClient.PutAsync($"/api/Recipes/{recipeModel.RecipeId.ToString()}", multiForm))
                 {
@@ -171,6 +173,24 @@ namespace Cook_Book_Mobile.API
             {
                 //_logger.Error("Got exception", exc);
                 throw;
+            }
+        }
+
+        public async Task<List<RecipeModel>> GetPublicRecipes()
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/GetPublicRecipes"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<RecipeModel>>();
+                    return result;
+                }
+                else
+                {
+                    Exception ex = new Exception(response.ReasonPhrase);
+                    //_logger.Error("Got exception", ex);
+                    throw ex;
+                }
             }
         }
     }
