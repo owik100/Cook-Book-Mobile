@@ -109,6 +109,7 @@ namespace Cook_Book_Mobile.ViewModels
         {
             try
             {
+                Title = "Moje przepisy";
                 tempRecipes.Clear();
                 var recipes = await _recipesEndPointAPI.GetRecipesLoggedUser();
 
@@ -125,6 +126,7 @@ namespace Cook_Book_Mobile.ViewModels
         {
             try
             {
+                Title = "Odkrywaj przepisy";
                 tempRecipes.Clear();
                 var recipes = await _recipesEndPointAPI.GetPublicRecipes();
 

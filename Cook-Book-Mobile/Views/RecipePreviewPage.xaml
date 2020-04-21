@@ -10,7 +10,7 @@
              xmlns:hp="clr-namespace:Cook_Book_Mobile.Helpers"
              Title="{Binding Title}">
 
-    <ContentPage.ToolbarItems>
+    <ContentPage.ToolbarItems Visibility="{Binding CanEdit}" >
         <ToolbarItem Text="Edytuj" Command="{Binding EditCommand}" />
         <ToolbarItem Text="Usuń" Command="{Binding DeleteCommand}"/>
     </ContentPage.ToolbarItems>

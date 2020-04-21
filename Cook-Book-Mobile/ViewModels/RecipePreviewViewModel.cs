@@ -23,20 +23,26 @@ namespace Cook_Book_Mobile.ViewModels
         private string _recipeInstructions;
         private string _imagePath;
         private int _recipeId;
+        private bool _canEdit;
+        private string _userName;
 
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private IMapper _mapper;
+        private ILoggedUser _loggedUser;
 
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
-        public RecipePreviewViewModel(IRecipesEndPointAPI recipesEndPointAPI, IMapper mapper)
+        public RecipePreviewViewModel(IRecipesEndPointAPI recipesEndPointAPI, IMapper mapper, ILoggedUser loggedUser)
         {
             EditCommand = new Command(() => Edit());
             DeleteCommand = new Command(async () => await Delete());
 
             _recipesEndPointAPI = recipesEndPointAPI;
-            _mapper = mapper; 
+            _mapper = mapper;
+            _loggedUser = loggedUser;
+
+            CanEdit = false;
 
             MessagingCenter.Subscribe<RecipesPage, RecipeModelDisplay>(this, EventMessages.RecipesPreviewEvent, (sender, arg) =>
             {
@@ -50,6 +56,16 @@ namespace Cook_Book_Mobile.ViewModels
                 RecipeIngredients = (currentRecipe.Ingredients).ToList();
                 RecipeInstructions = currentRecipe.Instruction;
                 ImagePath = currentRecipe.ImagePath;
+
+                if (!currentRecipe.IsPublic || currentRecipe.UserName == _loggedUser.UserName)
+                {
+                    CanEdit = true;
+                }
+                else
+                {
+                    CanEdit = false;
+                    UserName = "Autor przepisu: " + currentRecipe.UserName;
+                }
             });
         }
 
@@ -117,6 +133,25 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 _recipeInstructions = value;
                 OnPropertyChanged(nameof(RecipeInstructions));
+            }
+        }
+        public string UserName
+        {
+            get { return _userName; }
+            set
+            {
+                _userName = value;
+                OnPropertyChanged(nameof(UserName));
+            }
+        }
+
+        public bool CanEdit
+        {
+            get { return _canEdit; }
+            set
+            {
+                _canEdit = value;
+                OnPropertyChanged(nameof(CanEdit));
             }
         }
         #endregion
