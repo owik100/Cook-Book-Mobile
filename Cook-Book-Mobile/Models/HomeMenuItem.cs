@@ -10,7 +10,8 @@ namespace Cook_Book_Mobile.Models
         About,
         Register,
         Login,
-        Recipes,
+        UserRecipes,
+        PublicRecipes,
         RecipePreview,
     }
     public class HomeMenuItem

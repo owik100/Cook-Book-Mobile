@@ -38,9 +38,9 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 OnPropertyChanged(nameof(Logged));
                 LoggedMenu();
-                SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Recipes).FirstOrDefault();
+                SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.UserRecipes).FirstOrDefault();
 
-                MessagingCenter.Send(this, EventMessages.ReloadRecipesEvent);
+                //MessagingCenter.Send(this, EventMessages.ReloadUserRecipesEvent);
             });
 
             MessagingCenter.Subscribe<LoginViewModel, MenuItemType>(this, EventMessages.BasicNavigationEvent, (sender, arg) =>
@@ -89,6 +89,16 @@ namespace Cook_Book_Mobile.ViewModels
                 _selectedItem = value;
                 //SetProperty(ref _selectedItem, value);
                 OnPropertyChanged(nameof(SelectedItem));
+
+                if(SelectedItem == MenuItems.Where(x => x.Id == MenuItemType.PublicRecipes).FirstOrDefault())
+                {
+                    MessagingCenter.Send(this, EventMessages.ReloadPublicRecipesEvent);
+                }
+
+                if (SelectedItem == MenuItems.Where(x => x.Id == MenuItemType.UserRecipes).FirstOrDefault())
+                {
+                    MessagingCenter.Send(this, EventMessages.ReloadUserRecipesEvent);
+                }
             }
         }
 
@@ -129,7 +139,8 @@ namespace Cook_Book_Mobile.ViewModels
         {
             MenuItems = new ObservableCollection<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Recipes, Title="Przepisy" },
+                new HomeMenuItem {Id = MenuItemType.UserRecipes, Title="Moje przepisy" },
+                new HomeMenuItem {Id = MenuItemType.PublicRecipes, Title="Odkrywaj przepisy" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About" },
             };
             OnPropertyChanged(nameof(MenuItems));

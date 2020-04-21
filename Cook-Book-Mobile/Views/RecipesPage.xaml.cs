@@ -22,7 +22,7 @@ namespace Cook_Book_Mobile.Views
         async void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            var item = e.CurrentSelection.FirstOrDefault() as RecipeModel;
+            var item = e.CurrentSelection.FirstOrDefault() as RecipeModelDisplay;
             if (item == null)
                 return;
 

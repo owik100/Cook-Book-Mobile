@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using Cook_Book_Mobile.Models;
+using Cook_Book_Mobile.Helpers;
 
 namespace Cook_Book_Mobile.Views
 {
@@ -24,6 +25,9 @@ namespace Cook_Book_Mobile.Views
 
         public async Task NavigateFromMenu(int id)
         {
+            //if (id == 5)
+            //    id = 4;
+
             if (!MenuPages.ContainsKey(id))
             {
                 switch (id)
@@ -37,8 +41,11 @@ namespace Cook_Book_Mobile.Views
                     case (int)MenuItemType.Login:
                         MenuPages.Add(id, new NavigationPage(new LoginPage()));
                         break;
-                    case (int)MenuItemType.Recipes:
+                    case (int)MenuItemType.UserRecipes:
                         MenuPages.Add(id, new NavigationPage(new RecipesPage()));
+                        break;
+                    case (int)MenuItemType.PublicRecipes:
+                        id -= 1;
                         break;
                 }
             }
@@ -54,6 +61,15 @@ namespace Cook_Book_Mobile.Views
 
                 IsPresented = false;
             }
+
+            if (id == 4)
+            {
+                if (Device.RuntimePlatform == Device.Android)
+                    await Task.Delay(100);
+
+                IsPresented = false;
+            }
+               
         }
     }
 }

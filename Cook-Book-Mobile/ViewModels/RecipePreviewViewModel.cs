@@ -1,4 +1,5 @@
-﻿using Cook_Book_Mobile.API;
+﻿using AutoMapper;
+using Cook_Book_Mobile.API;
 using Cook_Book_Mobile.Helpers;
 using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
@@ -24,20 +25,24 @@ namespace Cook_Book_Mobile.ViewModels
         private int _recipeId;
 
         private IRecipesEndPointAPI _recipesEndPointAPI;
+        private IMapper _mapper;
 
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
-        public RecipePreviewViewModel(IRecipesEndPointAPI recipesEndPointAPI)
+        public RecipePreviewViewModel(IRecipesEndPointAPI recipesEndPointAPI, IMapper mapper)
         {
             EditCommand = new Command(() => Edit());
             DeleteCommand = new Command(async () => await Delete());
 
             _recipesEndPointAPI = recipesEndPointAPI;
+            _mapper = mapper; 
 
-            MessagingCenter.Subscribe<RecipesPage, RecipeModel>(this, EventMessages.RecipesPreviewEvent, (sender, arg) =>
+            MessagingCenter.Subscribe<RecipesPage, RecipeModelDisplay>(this, EventMessages.RecipesPreviewEvent, (sender, arg) =>
             {
-                currentRecipe = arg;
+                RecipeModel recipeModel = _mapper.Map<RecipeModel>(arg);
+
+                currentRecipe = recipeModel;
                 Title = arg.Name;
 
                 _recipeId = currentRecipe.RecipeId;

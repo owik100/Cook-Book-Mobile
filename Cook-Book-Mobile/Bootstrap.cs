@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extras.CommonServiceLocator;
+using AutoMapper;
 using CommonServiceLocator;
 using Cook_Book_Mobile.API;
 using Cook_Book_Mobile.ViewModels;
@@ -26,6 +27,31 @@ namespace Cook_Book_Mobile
             builder.RegisterType<LoggedUser>().As<ILoggedUser>().SingleInstance();
             builder.RegisterType<APIHelper>().As<IAPIHelper>().SingleInstance();
             builder.RegisterType<RecipesEndPointAPI>().As<IRecipesEndPointAPI>().SingleInstance();
+
+
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+
+
+            builder.Register(
+                c => new MapperConfiguration(cfg =>
+                {
+                    cfg.AddProfile(new MappingProfile());
+                }))
+                .AsSelf()
+                .SingleInstance();
+
+
+            builder.Register(
+               c => c.Resolve<MapperConfiguration>().CreateMapper(c.Resolve))
+               .As<IMapper>()
+               .InstancePerLifetimeScope();
+
 
             IContainer container = builder.Build();
 
