@@ -5,8 +5,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Cook_Book_Mobile.Views.RecipesPage"
+             xmlns:helpers="clr-namespace:Cook_Book_Mobile.Helpers"
              BindingContext="{Binding Recipes, Source={StaticResource Locator}}"
              Title="{Binding Title}">
+
+
+    <ContentPage.Resources>
+        <helpers:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+    </ContentPage.Resources>
+
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Dodaj przepis"  Clicked="AddRecipe_Clicked" />
@@ -35,14 +42,18 @@
                     </d:ListView.ItemsSource>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Padding="10">
+                            <Frame Padding="0"  CornerRadius="10" BorderColor="{Binding DisplayAsPublic, Converter={StaticResource BooleanToColorConverter}}">
+                                <Grid Padding="10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="70" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Image WidthRequest="60" HeightRequest="60" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"/>
-                                <Label Grid.Column="1"   Text="{Binding Name}" d:Text="{Binding .}" FontSize="20"/>
+                               
+                                    <Image WidthRequest="60" HeightRequest="60" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"/>
+                                    <Label Grid.Column="1"   Text="{Binding Name}" d:Text="{Binding .}" FontSize="20"/>
+                              
                             </Grid>
+                            </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
