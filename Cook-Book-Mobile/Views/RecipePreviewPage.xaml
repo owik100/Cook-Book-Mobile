@@ -35,6 +35,10 @@
                     
                 <customControls:BulletListControl ListItemFontSize="15" Items="{Binding RecipeIngredients}" Margin="15,0,15,5" />
 
+                <Label IsVisible="{Binding DisplayUserName}" Text="{Binding UserName}"
+                FontSize="Medium"
+                HorizontalOptions="CenterAndExpand" />
+
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -38,6 +38,7 @@ namespace Cook_Book_Mobile.ViewModels
         private AddOrEdit _addOrEdit = AddOrEdit.Add;
         private string _submitText;
         private int _recipeId;
+        private bool _isPublic;
 
         public AddOrEditViewModel(IRecipesEndPointAPI RecipesEndPointAPI)
         {
@@ -64,6 +65,7 @@ namespace Cook_Book_Mobile.ViewModels
                 RecipeIngredients = new ObservableCollection<string>(arg.Ingredients.ToList());
                 RecipeInstructions = arg.Instruction;
                 ImagePath = arg.ImagePath;
+                IsPublic = arg.IsPublic;
 
             });
     
@@ -143,6 +145,16 @@ namespace Cook_Book_Mobile.ViewModels
                 _ingredientInsert = value;
                 OnPropertyChanged(nameof(IngredientInsert));
                 OnPropertyChanged(nameof(CanAddIngredient));
+            }
+        }
+
+        public bool IsPublic
+        {
+            get { return _isPublic; }
+            set
+            {
+                _isPublic = value;
+                OnPropertyChanged(nameof(IsPublic));
             }
         }
 
@@ -298,7 +310,8 @@ namespace Cook_Book_Mobile.ViewModels
                     Name = RecipeName,
                     Ingredients = RecipeIngredients.ToList(),
                     Instruction = RecipeInstructions,
-                    NameOfImage = ImagePath
+                    NameOfImage = ImagePath,
+                    IsPublic = IsPublic,
                 };
 
                 if (recipeModel.NameOfImage == ImageConstants.LoadDefaultImage)

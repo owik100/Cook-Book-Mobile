@@ -42,7 +42,7 @@
                     </d:ListView.ItemsSource>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame Padding="0"  CornerRadius="10" BorderColor="{Binding DisplayAsPublic, Converter={StaticResource BooleanToColorConverter}}">
+                            <Frame Padding="0" CornerRadius="10" BorderColor="{Binding DisplayAsPublic, Converter={StaticResource BooleanToColorConverter}}">
                                 <Grid Padding="10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="70" />

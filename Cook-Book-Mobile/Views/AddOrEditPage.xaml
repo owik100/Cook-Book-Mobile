@@ -49,7 +49,12 @@
                 <Button HorizontalOptions="FillAndExpand" Text="Wczytaj obrazek" Command="{Binding SelectImageCommand}" />
                 <Button HorizontalOptions="FillAndExpand" Text="Usuń obrazek" Command="{Binding DeleteImageCommand}" IsEnabled="{Binding CanDeleteImage}" />
             </StackLayout>
-            <Image HeightRequest="30" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"  />
+            <StackLayout Orientation="Horizontal">
+                <Image HorizontalOptions="FillAndExpand" HeightRequest="30" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"  />
+                <Label Text="Przepis publiczny:" TextColor="Green" HorizontalOptions="End" FontSize="Medium"/>
+                <CheckBox HorizontalOptions="End" IsChecked="{Binding IsPublic}"/>
+            </StackLayout>
+           
             <Button Text="{Binding SubmitText}" Command="{Binding SubmitCommand}" IsEnabled="{Binding CanRecipeSubmit}" />
 
         </StackLayout>
