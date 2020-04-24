@@ -193,6 +193,16 @@ namespace Cook_Book_Mobile.API
                 }
             }
         }
+
+        public Task<List<RecipeModel>> GetRecipesLoggedUser(int PageSize, int PageNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<RecipeModel>> GetPublicRecipes(int PageSize, int PageNumber)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
