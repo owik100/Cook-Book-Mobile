@@ -25,6 +25,16 @@ namespace Cook_Book_Mobile.ViewModels
         private bool _isRefreshing;
         private UserOrPublicRecipes _currentRecipes = UserOrPublicRecipes.UserRecipes;
 
+        private bool _canNext;
+        private bool _canPrevious;
+
+        private int pageSize = 10;
+        private int totalPages = 1;
+        private int pageNumberUserRecipes = 1;
+        private int pageNumberPublicRecipes = 1;
+
+        private string _pageInfo;
+
         List<RecipeModelDisplay> tempRecipes = new List<RecipeModelDisplay>();
 
         public ICommand RefreshCommand { get; set; }
@@ -111,7 +121,7 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 Title = "Moje przepisy";
                 tempRecipes.Clear();
-                var recipes = await _recipesEndPointAPI.GetRecipesLoggedUser();
+                var recipes = await _recipesEndPointAPI.GetRecipesLoggedUser(pageSize, pageNumberUserRecipes);
 
                 RecipeModelsToRecipeModelDisplay(recipes);
             }
@@ -128,7 +138,7 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 Title = "Odkrywaj przepisy";
                 tempRecipes.Clear();
-                var recipes = await _recipesEndPointAPI.GetPublicRecipes();
+                var recipes = await _recipesEndPointAPI.GetPublicRecipes(pageSize, pageNumberPublicRecipes);
 
                 RecipeModelsToRecipeModelDisplay(recipes);
             }
