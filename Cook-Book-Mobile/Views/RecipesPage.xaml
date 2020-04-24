@@ -19,9 +19,14 @@
         <ToolbarItem Text="Dodaj przepis"  Clicked="AddRecipe_Clicked" />
     </ContentPage.ToolbarItems>
 
-
     <ContentPage.Content>
         <StackLayout Spacing="10" Padding="10">
+            <StackLayout Orientation="Horizontal">
+                <Button Command="{Binding BackCommand}" IsEnabled="{Binding CanPrevious}" HorizontalOptions="FillAndExpand" Text="&lt;="/>
+                <Label HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="{Binding PageInfo}"/>
+                <Button Command="{Binding NextCommand}" IsEnabled="{Binding CanNext}" HorizontalOptions="FillAndExpand" Text="=&gt;"/>
+            </StackLayout>
+                
             <RefreshView IsRefreshing="{Binding IsRefreshing}"
              Command="{Binding RefreshCommand}">
 
@@ -44,21 +49,19 @@
                         <DataTemplate>
                             <Frame Padding="0" CornerRadius="10" BorderColor="{Binding DisplayAsPublic, Converter={StaticResource BooleanToColorConverter}}">
                                 <Grid Padding="10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="70" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                               
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
                                     <Image WidthRequest="60" HeightRequest="60" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"/>
                                     <Label Grid.Column="1"   Text="{Binding Name}" d:Text="{Binding .}" FontSize="20"/>
-                              
-                            </Grid>
+                                </Grid>
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
             </RefreshView>
-        </StackLayout>
+            </StackLayout>
     </ContentPage.Content>
 </ContentPage>

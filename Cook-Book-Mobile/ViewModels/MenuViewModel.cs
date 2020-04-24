@@ -151,6 +151,8 @@ namespace Cook_Book_Mobile.ViewModels
             _loggedUser.LogOffUser();
             _apiHelper.LogOffUser();
             SecureStorage.RemoveAll();
+            MessagingCenter.Send(this, EventMessages.LogOffEvent);
+
             OnPropertyChanged(nameof(Logged));
 
             NotLoggedMenu();

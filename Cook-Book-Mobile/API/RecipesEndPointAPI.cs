@@ -20,9 +20,27 @@ namespace Cook_Book_Mobile.API
             _apiHelper = apiHelper;
         }
 
-        public async Task<List<RecipeModel>> GetRecipesLoggedUser()
+        public async Task<List<RecipeModel>> GetRecipesLoggedUser(int PageSize, int PageNumber)
         {
-            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/Recipes/CurrentUserRecipes"))
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync($"/api/Recipes/CurrentUserRecipes/{PageSize}/{PageNumber}"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<List<RecipeModel>>();
+                    return result;
+                }
+                else
+                {
+                    Exception ex = new Exception(response.ReasonPhrase);
+                    //_logger.Error("Got exception", ex);
+                    throw ex;
+                }
+            }
+        }
+
+        public async Task<List<RecipeModel>> GetPublicRecipes(int PageSize, int PageNumber)
+        {
+            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync($"/api/Recipes/GetPublicRecipes/{PageSize}/{PageNumber}"))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -174,34 +192,6 @@ namespace Cook_Book_Mobile.API
                 //_logger.Error("Got exception", exc);
                 throw;
             }
-        }
-
-        public async Task<List<RecipeModel>> GetPublicRecipes()
-        {
-            using (HttpResponseMessage response = await _apiHelper.ApiClient.GetAsync("/api/Recipes/GetPublicRecipes"))
-            {
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsAsync<List<RecipeModel>>();
-                    return result;
-                }
-                else
-                {
-                    Exception ex = new Exception(response.ReasonPhrase);
-                    //_logger.Error("Got exception", ex);
-                    throw ex;
-                }
-            }
-        }
-
-        public Task<List<RecipeModel>> GetRecipesLoggedUser(int PageSize, int PageNumber)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<RecipeModel>> GetPublicRecipes(int PageSize, int PageNumber)
-        {
-            throw new NotImplementedException();
         }
     }
 }

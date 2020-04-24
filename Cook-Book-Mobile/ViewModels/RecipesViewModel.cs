@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -38,12 +39,16 @@ namespace Cook_Book_Mobile.ViewModels
         List<RecipeModelDisplay> tempRecipes = new List<RecipeModelDisplay>();
 
         public ICommand RefreshCommand { get; set; }
+        public ICommand BackCommand { get; set; }
+        public ICommand NextCommand { get; set; }
 
         public RecipesViewModel(IRecipesEndPointAPI RecipesEndPointAPI, ILoggedUser loggedUser, IMapper mapper)
         {
             Title = "Moje przepisy";
 
             RefreshCommand = new Command(async () => await RefreshData(_currentRecipes));
+            BackCommand = new Command(async () => await RecipesBack());
+            NextCommand = new Command(async () => await RecipesNext());
 
             _recipesEndPointAPI = RecipesEndPointAPI;
             _loggedUser = loggedUser;
@@ -73,6 +78,11 @@ namespace Cook_Book_Mobile.ViewModels
                 await RefreshData(_currentRecipes);
             });
 
+            MessagingCenter.Subscribe<MenuViewModel>(this, EventMessages.LogOffEvent, (sender) =>
+            {
+                LogOffUser();
+            });
+
         }
 
         #region Props
@@ -95,27 +105,69 @@ namespace Cook_Book_Mobile.ViewModels
                 OnPropertyChanged(nameof(IsRefreshing));
             }
         }
+
+        public bool CanNext
+        {
+            get { return _canNext; }
+            set
+            {
+                _canNext = value;
+                OnPropertyChanged(nameof(CanNext));
+            }
+        }
+        public bool CanPrevious
+        {
+            get { return _canPrevious; }
+            set
+            {
+                _canPrevious = value;
+                OnPropertyChanged(nameof(CanPrevious));
+            }
+        }
+        public string PageInfo
+        {
+            get { return _pageInfo; }
+            set
+            {
+                _pageInfo = $"Strona {value} z {totalPages}";
+                OnPropertyChanged(nameof(PageInfo));
+            }
+        }
         #endregion
 
         private async Task RefreshData(UserOrPublicRecipes RecipesToRefresh)
         {
-           // IsRefreshing = true;
-
-            if(RecipesToRefresh == UserOrPublicRecipes.UserRecipes)
+            // IsRefreshing = true;
+            try
             {
-                await LoadUserRecipes();
-            }
-            else if (RecipesToRefresh == UserOrPublicRecipes.PublicResipes)
-            {
-                await LoadPublicRecipes();
-            }
+                if (!IsBusy)
+                {
+                    IsBusy = true;
+                    if (RecipesToRefresh == UserOrPublicRecipes.UserRecipes)
+                    {
+                        await LoadUserRecipes(pageSize, pageNumberUserRecipes);
+                    }
+                    else if (RecipesToRefresh == UserOrPublicRecipes.PublicResipes)
+                    {
+                        await LoadPublicRecipes(pageSize, pageNumberPublicRecipes);
+                    }
 
-            //  await Task.WhenAll(LoadRecipes(), LoadImages());
-            await LoadImages();
-            IsRefreshing = false;
+                    //  await Task.WhenAll(LoadRecipes(), LoadImages());
+                    await LoadImages();
+                    IsRefreshing = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                //throw;
+            }
+            finally
+            {
+                IsBusy = false;
+            }        
         }
 
-        private async Task LoadUserRecipes()
+        private async Task LoadUserRecipes(int pageSize, int pageNumber)
         {
             try
             {
@@ -123,7 +175,13 @@ namespace Cook_Book_Mobile.ViewModels
                 tempRecipes.Clear();
                 var recipes = await _recipesEndPointAPI.GetRecipesLoggedUser(pageSize, pageNumberUserRecipes);
 
+                totalPages = recipes.FirstOrDefault().TotalPages;
+                PageInfo = pageNumber.ToString();
+
+                NavigationButtonsActiveDeactive(pageNumber);
+
                 RecipeModelsToRecipeModelDisplay(recipes);
+                await LoadImages();
             }
             catch (Exception ex)
             {
@@ -132,7 +190,7 @@ namespace Cook_Book_Mobile.ViewModels
             }
         }
 
-        private async Task LoadPublicRecipes()
+        private async Task LoadPublicRecipes(int pageSize, int pageNumber)
         {
             try
             {
@@ -140,7 +198,13 @@ namespace Cook_Book_Mobile.ViewModels
                 tempRecipes.Clear();
                 var recipes = await _recipesEndPointAPI.GetPublicRecipes(pageSize, pageNumberPublicRecipes);
 
+                totalPages = recipes.FirstOrDefault().TotalPages;
+                PageInfo = pageNumber.ToString();
+
+                NavigationButtonsActiveDeactive(pageNumber);
+
                 RecipeModelsToRecipeModelDisplay(recipes);
+                await LoadImages();
             }
             catch (Exception ex)
             {
@@ -216,6 +280,67 @@ namespace Cook_Book_Mobile.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
             }
 
+        }
+
+        public async Task RecipesBack()
+        {
+            if (_currentRecipes == UserOrPublicRecipes.UserRecipes)
+            {
+                await LoadUserRecipes(pageSize, --pageNumberUserRecipes);
+            }
+            else
+            {
+                await LoadPublicRecipes(pageSize, --pageNumberPublicRecipes);
+            }
+        }
+
+        public async Task RecipesNext()
+        {
+            if (_currentRecipes == UserOrPublicRecipes.UserRecipes)
+            {
+                await LoadUserRecipes(pageSize, ++pageNumberUserRecipes);
+            }
+            else
+            {
+                await LoadPublicRecipes(pageSize, ++pageNumberPublicRecipes);
+            }
+
+        }
+
+        private void NavigationButtonsActiveDeactive(int pageNumber)
+        {
+            if (pageNumber <= 1)
+            {
+                CanPrevious = false;
+            }
+            else
+            {
+                CanPrevious = true;
+            }
+
+            if (pageNumber >= totalPages)
+            {
+                CanNext = false;
+            }
+            else
+            {
+                CanNext = true;
+            }
+        }
+
+        public void LogOffUser()
+        {
+            _currentRecipes = UserOrPublicRecipes.UserRecipes;
+            CanNext = false;
+            CanPrevious = false;
+
+            pageSize = 10;
+            totalPages = 1;
+            pageNumberUserRecipes = 1;
+            pageNumberPublicRecipes = 1;
+
+            tempRecipes.Clear();
+            _recipes.Clear();
         }
 
     }
