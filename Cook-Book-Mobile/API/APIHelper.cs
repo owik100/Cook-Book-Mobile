@@ -144,6 +144,32 @@ namespace Cook_Book_Mobile.API
             }
         }
 
+        public async Task<bool> EditUser(LoggedUser loggedUser)
+        {
+
+            string favourites = string.Join(";", loggedUser.FavouriteRecipes);
+
+            var multiForm = new MultipartFormDataContent();
+            multiForm.Add(new StringContent(loggedUser.Id), "Id");
+            multiForm.Add(new StringContent(loggedUser.UserName), "UserName");
+            multiForm.Add(new StringContent(loggedUser.Email), "Email");
+            multiForm.Add(new StringContent(favourites), "FavouriteRecipes");
+
+            using (HttpResponseMessage response = await _apiClient.PutAsync($"/api/User/{_loggedUser.Id}", multiForm))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    return response.IsSuccessStatusCode;
+                }
+                else
+                {
+                    Exception ex = new Exception(response.ReasonPhrase);
+                    //_logger.Error("Got exception", ex);
+                    throw ex;
+                }
+            }
+        }
+
         public void LogOffUser()
         {
             try
