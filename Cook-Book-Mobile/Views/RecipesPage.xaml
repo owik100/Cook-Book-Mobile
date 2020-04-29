@@ -11,7 +11,8 @@
 
 
     <ContentPage.Resources>
-        <helpers:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+        <helpers:PublicRecipeToColorConverter x:Key="PublicRecipeToColorConverter" />
+        <helpers:FavouritesRecipeToColorConverter x:Key="FavouritesRecipeToColorConverter" />
     </ContentPage.Resources>
 
 
@@ -47,17 +48,21 @@
                     </d:ListView.ItemsSource>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame Padding="0" CornerRadius="10" BorderColor="{Binding DisplayAsPublic, Converter={StaticResource BooleanToColorConverter}}">
-                                <Grid Padding="10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="70" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
+                            <ContentView Padding="2">
+                                <Frame Padding="0" CornerRadius="10" BorderColor="{Binding DisplayAsPublic, Converter={StaticResource PublicRecipeToColorConverter}}">
+                                    <Frame Padding="0" CornerRadius="10" BorderColor="{Binding DisplayAsFavourites, Converter={StaticResource FavouritesRecipeToColorConverter}}">
+                                        <Grid Padding="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="70" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
 
-                                    <Image WidthRequest="60" HeightRequest="60" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"/>
-                                    <Label Grid.Column="1"   Text="{Binding Name}" d:Text="{Binding .}" FontSize="20"/>
-                                </Grid>
-                            </Frame>
+                                            <Image WidthRequest="60" HeightRequest="60" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"/>
+                                            <Label Grid.Column="1"   Text="{Binding Name}" d:Text="{Binding .}" FontSize="20"/>
+                                        </Grid>
+                                    </Frame>
+                                </Frame>
+                            </ContentView>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

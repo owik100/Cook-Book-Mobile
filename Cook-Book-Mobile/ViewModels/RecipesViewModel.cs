@@ -244,14 +244,14 @@ namespace Cook_Book_Mobile.ViewModels
                     RecipeModelDisplay recipeModelDisplaySingle = _mapper.Map<RecipeModelDisplay>(item);
 
                     bool displayAsPublic = false;
-                    if (item.IsPublic && _loggedUser.UserName == item.UserName)
+                    if (item.IsPublic && _loggedUser.UserName == item.UserName && (_currentRecipes == UserOrPublicOrFavouritesRecipes.PublicResipes || _currentRecipes == UserOrPublicOrFavouritesRecipes.UserRecipes))
                     {
                         displayAsPublic = true;
                     }
                     recipeModelDisplaySingle.DisplayAsPublic = displayAsPublic;
 
                     bool displayAsFavourites = false;
-                    if (_loggedUser.FavouriteRecipes.Contains(item.RecipeId.ToString()))
+                    if (_loggedUser.FavouriteRecipes.Contains(item.RecipeId.ToString()) && _currentRecipes == UserOrPublicOrFavouritesRecipes.PublicResipes)
                     {
                         displayAsFavourites = true;
                     }

@@ -6,14 +6,14 @@ using Xamarin.Forms;
 
 namespace Cook_Book_Mobile.Helpers
 {
-    public class BooleanToColorConverter : IValueConverter
+    public class FavouritesRecipeToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if ((bool)value)
             {
                 {
-                    return Color.Green;
+                    return Color.Yellow;
                 }
             }
             return Color.Transparent;
