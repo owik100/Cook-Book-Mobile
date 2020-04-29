@@ -99,6 +99,11 @@ namespace Cook_Book_Mobile.ViewModels
                 {
                     MessagingCenter.Send(this, EventMessages.ReloadUserRecipesEvent);
                 }
+
+                if (SelectedItem == MenuItems.Where(x => x.Id == MenuItemType.FavouritesRecipes).FirstOrDefault())
+                {
+                    MessagingCenter.Send(this, EventMessages.ReloadFavouritesRecipesEvent);
+                }
             }
         }
 
@@ -141,6 +146,7 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 new HomeMenuItem {Id = MenuItemType.UserRecipes, Title="Moje przepisy" },
                 new HomeMenuItem {Id = MenuItemType.PublicRecipes, Title="Odkrywaj przepisy" },
+                new HomeMenuItem {Id = MenuItemType.FavouritesRecipes, Title="Ulubione przepisy" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About" },
             };
             OnPropertyChanged(nameof(MenuItems));

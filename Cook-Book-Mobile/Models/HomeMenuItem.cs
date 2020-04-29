@@ -13,6 +13,7 @@ namespace Cook_Book_Mobile.Models
         UserRecipes,
         PublicRecipes,
         RecipePreview,
+        FavouritesRecipes
     }
     public class HomeMenuItem
     {

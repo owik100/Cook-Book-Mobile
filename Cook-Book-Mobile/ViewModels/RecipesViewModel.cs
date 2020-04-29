@@ -24,7 +24,7 @@ namespace Cook_Book_Mobile.ViewModels
         private ILoggedUser _loggedUser;
         private ObservableCollection<RecipeModelDisplay> _recipes;
         private bool _isRefreshing;
-        private UserOrPublicRecipes _currentRecipes = UserOrPublicRecipes.UserRecipes;
+        private UserOrPublicOrFavouritesRecipes _currentRecipes = UserOrPublicOrFavouritesRecipes.UserRecipes;
 
         private bool _canNext;
         private bool _canPrevious;
@@ -33,6 +33,7 @@ namespace Cook_Book_Mobile.ViewModels
         private int totalPages = 1;
         private int pageNumberUserRecipes = 1;
         private int pageNumberPublicRecipes = 1;
+        private int pageNumberFavouritesRecipes = 1;
 
         private string _pageInfo;
 
@@ -56,25 +57,43 @@ namespace Cook_Book_Mobile.ViewModels
 
             MessagingCenter.Subscribe<MenuViewModel>(this, EventMessages.ReloadUserRecipesEvent, async (sender) =>
             {
-                _currentRecipes = UserOrPublicRecipes.UserRecipes;
+                _currentRecipes = UserOrPublicOrFavouritesRecipes.UserRecipes;
                 await RefreshData(_currentRecipes);
             });
 
             MessagingCenter.Subscribe<MenuViewModel>(this, EventMessages.ReloadPublicRecipesEvent, async (sender) =>
             {
-                _currentRecipes = UserOrPublicRecipes.PublicResipes;
+                _currentRecipes = UserOrPublicOrFavouritesRecipes.PublicResipes;
+                await RefreshData(_currentRecipes);
+            });  
+            
+            MessagingCenter.Subscribe<MenuViewModel>(this, EventMessages.ReloadFavouritesRecipesEvent, async (sender) =>
+            {
+                _currentRecipes = UserOrPublicOrFavouritesRecipes.FavouritesRecipes;
                 await RefreshData(_currentRecipes);
             });
 
             MessagingCenter.Subscribe<AddOrEditPage>(this, EventMessages.ReloadUserRecipesEvent, async (sender) =>
             {
-                _currentRecipes = UserOrPublicRecipes.UserRecipes;
+                _currentRecipes = UserOrPublicOrFavouritesRecipes.UserRecipes;
                 await RefreshData(_currentRecipes);
             });
 
             MessagingCenter.Subscribe<RecipePreviewPage>(this, EventMessages.ReloadUserRecipesEvent, async (sender) =>
             {
-                _currentRecipes = UserOrPublicRecipes.UserRecipes;
+                _currentRecipes = UserOrPublicOrFavouritesRecipes.UserRecipes;
+                await RefreshData(_currentRecipes);
+            });  
+            
+            MessagingCenter.Subscribe<RecipePreviewViewModel>(this, EventMessages.ReloadPublicRecipesEvent, async (sender) =>
+            {
+                _currentRecipes = UserOrPublicOrFavouritesRecipes.PublicResipes;
+                await RefreshData(_currentRecipes);
+            });  
+            
+            MessagingCenter.Subscribe<RecipePreviewViewModel>(this, EventMessages.ReloadFavouritesRecipesEvent, async (sender) =>
+            {
+                _currentRecipes = UserOrPublicOrFavouritesRecipes.FavouritesRecipes;
                 await RefreshData(_currentRecipes);
             });
 
@@ -135,7 +154,7 @@ namespace Cook_Book_Mobile.ViewModels
         }
         #endregion
 
-        private async Task RefreshData(UserOrPublicRecipes RecipesToRefresh)
+        private async Task RefreshData(UserOrPublicOrFavouritesRecipes RecipesToRefresh)
         {
             // IsRefreshing = true;
             try
@@ -143,13 +162,20 @@ namespace Cook_Book_Mobile.ViewModels
                 if (!IsBusy)
                 {
                     IsBusy = true;
-                    if (RecipesToRefresh == UserOrPublicRecipes.UserRecipes)
+                    if (RecipesToRefresh == UserOrPublicOrFavouritesRecipes.UserRecipes)
                     {
-                        await LoadUserRecipes(pageSize, pageNumberUserRecipes);
+                        Title = "Moje przepisy";
+                        await LoadRecipes(RecipesToRefresh, pageSize, pageNumberUserRecipes);
                     }
-                    else if (RecipesToRefresh == UserOrPublicRecipes.PublicResipes)
+                    else if (RecipesToRefresh == UserOrPublicOrFavouritesRecipes.PublicResipes)
                     {
-                        await LoadPublicRecipes(pageSize, pageNumberPublicRecipes);
+                        Title = "Odkrywaj przepisy";
+                        await LoadRecipes(RecipesToRefresh, pageSize, pageNumberPublicRecipes);
+                    }
+                    else if (RecipesToRefresh == UserOrPublicOrFavouritesRecipes.FavouritesRecipes)
+                    {
+                        Title = "Ulubione przepisy";
+                        await LoadRecipes(RecipesToRefresh, pageSize, pageNumberFavouritesRecipes);
                     }
 
                     //  await Task.WhenAll(LoadRecipes(), LoadImages());
@@ -167,15 +193,35 @@ namespace Cook_Book_Mobile.ViewModels
             }        
         }
 
-        private async Task LoadUserRecipes(int pageSize, int pageNumber)
+        private async Task LoadRecipes(UserOrPublicOrFavouritesRecipes userOrPublicOrFavourites, int pageSize, int pageNumber)
         {
             try
             {
-                Title = "Moje przepisy";
                 tempRecipes.Clear();
-                var recipes = await _recipesEndPointAPI.GetRecipesLoggedUser(pageSize, pageNumberUserRecipes);
+                List<RecipeModel> recipes = new List<RecipeModel>();
 
-                totalPages = recipes.FirstOrDefault().TotalPages;
+                if(userOrPublicOrFavourites == UserOrPublicOrFavouritesRecipes.UserRecipes)
+                {
+                    recipes = await _recipesEndPointAPI.GetRecipesLoggedUser(pageSize, pageNumber);
+                }
+                else if(userOrPublicOrFavourites == UserOrPublicOrFavouritesRecipes.PublicResipes)
+                {
+                    recipes = await _recipesEndPointAPI.GetPublicRecipes(pageSize, pageNumber);
+                } 
+                else if(userOrPublicOrFavourites == UserOrPublicOrFavouritesRecipes.FavouritesRecipes)
+                {
+                    recipes = await _recipesEndPointAPI.GetFavouritesRecipes(pageSize, pageNumber);
+                }
+
+                if (recipes.Count > 0)
+                {
+                    totalPages = recipes.FirstOrDefault().TotalPages;
+                }
+                else
+                {
+                    totalPages = 1;
+                }
+
                 PageInfo = pageNumber.ToString();
 
                 NavigationButtonsActiveDeactive(pageNumber);
@@ -188,31 +234,7 @@ namespace Cook_Book_Mobile.ViewModels
                 //_logger.Error("Got exception", ex);
                 await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
             }
-        }
-
-        private async Task LoadPublicRecipes(int pageSize, int pageNumber)
-        {
-            try
-            {
-                Title = "Odkrywaj przepisy";
-                tempRecipes.Clear();
-                var recipes = await _recipesEndPointAPI.GetPublicRecipes(pageSize, pageNumberPublicRecipes);
-
-                totalPages = recipes.FirstOrDefault().TotalPages;
-                PageInfo = pageNumber.ToString();
-
-                NavigationButtonsActiveDeactive(pageNumber);
-
-                RecipeModelsToRecipeModelDisplay(recipes);
-                await LoadImages();
-            }
-            catch (Exception ex)
-            {
-                //_logger.Error("Got exception", ex);
-                await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
-            }
-        }
-
+        }  
         private async void RecipeModelsToRecipeModelDisplay(List<RecipeModel> recipeModels)
         {
             try
@@ -291,26 +313,35 @@ namespace Cook_Book_Mobile.ViewModels
 
         public async Task RecipesBack()
         {
-            if (_currentRecipes == UserOrPublicRecipes.UserRecipes)
+            if (_currentRecipes == UserOrPublicOrFavouritesRecipes.UserRecipes)
             {
-                await LoadUserRecipes(pageSize, --pageNumberUserRecipes);
+                await LoadRecipes(UserOrPublicOrFavouritesRecipes.UserRecipes, pageSize, --pageNumberUserRecipes);
             }
-            else
+            else if (_currentRecipes == UserOrPublicOrFavouritesRecipes.PublicResipes)
             {
-                await LoadPublicRecipes(pageSize, --pageNumberPublicRecipes);
+                await LoadRecipes(UserOrPublicOrFavouritesRecipes.PublicResipes, pageSize, --pageNumberPublicRecipes);
+            }
+            else if (_currentRecipes == UserOrPublicOrFavouritesRecipes.FavouritesRecipes)
+            {
+                await LoadRecipes(UserOrPublicOrFavouritesRecipes.FavouritesRecipes, pageSize, --pageNumberFavouritesRecipes);
             }
         }
 
         public async Task RecipesNext()
         {
-            if (_currentRecipes == UserOrPublicRecipes.UserRecipes)
+            if (_currentRecipes == UserOrPublicOrFavouritesRecipes.UserRecipes)
             {
-                await LoadUserRecipes(pageSize, ++pageNumberUserRecipes);
+                await LoadRecipes(UserOrPublicOrFavouritesRecipes.UserRecipes, pageSize, ++pageNumberUserRecipes);
             }
-            else
+            else if (_currentRecipes == UserOrPublicOrFavouritesRecipes.PublicResipes)
             {
-                await LoadPublicRecipes(pageSize, ++pageNumberPublicRecipes);
+                await LoadRecipes(UserOrPublicOrFavouritesRecipes.PublicResipes, pageSize, ++pageNumberPublicRecipes);
             }
+            else if (_currentRecipes == UserOrPublicOrFavouritesRecipes.FavouritesRecipes)
+            {
+                await LoadRecipes(UserOrPublicOrFavouritesRecipes.FavouritesRecipes, pageSize, ++pageNumberFavouritesRecipes);
+            }
+
 
         }
 
@@ -337,7 +368,7 @@ namespace Cook_Book_Mobile.ViewModels
 
         public void LogOffUser()
         {
-            _currentRecipes = UserOrPublicRecipes.UserRecipes;
+            _currentRecipes = UserOrPublicOrFavouritesRecipes.UserRecipes;
             CanNext = false;
             CanPrevious = false;
 
@@ -353,8 +384,9 @@ namespace Cook_Book_Mobile.ViewModels
     }
 }
 
-public enum UserOrPublicRecipes
+public enum UserOrPublicOrFavouritesRecipes
 {
     UserRecipes,
-    PublicResipes
+    PublicResipes,
+    FavouritesRecipes
 }

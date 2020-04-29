@@ -15,6 +15,8 @@
     <ContentPage.ToolbarItems>
         <control:BindableToolbarItem IsVisible="{Binding CanEdit}" Parent="{x:Reference this}" Text="Edytuj" Command="{Binding EditCommand}" />
         <control:BindableToolbarItem IsVisible="{Binding CanEdit}" Parent="{x:Reference this}" Text="Usuń" Command="{Binding DeleteCommand}"/>
+
+        <control:BindableToolbarItem IsVisible="{Binding CanAddDeleteFavourites}" Parent="{x:Reference this}"  IconImageSource="{Binding FavouritesImage}" Command="{Binding FavouriteCommand}"/>
     </ContentPage.ToolbarItems>
 
 

@@ -107,6 +107,7 @@ namespace Cook_Book_Mobile.API
                     _loggedUser.Token = token;
                     _loggedUser.UserName = result.UserName;
                     _loggedUser.Email = result.Email;
+                    _loggedUser.FavouriteRecipes = result.FavouriteRecipes;
 
                     return result;
                 }

@@ -1,4 +1,5 @@
 ﻿using Cook_Book_Mobile.Helpers;
+using Cook_Book_Mobile.Models;
 using Cook_Book_Shared_Code.Models;
 using System;
 using System.Collections.Generic;
@@ -30,12 +31,15 @@ namespace Cook_Book_Mobile.Views
 
             ListViewRecipes.SelectedItem = null;
 
-            MessagingCenter.Send(this, EventMessages.RecipesPreviewEvent, item);
+            RecipeAndTitlePage recipeAndTitlePage = new RecipeAndTitlePage(item, Title);
+
+            MessagingCenter.Send(this, EventMessages.RecipesPreviewEvent, recipeAndTitlePage);
         }
 
         private async void AddRecipe_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new AddOrEditPage(), true);        
         }
+
     }
 }

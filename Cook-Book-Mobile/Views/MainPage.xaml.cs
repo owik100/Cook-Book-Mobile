@@ -47,6 +47,9 @@ namespace Cook_Book_Mobile.Views
                     case (int)MenuItemType.PublicRecipes:
                         id -= 1;
                         break;
+                    case (int)MenuItemType.FavouritesRecipes:
+                        id -= 3;
+                        break;
                 }
             }
 

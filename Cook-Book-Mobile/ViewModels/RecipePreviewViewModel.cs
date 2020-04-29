@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Cook_Book_Mobile.API;
 using Cook_Book_Mobile.Helpers;
+using Cook_Book_Mobile.Models;
 using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
@@ -26,30 +27,54 @@ namespace Cook_Book_Mobile.ViewModels
         private bool _canEdit;
         private string _userName;
 
+        private string _favouritesImage;
+        private bool _canAddDeleteFavourites;
+        private AddOrdDeleteFromFavourites _AddOrdDeleteFavourites;
+
         private IRecipesEndPointAPI _recipesEndPointAPI;
         private IMapper _mapper;
         private ILoggedUser _loggedUser;
+        private IAPIHelper _aPIHelper;
+
+        private UserOrPublicOrFavouritesRecipes lastVised = UserOrPublicOrFavouritesRecipes.UserRecipes;
 
         public ICommand EditCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
+        public ICommand FavouriteCommand { get; set; }
 
-        public RecipePreviewViewModel(IRecipesEndPointAPI recipesEndPointAPI, IMapper mapper, ILoggedUser loggedUser)
+        public RecipePreviewViewModel(IRecipesEndPointAPI recipesEndPointAPI, IMapper mapper, ILoggedUser loggedUser, IAPIHelper aPIHelper)
         {
             EditCommand = new Command(() => Edit());
             DeleteCommand = new Command(async () => await Delete());
+            FavouriteCommand = new Command(async () => await AddOrDeleteFavourites());
 
             _recipesEndPointAPI = recipesEndPointAPI;
             _mapper = mapper;
             _loggedUser = loggedUser;
+            _aPIHelper = aPIHelper;
 
             CanEdit = false;
 
-            MessagingCenter.Subscribe<RecipesPage, RecipeModelDisplay>(this, EventMessages.RecipesPreviewEvent, (sender, arg) =>
+            MessagingCenter.Subscribe<RecipesPage, RecipeAndTitlePage>(this, EventMessages.RecipesPreviewEvent, async (sender, arg) =>
             {
-                RecipeModel recipeModel = _mapper.Map<RecipeModel>(arg);
+
+                if(arg.Title == "Moje przepisy")
+                {
+                    lastVised = UserOrPublicOrFavouritesRecipes.UserRecipes;
+                }
+                else if(arg.Title == "Odkrywaj przepisy")
+                {
+                    lastVised = UserOrPublicOrFavouritesRecipes.PublicResipes;
+                }
+                else if(arg.Title == "Ulubione przepisy")
+                {
+                    lastVised = UserOrPublicOrFavouritesRecipes.FavouritesRecipes;
+                }
+
+                RecipeModel recipeModel = _mapper.Map<RecipeModel>(arg.RecipeModelDisplay);
 
                 currentRecipe = recipeModel;
-                Title = arg.Name;
+                Title = arg.RecipeModelDisplay.Name;
 
                 _recipeId = currentRecipe.RecipeId;
                 RecipeName = currentRecipe.Name;
@@ -60,11 +85,25 @@ namespace Cook_Book_Mobile.ViewModels
                 if (!currentRecipe.IsPublic || currentRecipe.UserName == _loggedUser.UserName)
                 {
                     CanEdit = true;
+                    CanAddDeleteFavourites = false;
                 }
                 else
                 {
                     CanEdit = false;
                     UserName = "Autor przepisu: " + currentRecipe.UserName;
+
+                    CanAddDeleteFavourites = true;
+
+                    if (await AlreadyFavourites())
+                    {
+                        _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Delete;
+                        FavouritesImage = ImageConstants.StarFull;
+                    }
+                    else
+                    {
+                        _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Add;
+                        FavouritesImage = ImageConstants.StarEmpty;
+                    }
                 }
             });
         }
@@ -154,6 +193,111 @@ namespace Cook_Book_Mobile.ViewModels
                 OnPropertyChanged(nameof(CanEdit));
             }
         }
+
+        public string FavouritesImage
+        {
+            get { return _favouritesImage; }
+            set
+            {
+                _favouritesImage = value;
+                OnPropertyChanged(nameof(FavouritesImage));
+            }
+        }
+
+
+        public bool CanAddDeleteFavourites
+        {
+            get { return _canAddDeleteFavourites; }
+            set
+            {
+                _canAddDeleteFavourites = value;
+                OnPropertyChanged(nameof(CanAddDeleteFavourites));
+            }
+        }
         #endregion
+
+        public async Task AddOrDeleteFavourites()
+        {
+            try
+            {
+                if (_AddOrdDeleteFavourites == AddOrdDeleteFromFavourites.Add)
+                {
+                    _loggedUser.FavouriteRecipes.Add(_recipeId.ToString());
+                }
+                else
+                {
+                    _loggedUser.FavouriteRecipes.Remove(_recipeId.ToString());
+                }
+
+                LoggedUser loggedUser = new LoggedUser
+                {
+                    Id = _loggedUser.Id,
+                    Email = _loggedUser.Email,
+                    UserName = _loggedUser.UserName,
+                    FavouriteRecipes = _loggedUser.FavouriteRecipes
+                };
+
+                var result = await _aPIHelper.EditUser(loggedUser);
+
+                if (result)
+                {
+                    if (await AlreadyFavourites())
+                    {
+                        _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Delete;
+                        FavouritesImage = ImageConstants.StarFull;                      
+                    }
+                    else
+                    {
+                        _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Add;
+                        FavouritesImage = ImageConstants.StarEmpty;                      
+                    }
+
+                    if (lastVised == UserOrPublicOrFavouritesRecipes.PublicResipes)
+                    {
+                        MessagingCenter.Send(this, EventMessages.ReloadPublicRecipesEvent);
+                    }
+                    else if (lastVised == UserOrPublicOrFavouritesRecipes.FavouritesRecipes)
+                    {
+                        MessagingCenter.Send(this, EventMessages.ReloadFavouritesRecipesEvent);
+                    }
+
+                }
+
+                //_reloadNeeded = true;
+
+                //await Back();
+            }
+            catch (Exception ex)
+            {
+                // _logger.Error("Got exception", ex);
+                await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+            }
+        }
+
+        private async Task<bool> AlreadyFavourites()
+        {
+            bool output = false;
+
+            try
+            {
+                if (_loggedUser.FavouriteRecipes.Contains(_recipeId.ToString()))
+                {
+                    output = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                //_logger.Error("Got exception", ex);
+                await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+            }
+
+            return output;
+        }
+    }
+
+    public enum AddOrdDeleteFromFavourites
+    {
+        Add,
+        Delete
     }
 }
