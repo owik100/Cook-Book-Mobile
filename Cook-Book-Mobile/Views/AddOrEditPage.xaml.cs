@@ -21,7 +21,7 @@ namespace Cook_Book_Mobile.Views
             MessagingCenter.Subscribe<AddOrEditViewModel>(this, EventMessages.BasicNavigationEvent, async (sender) =>
             {
                 await Navigation.PopToRootAsync(true);
-                MessagingCenter.Send(this, EventMessages.ReloadUserRecipesEvent);
+                MessagingCenter.Send(this, EventMessages.BasicNavigationEvent);
             });
         }
     }

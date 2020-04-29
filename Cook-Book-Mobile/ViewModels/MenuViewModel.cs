@@ -47,6 +47,12 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 SelectedItem = MenuItems.Where(x => x.Id == arg).FirstOrDefault();
                 //Wywola sie event w code behind, przekierowujacy do wybranej strony
+            }); 
+
+            MessagingCenter.Subscribe<AddOrEditViewModel>(this, EventMessages.BasicNavigationEvent, (sender) =>
+            {
+                SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.UserRecipes).FirstOrDefault();
+                //Wywola sie event w code behind, przekierowujacy do wybranej strony
             });
         }
 
