@@ -228,6 +228,13 @@ namespace Cook_Book_Mobile.ViewModels
                     }
                     recipeModelDisplaySingle.DisplayAsPublic = displayAsPublic;
 
+                    bool displayAsFavourites = false;
+                    if (_loggedUser.FavouriteRecipes.Contains(item.RecipeId.ToString()))
+                    {
+                        displayAsFavourites = true;
+                    }
+                    recipeModelDisplaySingle.DisplayAsFavourites = displayAsFavourites;
+
                     tempRecipes.Add(recipeModelDisplaySingle);
                 }
             }
