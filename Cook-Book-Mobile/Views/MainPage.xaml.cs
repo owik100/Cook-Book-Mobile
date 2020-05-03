@@ -25,9 +25,6 @@ namespace Cook_Book_Mobile.Views
 
         public async Task NavigateFromMenu(int id)
         {
-            //if (id == 5)
-            //    id = 4;
-
             if (!MenuPages.ContainsKey(id))
             {
                 switch (id)
@@ -45,10 +42,10 @@ namespace Cook_Book_Mobile.Views
                         MenuPages.Add(id, new NavigationPage(new RecipesPage()));
                         break;
                     case (int)MenuItemType.PublicRecipes:
-                        id -= 1;
+                        id = (int)MenuItemType.UserRecipes;
                         break;
                     case (int)MenuItemType.FavouritesRecipes:
-                        id -= 3;
+                        id = (int)MenuItemType.UserRecipes;
                         break;
                 }
             }
@@ -65,7 +62,7 @@ namespace Cook_Book_Mobile.Views
                 IsPresented = false;
             }
 
-            if (id == 4)
+            if (id == (int)MenuItemType.UserRecipes)
             {
                 if (Device.RuntimePlatform == Device.Android)
                     await Task.Delay(100);
