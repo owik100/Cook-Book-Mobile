@@ -13,7 +13,7 @@ namespace Cook_Book_Mobile.Helpers
             if ((bool)value)
             {
                 {
-                    return Color.Yellow;
+                    return Color.FromRgb(255, 217, 0);
                 }
             }
             return Color.Transparent;
