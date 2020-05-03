@@ -306,7 +306,7 @@ namespace Cook_Book_Mobile.ViewModels
             catch (Exception ex)
             {
                 //_logger.Error("Got exception", ex);
-                await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+                //await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
             }
 
         }
