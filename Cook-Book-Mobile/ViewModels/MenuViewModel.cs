@@ -141,7 +141,7 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 new HomeMenuItem {Id = MenuItemType.Login, Title="Logowanie" },
                 new HomeMenuItem {Id = MenuItemType.Register, Title="Rejestracja" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" },
+                new HomeMenuItem {Id = MenuItemType.About, Title="O aplikacji" },
             };
             OnPropertyChanged(nameof(MenuItems));
         }
@@ -153,7 +153,7 @@ namespace Cook_Book_Mobile.ViewModels
                 new HomeMenuItem {Id = MenuItemType.UserRecipes, Title="Moje przepisy" },
                 new HomeMenuItem {Id = MenuItemType.PublicRecipes, Title="Odkrywaj przepisy" },
                 new HomeMenuItem {Id = MenuItemType.FavouritesRecipes, Title="Ulubione przepisy" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" },
+                new HomeMenuItem {Id = MenuItemType.About, Title="O aplikacji" },
             };
             OnPropertyChanged(nameof(MenuItems));
         }
