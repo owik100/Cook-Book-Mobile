@@ -18,8 +18,10 @@
 
             <Entry Placeholder="Nazwa składniku" Text="{Binding IngredientInsert}"/>
             <StackLayout Orientation="Horizontal">
-                <Button HorizontalOptions="FillAndExpand" Text="Dodaj składnik" Command="{Binding AddIngredientCommand}" IsEnabled="{Binding CanAddIngredient}" />
-                <Button HorizontalOptions="FillAndExpand" Text="Uśun składnik" Command="{Binding DeleteIngredientCommand}" IsEnabled="{Binding CanDeleteIngredient}" />
+                <Button HorizontalOptions="FillAndExpand" Text="Dodaj składnik" Command="{Binding AddIngredientCommand}" IsEnabled="{Binding CanAddIngredient}" BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" />
+                <Button HorizontalOptions="FillAndExpand" Text="Uśun składnik" Command="{Binding DeleteIngredientCommand}" IsEnabled="{Binding CanDeleteIngredient}" BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" />
             </StackLayout>
 
             <ListView x:Name="ListViewIngredients"
@@ -46,16 +48,19 @@
             <Editor HeightRequest="100" Placeholder="Podaj przepis" Text="{Binding RecipeInstructions}"/>
 
             <StackLayout Orientation="Horizontal">
-                <Button HorizontalOptions="FillAndExpand" Text="Wczytaj obrazek" Command="{Binding SelectImageCommand}" />
-                <Button HorizontalOptions="FillAndExpand" Text="Usuń obrazek" Command="{Binding DeleteImageCommand}" IsEnabled="{Binding CanDeleteImage}" />
+                <Button HorizontalOptions="FillAndExpand" Text="Wczytaj obrazek" Command="{Binding SelectImageCommand}" BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" />
+                <Button HorizontalOptions="FillAndExpand" Text="Usuń obrazek" Command="{Binding DeleteImageCommand}" IsEnabled="{Binding CanDeleteImage}" BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" />
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Image HorizontalOptions="FillAndExpand" HeightRequest="30" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"  />
                 <Label Text="Przepis publiczny:" TextColor="Green" HorizontalOptions="End" FontSize="Medium"/>
                 <CheckBox HorizontalOptions="End" IsChecked="{Binding IsPublic}"/>
             </StackLayout>
-           
-            <Button Text="{Binding SubmitText}" Command="{Binding SubmitCommand}" IsEnabled="{Binding CanRecipeSubmit}" />
+
+            <Button Text="{Binding SubmitText}" Command="{Binding SubmitCommand}" IsEnabled="{Binding CanRecipeSubmit}" BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" />
 
         </StackLayout>
     </ContentPage.Content>

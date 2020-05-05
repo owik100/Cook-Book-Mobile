@@ -10,7 +10,7 @@
              
     <StackLayout VerticalOptions="FillAndExpand">
         <Label Text="{Binding HelloText}" IsVisible="{Binding Logged}" FontSize="Large" Margin="10,10,0,0"/>
-        <Button Text="Wyloguj" IsVisible="{Binding Logged}" Command="{Binding LogOutCommand}"/>
+        <Button Text="Wyloguj" IsVisible="{Binding Logged}" Command="{Binding LogOutCommand}" BackgroundColor="{StaticResource Primary}" TextColor="White" Margin="10"/>
         <ListView x:Name="ListViewMenu"
                     HasUnevenRows="True"
                     ItemsSource="{Binding MenuItems, Mode=TwoWay}"

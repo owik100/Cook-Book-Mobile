@@ -21,7 +21,7 @@
             <Label Text="Zapamiętaj mnie:" HorizontalOptions="Start" FontSize="Medium"/>
             <CheckBox IsChecked="{Binding Remember}"/>
 
-            <Button Text="Zaloguj" Margin="15" Command="{Binding InfoCommand}" IsEnabled="{Binding CanLogin}" />
+            <Button Text="Zaloguj" Margin="15" Command="{Binding InfoCommand}" IsEnabled="{Binding CanLogin}" BackgroundColor="{StaticResource Primary}" TextColor="White" />
             
             <ActivityIndicator IsRunning="{Binding IsBusy}" />
             

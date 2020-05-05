@@ -24,7 +24,7 @@
             <Label Text="Powtórz hasło:" HorizontalOptions="Center" FontSize="Medium"/>
             <Entry Placeholder="Powtórz hasło" IsPassword="True" Text="{Binding PasswordRepeat}"/>
 
-            <Button Text="Zarejestruj" Margin="15" Command="{Binding InfoCommand}" IsEnabled="{Binding CanRegister}" />
+            <Button Text="Zarejestruj" Margin="15" Command="{Binding InfoCommand}" IsEnabled="{Binding CanRegister}" BackgroundColor="{StaticResource Primary}" TextColor="White" />
 
             <ActivityIndicator IsRunning="{Binding IsBusy}" />
         </StackLayout>
