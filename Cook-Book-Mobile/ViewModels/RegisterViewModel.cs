@@ -1,13 +1,6 @@
-﻿using Android.Widget;
-using Cook_Book_Mobile.API;
-using Cook_Book_Shared_Code.API;
+﻿using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
