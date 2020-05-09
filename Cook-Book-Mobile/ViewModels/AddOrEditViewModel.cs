@@ -67,6 +67,8 @@ namespace Cook_Book_Mobile.ViewModels
                 ImagePath = arg.ImagePath;
                 IsPublic = arg.IsPublic;
 
+                OnPropertyChanged(nameof(CanDeleteImage));
+
             });
     
         }
