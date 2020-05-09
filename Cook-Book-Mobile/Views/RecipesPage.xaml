@@ -23,9 +23,37 @@
     <ContentPage.Content>
         <StackLayout Spacing="10" Padding="10">
             <StackLayout Orientation="Horizontal">
-                <Button Command="{Binding BackCommand}" IsEnabled="{Binding CanPrevious}" HorizontalOptions="FillAndExpand" Text="&lt;=" BackgroundColor="{StaticResource Primary}" TextColor="White"/>
+                <Button x:Name="btnBack" Command="{Binding BackCommand}" IsEnabled="{Binding CanPrevious}" HorizontalOptions="FillAndExpand" Text="&lt;=" BackgroundColor="{StaticResource Primary}" TextColor="White">
+                    <Button.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Reference btnBack}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="False">
+                            <Setter Property="TextColor" Value="Gray" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Source={x:Reference btnBack}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="True">
+                            <Setter Property="TextColor" Value="White" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
                 <Label HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="{Binding PageInfo}"/>
-                <Button Command="{Binding NextCommand}" IsEnabled="{Binding CanNext}" HorizontalOptions="FillAndExpand" Text="=&gt;" BackgroundColor="{StaticResource Primary}" TextColor="White"/>
+                <Button x:Name="btnNext" Command="{Binding NextCommand}" IsEnabled="{Binding CanNext}" HorizontalOptions="FillAndExpand" Text="=&gt;" BackgroundColor="{StaticResource Primary}" TextColor="White">
+                    <Button.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Reference btnNext}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="False">
+                            <Setter Property="TextColor" Value="Gray" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Source={x:Reference btnNext}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="True">
+                            <Setter Property="TextColor" Value="White" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
             </StackLayout>
                 
             <RefreshView IsRefreshing="{Binding IsRefreshing}"

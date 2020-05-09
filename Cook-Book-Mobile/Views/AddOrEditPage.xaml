@@ -18,10 +18,42 @@
 
             <Entry Placeholder="Nazwa składniku" Text="{Binding IngredientInsert}"/>
             <StackLayout Orientation="Horizontal">
-                <Button HorizontalOptions="FillAndExpand" Text="Dodaj składnik" Command="{Binding AddIngredientCommand}" IsEnabled="{Binding CanAddIngredient}" BackgroundColor="{StaticResource Primary}"
-                        TextColor="White" />
-                <Button HorizontalOptions="FillAndExpand" Text="Uśun składnik" Command="{Binding DeleteIngredientCommand}" IsEnabled="{Binding CanDeleteIngredient}" BackgroundColor="{StaticResource Primary}"
-                        TextColor="White" />
+                <Button x:Name="btnAddIngredient" HorizontalOptions="FillAndExpand" Text="Dodaj składnik" Command="{Binding AddIngredientCommand}" IsEnabled="{Binding CanAddIngredient}" BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" >
+
+                    <Button.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Reference btnAddIngredient}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="False">
+                            <Setter Property="TextColor" Value="Gray" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Source={x:Reference btnAddIngredient}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="True">
+                            <Setter Property="TextColor" Value="White" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                    
+                </Button>
+                <Button x:Name="btnRemoveIngredient" HorizontalOptions="FillAndExpand" Text="Uśun składnik" Command="{Binding DeleteIngredientCommand}" IsEnabled="{Binding CanDeleteIngredient}" BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" >
+                    <Button.Triggers>
+
+                        <DataTrigger Binding="{Binding Source={x:Reference btnRemoveIngredient}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="False">
+                            <Setter Property="TextColor" Value="Gray" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Source={x:Reference btnRemoveIngredient}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="True">
+                            <Setter Property="TextColor" Value="White" />
+                        </DataTrigger>
+                    </Button.Triggers>
+
+                </Button>
             </StackLayout>
 
             <ListView x:Name="ListViewIngredients"
@@ -77,8 +109,23 @@
                 <CheckBox HorizontalOptions="End" IsChecked="{Binding IsPublic}"/>
             </StackLayout>
 
-            <Button Text="{Binding SubmitText}" Command="{Binding SubmitCommand}" IsEnabled="{Binding CanRecipeSubmit}" BackgroundColor="{StaticResource Primary}"
-                        TextColor="White" />
+            <Button x:Name="btnSubmit" Text="{Binding SubmitText}" Command="{Binding SubmitCommand}" IsEnabled="{Binding CanRecipeSubmit}" BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" >
+                
+                <Button.Triggers>
+                    <DataTrigger Binding="{Binding Source={x:Reference btnSubmit}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="False">
+                        <Setter Property="TextColor" Value="Gray" />
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding Source={x:Reference btnSubmit}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="True">
+                        <Setter Property="TextColor" Value="White" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
 
         </StackLayout>
     </ContentPage.Content>

@@ -21,8 +21,22 @@
             <Label Text="Zapamiętaj mnie:" HorizontalOptions="Start" FontSize="Medium"/>
             <CheckBox IsChecked="{Binding Remember}"/>
 
-            <Button Text="Zaloguj" Margin="15" Command="{Binding InfoCommand}" IsEnabled="{Binding CanLogin}" BackgroundColor="{StaticResource Primary}" TextColor="White" />
-            
+            <Button x:Name="btnSubmit" Text="Zaloguj" Margin="15" Command="{Binding InfoCommand}" IsEnabled="{Binding CanLogin}" BackgroundColor="{StaticResource Primary}" TextColor="White" >
+                <Button.Triggers>
+                    <DataTrigger Binding="{Binding Source={x:Reference btnSubmit}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="False">
+                        <Setter Property="TextColor" Value="Gray" />
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding Source={x:Reference btnSubmit}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="True">
+                        <Setter Property="TextColor" Value="White" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+
             <ActivityIndicator IsRunning="{Binding IsBusy}" />
             
             <Label Text="Nie masz jeszcze konta? Zarejestruj się!" HorizontalOptions="Center" FontSize="Small" Margin="0,40,0,0">
