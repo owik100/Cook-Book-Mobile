@@ -23,6 +23,9 @@
     <ContentPage.Content>
         <StackLayout Spacing="10" Padding="10">
             <StackLayout Orientation="Horizontal">
+
+               
+
                 <Button x:Name="btnBack" Command="{Binding BackCommand}" IsEnabled="{Binding CanPrevious}" HorizontalOptions="FillAndExpand" Text="&lt;=" BackgroundColor="{StaticResource Primary}" TextColor="White">
                     <Button.Triggers>
                         <DataTrigger Binding="{Binding Source={x:Reference btnBack}, Path=IsEnabled}"
@@ -55,7 +58,9 @@
                     </Button.Triggers>
                 </Button>
             </StackLayout>
-                
+
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
+
             <RefreshView IsRefreshing="{Binding IsRefreshing}"
              Command="{Binding RefreshCommand}">
 

@@ -159,9 +159,6 @@ namespace Cook_Book_Mobile.ViewModels
             // IsRefreshing = true;
             try
             {
-                if (!IsBusy)
-                {
-                    IsBusy = true;
                     if (RecipesToRefresh == UserOrPublicOrFavouritesRecipes.UserRecipes)
                     {
                         Title = "Moje przepisy";
@@ -181,7 +178,6 @@ namespace Cook_Book_Mobile.ViewModels
                     //  await Task.WhenAll(LoadRecipes(), LoadImages());
                     await LoadImages();
                     IsRefreshing = false;
-                }
             }
             catch (Exception ex)
             {
@@ -197,37 +193,41 @@ namespace Cook_Book_Mobile.ViewModels
         {
             try
             {
-                tempRecipes.Clear();
-                List<RecipeModel> recipes = new List<RecipeModel>();
-
-                if(userOrPublicOrFavourites == UserOrPublicOrFavouritesRecipes.UserRecipes)
+                if (!IsBusy)
                 {
-                    recipes = await _recipesEndPointAPI.GetRecipesLoggedUser(pageSize, pageNumber);
+                    IsBusy = true;
+                    tempRecipes.Clear();
+                    List<RecipeModel> recipes = new List<RecipeModel>();
+
+                    if (userOrPublicOrFavourites == UserOrPublicOrFavouritesRecipes.UserRecipes)
+                    {
+                        recipes = await _recipesEndPointAPI.GetRecipesLoggedUser(pageSize, pageNumber);
+                    }
+                    else if (userOrPublicOrFavourites == UserOrPublicOrFavouritesRecipes.PublicResipes)
+                    {
+                        recipes = await _recipesEndPointAPI.GetPublicRecipes(pageSize, pageNumber);
+                    }
+                    else if (userOrPublicOrFavourites == UserOrPublicOrFavouritesRecipes.FavouritesRecipes)
+                    {
+                        recipes = await _recipesEndPointAPI.GetFavouritesRecipes(pageSize, pageNumber);
+                    }
+
+                    if (recipes.Count > 0)
+                    {
+                        totalPages = recipes.FirstOrDefault().TotalPages;
+                    }
+                    else
+                    {
+                        totalPages = 1;
+                    }
+
+                    PageInfo = pageNumber.ToString();
+
+                    NavigationButtonsActiveDeactive(pageNumber);
+
+                    RecipeModelsToRecipeModelDisplay(recipes);
+                    await LoadImages();
                 }
-                else if(userOrPublicOrFavourites == UserOrPublicOrFavouritesRecipes.PublicResipes)
-                {
-                    recipes = await _recipesEndPointAPI.GetPublicRecipes(pageSize, pageNumber);
-                } 
-                else if(userOrPublicOrFavourites == UserOrPublicOrFavouritesRecipes.FavouritesRecipes)
-                {
-                    recipes = await _recipesEndPointAPI.GetFavouritesRecipes(pageSize, pageNumber);
-                }
-
-                if (recipes.Count > 0)
-                {
-                    totalPages = recipes.FirstOrDefault().TotalPages;
-                }
-                else
-                {
-                    totalPages = 1;
-                }
-
-                PageInfo = pageNumber.ToString();
-
-                NavigationButtonsActiveDeactive(pageNumber);
-
-                RecipeModelsToRecipeModelDisplay(recipes);
-                await LoadImages();
             }
             catch (Exception ex)
             {
@@ -307,6 +307,10 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 //_logger.Error("Got exception", ex);
                 //await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
+            }
+            finally
+            {
+                IsBusy = false;
             }
 
         }
