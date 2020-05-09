@@ -50,8 +50,26 @@
             <StackLayout Orientation="Horizontal">
                 <Button HorizontalOptions="FillAndExpand" Text="Wczytaj obrazek" Command="{Binding SelectImageCommand}" BackgroundColor="{StaticResource Primary}"
                         TextColor="White" />
-                <Button HorizontalOptions="FillAndExpand" Text="Usuń obrazek" Command="{Binding DeleteImageCommand}" IsEnabled="{Binding CanDeleteImage}" BackgroundColor="{StaticResource Primary}"
-                        TextColor="White" />
+                <Button x:Name="btnDeleteImage" HorizontalOptions="FillAndExpand" Text="Usuń obrazek" Command="{Binding DeleteImageCommand}" IsEnabled="{Binding CanDeleteImage}" BackgroundColor="{StaticResource OrangeTheme}"
+                        TextColor="White" >
+
+                    <Button.Triggers>
+
+                        <DataTrigger Binding="{Binding Source={x:Reference btnDeleteImage}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="False">
+                            <Setter Property="TextColor" Value="Gray" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Source={x:Reference btnDeleteImage}, Path=IsEnabled}"
+                                 TargetType="Button"
+                                 Value="True">
+                            <Setter Property="TextColor" Value="White" />
+                        </DataTrigger>
+
+                    </Button.Triggers>
+
+                </Button>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Image HorizontalOptions="FillAndExpand" HeightRequest="30" Source="{Binding ImagePath, Converter={StaticResource ImageFileToImageSourceConverter}}"  />

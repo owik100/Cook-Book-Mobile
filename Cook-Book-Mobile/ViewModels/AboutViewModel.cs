@@ -13,7 +13,7 @@ namespace Cook_Book_Mobile.ViewModels
         {
             Title = "O aplikacji";
             AppVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://github.com/owik100/Cook-Book"));
+            OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://github.com/owik100/Cook-Book-Mobile"));
         }
 
         #region Props
