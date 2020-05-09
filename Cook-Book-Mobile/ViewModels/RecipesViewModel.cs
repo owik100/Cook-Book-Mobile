@@ -35,6 +35,8 @@ namespace Cook_Book_Mobile.ViewModels
         private int pageNumberPublicRecipes = 1;
         private int pageNumberFavouritesRecipes = 1;
 
+        private int pageNumberActual = 1;
+
         private string _pageInfo;
 
         List<RecipeModelDisplay> tempRecipes = new List<RecipeModelDisplay>();
@@ -196,6 +198,9 @@ namespace Cook_Book_Mobile.ViewModels
                 if (!IsBusy)
                 {
                     IsBusy = true;
+                    CanNext = false;
+                    CanPrevious = false;
+
                     tempRecipes.Clear();
                     List<RecipeModel> recipes = new List<RecipeModel>();
 
@@ -221,9 +226,8 @@ namespace Cook_Book_Mobile.ViewModels
                         totalPages = 1;
                     }
 
+                    pageNumberActual = pageNumber;
                     PageInfo = pageNumber.ToString();
-
-                    NavigationButtonsActiveDeactive(pageNumber);
 
                     RecipeModelsToRecipeModelDisplay(recipes);
                     await LoadImages();
@@ -311,6 +315,7 @@ namespace Cook_Book_Mobile.ViewModels
             finally
             {
                 IsBusy = false;
+                NavigationButtonsActiveDeactive(pageNumberActual);
             }
 
         }
@@ -351,20 +356,20 @@ namespace Cook_Book_Mobile.ViewModels
 
         private void NavigationButtonsActiveDeactive(int pageNumber)
         {
-            if (pageNumber <= 1)
+            if (pageNumber <= 1 && !IsBusy)
             {
                 CanPrevious = false;
             }
-            else
+            else if(!IsBusy)
             {
                 CanPrevious = true;
             }
 
-            if (pageNumber >= totalPages)
+            if (pageNumber >= totalPages && !IsBusy)
             {
                 CanNext = false;
             }
-            else
+            else if(!IsBusy)
             {
                 CanNext = true;
             }
