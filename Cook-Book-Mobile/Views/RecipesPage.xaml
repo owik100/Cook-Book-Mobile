@@ -61,6 +61,9 @@
 
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
 
+            <Label IsVisible="{Binding NoRecipes}" HorizontalOptions="Center" Text="Nie masz żadnych przepisów. Dodaj kilka!"></Label>
+            <Label IsVisible="{Binding NoFavouriteRecipes}" HorizontalOptions="Center" Text="Nie masz żadnych ulubionych przepisów. Dodaj jakieś naciskając gwiazdkę!"></Label>
+
             <RefreshView IsRefreshing="{Binding IsRefreshing}"
              Command="{Binding RefreshCommand}">
 

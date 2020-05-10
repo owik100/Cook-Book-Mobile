@@ -39,6 +39,9 @@ namespace Cook_Book_Mobile.ViewModels
 
         private string _pageInfo;
 
+        private bool _noRecipes;
+        private bool _noFavouriteRecipes;
+
         List<RecipeModelDisplay> tempRecipes = new List<RecipeModelDisplay>();
 
         public ICommand RefreshCommand { get; set; }
@@ -145,6 +148,28 @@ namespace Cook_Book_Mobile.ViewModels
                 OnPropertyChanged(nameof(CanPrevious));
             }
         }
+
+        public bool NoRecipes
+        {
+            get { return _noRecipes; }
+            set
+            {
+                _noRecipes = value;
+                OnPropertyChanged(nameof(NoRecipes));
+            }
+        }
+
+        public bool NoFavouriteRecipes
+        {
+            get { return _noFavouriteRecipes; }
+            set
+            {
+                _noFavouriteRecipes = value;
+                OnPropertyChanged(nameof(NoFavouriteRecipes));
+            }
+        }
+
+
         public string PageInfo
         {
             get { return _pageInfo; }
@@ -319,6 +344,25 @@ namespace Cook_Book_Mobile.ViewModels
             {
                 IsBusy = false;
                 NavigationButtonsActiveDeactive(pageNumberActual);
+
+                if(Recipes.Count <=0 && _currentRecipes == UserOrPublicOrFavouritesRecipes.UserRecipes)
+                {
+                    NoRecipes = true;
+                }
+                else
+                {
+                    NoRecipes = false;
+                }
+
+                if (Recipes.Count <= 0 && _currentRecipes == UserOrPublicOrFavouritesRecipes.FavouritesRecipes)
+                {
+                    NoFavouriteRecipes = true;
+                }
+                else
+                {
+                    NoFavouriteRecipes = false;
+                }
+
             }
 
         }

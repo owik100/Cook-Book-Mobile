@@ -43,7 +43,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Nie masz jeszcze konta? "/>
-                        <Span Text="Zarejestruj się!" FontAttributes="Bold" TextColor="Blue" >
+                        <Span Text="Zarejestruj się!" FontAttributes="Bold" TextColor="Orange" >
                             <Span.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding RegisterCommand}" />
                             </Span.GestureRecognizers>
