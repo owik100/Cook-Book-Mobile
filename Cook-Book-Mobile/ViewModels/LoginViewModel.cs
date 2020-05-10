@@ -24,14 +24,16 @@ namespace Cook_Book_Mobile.ViewModels
         public ICommand RegisterCommand { get; set; }
 
         private IAPIHelper _apiHelper;
+        private ILoggedUser _loggedUser;
 
-        public LoginViewModel(IAPIHelper APIHelper)
+        public LoginViewModel(IAPIHelper APIHelper, ILoggedUser loggedUser)
         {
             Title = "Logowanie";
             InfoCommand = new Command(async () => await Login());
             RegisterCommand = new Command(() => GoRegister());
 
             _apiHelper = APIHelper;
+            _loggedUser = loggedUser;
 
             MessagingCenter.Subscribe<App>(this, EventMessages.AppStartEvent, async (sender) =>
             {
@@ -98,25 +100,28 @@ namespace Cook_Book_Mobile.ViewModels
         {
             try
             {
-
-                IsBusy = true;
-                OnPropertyChanged(nameof(CanLogin));
-
-                AuthenticatedUser user = await _apiHelper.Authenticate(UserName, Password);
-
-                await _apiHelper.GetLoggedUserData(user.Access_Token);
-
-                if (Remember)
+                if(!IsBusy && !AlreadyLogged())
                 {
-                   await SaveUserLoginPassword();
+                    IsBusy = true;
+                    OnPropertyChanged(nameof(CanLogin));
+
+                    AuthenticatedUser user = await _apiHelper.Authenticate(UserName, Password);
+
+                    await _apiHelper.GetLoggedUserData(user.Access_Token);
+
+                    if (Remember)
+                    {
+                        await SaveUserLoginPassword();
+                    }
+                    else
+                    {
+                        SecureStorage.RemoveAll();
+                    }
+
+                    MessagingCenter.Send(this, EventMessages.LogOnEvent);
+                    Clear();
                 }
-                else
-                {
-                    SecureStorage.RemoveAll();
-                }
-               
-                MessagingCenter.Send(this, EventMessages.LogOnEvent);
-                Clear();
+              
             }
             catch (Exception ex)
             {
@@ -128,6 +133,25 @@ namespace Cook_Book_Mobile.ViewModels
                 IsBusy = false;
                 OnPropertyChanged(nameof(CanLogin));
             }
+        }
+
+        private bool AlreadyLogged()
+        {
+            bool output = false;
+
+            try
+            {
+                if(!string.IsNullOrEmpty(_loggedUser.UserName))
+                {
+                    output = true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return output;
         }
 
         private void GoRegister()

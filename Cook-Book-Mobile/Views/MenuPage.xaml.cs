@@ -1,4 +1,6 @@
-﻿using Cook_Book_Mobile.Models;
+﻿using Cook_Book_Mobile.Helpers;
+using Cook_Book_Mobile.Models;
+using Cook_Book_Mobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +14,7 @@ namespace Cook_Book_Mobile.Views
     [DesignTimeVisible(false)]
     public partial class MenuPage : ContentPage
     {
-        MainPage RootPage { get => Application.Current.MainPage as MainPage; }
+        MainPage RootPage { get => Application.Current.MainPage as MainPage; };
         public MenuPage()
         {
             InitializeComponent();
@@ -25,6 +27,20 @@ namespace Cook_Book_Mobile.Views
                 var id = (int)((HomeMenuItem)e.SelectedItem).Id;
                 await RootPage.NavigateFromMenu(id);
             };
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+          
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+         
         }
     }
 }

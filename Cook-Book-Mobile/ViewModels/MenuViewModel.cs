@@ -30,11 +30,26 @@ namespace Cook_Book_Mobile.ViewModels
             _apiHelper = apiHelper;
             LogOutCommand = new Command(() => LogOut());
 
-            NotLoggedMenu();
+            if(!AlreadyLogged())
+            {
+                NotLoggedMenu();
 
-            SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Login).FirstOrDefault();
+                SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Login).FirstOrDefault();
+            }
+            else
+            {
+                LoggedMenu();
 
-            MessagingCenter.Subscribe<LoginViewModel>(this, EventMessages.LogOnEvent, (sender) =>
+                SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.UserRecipes).FirstOrDefault();
+            }
+
+
+            MessagingCenter.Unsubscribe<LoginViewModel>(this, EventMessages.LogOnEvent);
+            MessagingCenter.Unsubscribe<LoginViewModel>(this, EventMessages.BasicNavigationEvent);
+            MessagingCenter.Unsubscribe<AddOrEditViewModel>(this, EventMessages.BasicNavigationEvent);
+
+
+           MessagingCenter.Subscribe<LoginViewModel>(this, EventMessages.LogOnEvent, (sender) =>
             {
                 OnPropertyChanged(nameof(Logged));
                 LoggedMenu();
@@ -156,6 +171,25 @@ namespace Cook_Book_Mobile.ViewModels
                 new HomeMenuItem {Id = MenuItemType.About, Title="O aplikacji" },
             };
             OnPropertyChanged(nameof(MenuItems));
+        }
+
+        private bool AlreadyLogged()
+        {
+            bool output = false;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(_loggedUser.UserName))
+                {
+                    output = true;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return output;
         }
 
         private void LogOut()
