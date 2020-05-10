@@ -178,7 +178,7 @@ namespace Cook_Book_Mobile.ViewModels
                     }
 
                     //  await Task.WhenAll(LoadRecipes(), LoadImages());
-                    await LoadImages();
+                    //await LoadImages();
                     IsRefreshing = false;
             }
             catch (Exception ex)
