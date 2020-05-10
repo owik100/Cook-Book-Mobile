@@ -179,7 +179,7 @@ namespace Cook_Book_Mobile.ViewModels
 
                     //  await Task.WhenAll(LoadRecipes(), LoadImages());
                     //await LoadImages();
-                    IsRefreshing = false;
+                   
             }
             catch (Exception ex)
             {
@@ -187,6 +187,7 @@ namespace Cook_Book_Mobile.ViewModels
             }
             finally
             {
+                IsRefreshing = false;
                 IsBusy = false;
             }        
         }
@@ -202,6 +203,8 @@ namespace Cook_Book_Mobile.ViewModels
                     CanPrevious = false;
 
                     tempRecipes.Clear();
+                    _recipes?.Clear();
+
                     List<RecipeModel> recipes = new List<RecipeModel>();
 
                     if (userOrPublicOrFavourites == UserOrPublicOrFavouritesRecipes.UserRecipes)

@@ -15,6 +15,9 @@ namespace Cook_Book_Mobile.Views
     public partial class MenuPage : ContentPage
     {
         MainPage RootPage { get => Application.Current.MainPage as MainPage; }
+        static bool redirectToUserRecipes;
+        static bool logged;
+
         public MenuPage()
         {
             InitializeComponent();
@@ -25,6 +28,13 @@ namespace Cook_Book_Mobile.Views
                     return;
 
                 var id = (int)((HomeMenuItem)e.SelectedItem).Id;
+
+                //Sprawdz czy pozwolic przekierowac do przepisow po zalogowaniu po re opoenie appki
+                if(id == 4)
+                {
+                    logged = true;
+                }
+
                 await RootPage.NavigateFromMenu(id);
             };
         }
@@ -33,14 +43,20 @@ namespace Cook_Book_Mobile.Views
         {
             base.OnDisappearing();
 
-          
+            if(logged)
+            {
+                redirectToUserRecipes = true;
+            }
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-         
+            if(logged && redirectToUserRecipes)
+            {
+                await RootPage.NavigateFromMenu(4);
+            }     
         }
     }
 }
