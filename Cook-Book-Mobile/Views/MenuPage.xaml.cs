@@ -14,7 +14,7 @@ namespace Cook_Book_Mobile.Views
     [DesignTimeVisible(false)]
     public partial class MenuPage : ContentPage
     {
-        MainPage RootPage { get => Application.Current.MainPage as MainPage; };
+        MainPage RootPage { get => Application.Current.MainPage as MainPage; }
         public MenuPage()
         {
             InitializeComponent();
