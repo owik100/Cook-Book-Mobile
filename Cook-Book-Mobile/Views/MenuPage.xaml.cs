@@ -43,7 +43,9 @@ namespace Cook_Book_Mobile.Views
         {
             base.OnDisappearing();
 
-            if(logged)
+            MessagingCenter.Send(this, EventMessages.DeactivateSubscriptions);
+
+            if (logged)
             {
                 redirectToUserRecipes = true;
             }
@@ -53,7 +55,9 @@ namespace Cook_Book_Mobile.Views
         {
             base.OnAppearing();
 
-            if(logged && redirectToUserRecipes)
+            MessagingCenter.Send(this, EventMessages.ActiveSubscriptions);
+
+            if (logged && redirectToUserRecipes)
             {
                 await RootPage.NavigateFromMenu(4);
             }     
