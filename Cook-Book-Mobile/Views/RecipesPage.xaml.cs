@@ -2,10 +2,7 @@
 using Cook_Book_Mobile.Models;
 using Cook_Book_Shared_Code.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -38,7 +35,7 @@ namespace Cook_Book_Mobile.Views
 
         private async void AddRecipe_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new AddOrEditPage(), true);        
+            await Navigation.PushAsync(new AddOrEditPage(), true);
         }
 
     }

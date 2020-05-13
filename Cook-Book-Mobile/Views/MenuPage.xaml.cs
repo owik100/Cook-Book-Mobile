@@ -1,11 +1,7 @@
 ﻿using Cook_Book_Mobile.Helpers;
 using Cook_Book_Mobile.Models;
-using Cook_Book_Mobile.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Cook_Book_Mobile.Views
 {
@@ -30,7 +26,7 @@ namespace Cook_Book_Mobile.Views
                 var id = (int)((HomeMenuItem)e.SelectedItem).Id;
 
                 //Sprawdz czy pozwolic przekierowac do przepisow po zalogowaniu po re opoenie appki
-                if(id == 4)
+                if (id == 4)
                 {
                     logged = true;
                 }
@@ -60,7 +56,7 @@ namespace Cook_Book_Mobile.Views
             if (logged && redirectToUserRecipes)
             {
                 await RootPage.NavigateFromMenu(4);
-            }     
+            }
         }
     }
 }

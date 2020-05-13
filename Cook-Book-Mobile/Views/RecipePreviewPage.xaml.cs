@@ -1,11 +1,6 @@
 ﻿using Cook_Book_Mobile.Helpers;
 using Cook_Book_Mobile.ViewModels;
 using Cook_Book_Shared_Code.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -27,7 +22,7 @@ namespace Cook_Book_Mobile.Views
 
             MessagingCenter.Subscribe<RecipePreviewViewModel, RecipeModel>(this, EventMessages.EditRecipeEvent, async (sender, arg) =>
             {
-                await Navigation.PushAsync(new AddOrEditPage(),true);
+                await Navigation.PushAsync(new AddOrEditPage(), true);
                 MessagingCenter.Send(this, EventMessages.EditRecipeEvent, arg);
             });
 

@@ -1,7 +1,4 @@
 ﻿using CommonServiceLocator;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Cook_Book_Mobile.ViewModels
 {
@@ -34,7 +31,7 @@ namespace Cook_Book_Mobile.ViewModels
         public RecipePreviewViewModel RecipePreview
         {
             get => ServiceLocator.Current.GetInstance<RecipePreviewViewModel>();
-        } 
+        }
         public AddOrEditViewModel AddOrEdit
         {
             get => ServiceLocator.Current.GetInstance<AddOrEditViewModel>();

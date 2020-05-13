@@ -111,8 +111,8 @@ namespace Cook_Book_Mobile.ViewModels
         private async Task Register()
         {
             try
-            {           
-                if(!CheckSamePasswords())
+            {
+                if (!CheckSamePasswords())
                 {
                     await Application.Current.MainPage.DisplayAlert("Błąd!", "Hasła nie są identyczne", "Ok");
                     return;
@@ -131,7 +131,7 @@ namespace Cook_Book_Mobile.ViewModels
 
                 var result = await _apiHelper.Register(user);
 
-                await Application.Current.MainPage.DisplayAlert("Sukces", "Rejestracja pomyślna. Możesz się teraz zalogować","Ok");
+                await Application.Current.MainPage.DisplayAlert("Sukces", "Rejestracja pomyślna. Możesz się teraz zalogować", "Ok");
 
                 Clear();
             }

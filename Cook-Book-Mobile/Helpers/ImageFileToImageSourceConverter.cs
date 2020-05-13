@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using Xamarin.Forms;
 
 namespace Cook_Book_Mobile.Helpers
@@ -12,7 +10,7 @@ namespace Cook_Book_Mobile.Helpers
         {
             ImageSource output = ImageSource.FromResource("");
             try
-            {            
+            {
                 if (value != null)
                 {
                     var path = (string)value;

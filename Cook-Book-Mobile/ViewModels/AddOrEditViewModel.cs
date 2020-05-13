@@ -6,11 +6,8 @@ using Cook_Book_Shared_Code.Models;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -44,11 +41,11 @@ namespace Cook_Book_Mobile.ViewModels
         {
             _recipesEndPointAPI = RecipesEndPointAPI;
 
-            SubmitCommand = new Command (async () => await Submit());
-            AddIngredientCommand = new Command (async () => await AddIngredient());
-            DeleteIngredientCommand = new Command (async () => await DeleteIngredient());
-            SelectImageCommand = new Command (async () => await OpenFile());
-            DeleteImageCommand = new Command (async () => await DeleteFile());
+            SubmitCommand = new Command(async () => await Submit());
+            AddIngredientCommand = new Command(async () => await AddIngredient());
+            DeleteIngredientCommand = new Command(async () => await DeleteIngredient());
+            SelectImageCommand = new Command(async () => await OpenFile());
+            DeleteImageCommand = new Command(async () => await DeleteFile());
 
             Title = "Dodaj";
             ImagePath = ImageConstants.LoadDefaultImage;
@@ -70,7 +67,7 @@ namespace Cook_Book_Mobile.ViewModels
                 OnPropertyChanged(nameof(CanDeleteImage));
 
             });
-    
+
         }
 
         #region Props
@@ -274,9 +271,9 @@ namespace Cook_Book_Mobile.ViewModels
                 {
                     status = await CrossPermissions.Current.RequestPermissionAsync<StoragePermission>();
                 }
-                          
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 //_logger.Error("Got exception", ex);
             }
@@ -349,7 +346,7 @@ namespace Cook_Book_Mobile.ViewModels
             }
             catch (Exception ex)
             {
-              // _logger.Error("Got exception", ex);
+                // _logger.Error("Got exception", ex);
                 await Application.Current.MainPage.DisplayAlert("Błąd", ex.Message, "Ok");
             }
             finally

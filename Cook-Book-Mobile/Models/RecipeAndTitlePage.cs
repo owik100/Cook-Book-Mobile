@@ -1,7 +1,4 @@
 ﻿using Cook_Book_Shared_Code.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Cook_Book_Mobile.Models
 {
@@ -13,8 +10,8 @@ namespace Cook_Book_Mobile.Models
             Title = title;
         }
 
-       public RecipeModelDisplay RecipeModelDisplay { get; set; }
-       public string Title { get; set; }
+        public RecipeModelDisplay RecipeModelDisplay { get; set; }
+        public string Title { get; set; }
     }
 
 }

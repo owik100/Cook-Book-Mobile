@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Cook_Book_Mobile.Models
+﻿namespace Cook_Book_Mobile.Models
 {
     public class Item
     {

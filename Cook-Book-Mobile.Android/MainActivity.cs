@@ -1,14 +1,11 @@
-﻿using System;
-
-using Android.App;
+﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
+using Android.OS;
 using Android.Runtime;
 using Android.Views;
-using Android.Widget;
-using Android.OS;
+using System;
 using System.Threading.Tasks;
-using System.IO;
-using Android.Content;
 
 namespace Cook_Book_Mobile.Droid
 {
@@ -59,7 +56,7 @@ namespace Cook_Book_Mobile.Droid
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
-          
+
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
@@ -76,7 +73,7 @@ namespace Cook_Book_Mobile.Droid
                     doc_id = document_id.Substring(document_id.LastIndexOf(":") + 1);
                 }
 
-              
+
 
                 // The projection contains the columns we want to return in our query.
                 string selection = Android.Provider.MediaStore.Images.Media.InterfaceConsts.Id + " =? ";
@@ -87,12 +84,12 @@ namespace Cook_Book_Mobile.Droid
                     cursor.MoveToFirst();
                     path = cursor.GetString(columnIndex);
                 }
-               
+
             }
             catch (Exception ex)
             {
 
-               //
+                //
             }
 
             return path;

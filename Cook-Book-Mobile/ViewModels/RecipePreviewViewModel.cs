@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Cook_Book_Mobile.API;
 using Cook_Book_Mobile.Helpers;
 using Cook_Book_Mobile.Models;
 using Cook_Book_Mobile.Views;
@@ -8,7 +7,6 @@ using Cook_Book_Shared_Code.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -58,15 +56,15 @@ namespace Cook_Book_Mobile.ViewModels
             MessagingCenter.Subscribe<RecipesPage, RecipeAndTitlePage>(this, EventMessages.RecipesPreviewEvent, async (sender, arg) =>
             {
 
-                if(arg.Title == "Moje przepisy")
+                if (arg.Title == "Moje przepisy")
                 {
                     lastVised = UserOrPublicOrFavouritesRecipes.UserRecipes;
                 }
-                else if(arg.Title == "Odkrywaj przepisy")
+                else if (arg.Title == "Odkrywaj przepisy")
                 {
                     lastVised = UserOrPublicOrFavouritesRecipes.PublicResipes;
                 }
-                else if(arg.Title == "Ulubione przepisy")
+                else if (arg.Title == "Ulubione przepisy")
                 {
                     lastVised = UserOrPublicOrFavouritesRecipes.FavouritesRecipes;
                 }
@@ -117,7 +115,7 @@ namespace Cook_Book_Mobile.ViewModels
                 answer = await Application.Current.MainPage.DisplayAlert(RecipeName, "Na pewno chcesz usunąć ten przepis? Operacji nie można cofnąć!", "Tak", "Nie");
                 if (answer)
                 {
-                     var result = await _recipesEndPointAPI.DeleteRecipe(currentRecipe.RecipeId.ToString());
+                    var result = await _recipesEndPointAPI.DeleteRecipe(currentRecipe.RecipeId.ToString());
 
                     MessagingCenter.Send(this, EventMessages.BasicNavigationEvent);
                 }
@@ -131,7 +129,7 @@ namespace Cook_Book_Mobile.ViewModels
 
         private void Edit()
         {
-           MessagingCenter.Send(this, EventMessages.EditRecipeEvent,currentRecipe);
+            MessagingCenter.Send(this, EventMessages.EditRecipeEvent, currentRecipe);
         }
 
         #region Props
@@ -244,12 +242,12 @@ namespace Cook_Book_Mobile.ViewModels
                     if (await AlreadyFavourites())
                     {
                         _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Delete;
-                        FavouritesImage = ImageConstants.StarFull;                      
+                        FavouritesImage = ImageConstants.StarFull;
                     }
                     else
                     {
                         _AddOrdDeleteFavourites = AddOrdDeleteFromFavourites.Add;
-                        FavouritesImage = ImageConstants.StarEmpty;                      
+                        FavouritesImage = ImageConstants.StarEmpty;
                     }
 
                     if (lastVised == UserOrPublicOrFavouritesRecipes.PublicResipes)

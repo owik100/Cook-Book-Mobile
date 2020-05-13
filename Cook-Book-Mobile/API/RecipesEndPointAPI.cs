@@ -5,14 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Cook_Book_Mobile.API
 {
     class RecipesEndPointAPI : IRecipesEndPointAPI
     {
-      //  private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //  private static readonly log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private IAPIHelper _apiHelper;
         public RecipesEndPointAPI(IAPIHelper apiHelper)
@@ -137,7 +136,7 @@ namespace Cook_Book_Mobile.API
                     else
                     {
                         Exception ex = new Exception(response.ReasonPhrase);
-                       // _logger.Error("Got exception", ex);
+                        // _logger.Error("Got exception", ex);
                         throw ex;
                     }
                 }

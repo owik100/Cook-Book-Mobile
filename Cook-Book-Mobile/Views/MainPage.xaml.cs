@@ -1,12 +1,8 @@
-﻿using System;
+﻿using Cook_Book_Mobile.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-using Cook_Book_Mobile.Models;
-using Cook_Book_Mobile.Helpers;
 
 namespace Cook_Book_Mobile.Views
 {
@@ -69,7 +65,7 @@ namespace Cook_Book_Mobile.Views
 
                 IsPresented = false;
             }
-               
+
         }
     }
 }

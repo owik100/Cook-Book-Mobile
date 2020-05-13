@@ -1,75 +1,73 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace Cook_Book_Mobile.Helpers
 {
     public class AppSettingsManager
+    {
+        private static AppSettingsManager _instance;
+        private JObject _secrets;
+
+        private const string Namespace = "Cook_Book_Mobile";
+        private const string FileName = "appsettings.json";
+
+        private AppSettingsManager()
         {
-            private static AppSettingsManager _instance;
-            private JObject _secrets;
+            try
+            {
+                var assembly = IntrospectionExtensions.GetTypeInfo(typeof(AppSettingsManager)).Assembly;
+                var stream = assembly.GetManifestResourceStream($"{Namespace}.{FileName}");
+                using (var reader = new StreamReader(stream))
+                {
+                    var json = reader.ReadToEnd();
+                    _secrets = JObject.Parse(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Unable to load secrets file");
+            }
+        }
 
-            private const string Namespace = "Cook_Book_Mobile";
-            private const string FileName = "appsettings.json";
+        public static AppSettingsManager Settings
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new AppSettingsManager();
+                }
 
-            private AppSettingsManager()
+                return _instance;
+            }
+        }
+
+        public string this[string name]
+        {
+            get
             {
                 try
                 {
-                    var assembly = IntrospectionExtensions.GetTypeInfo(typeof(AppSettingsManager)).Assembly;
-                    var stream = assembly.GetManifestResourceStream($"{Namespace}.{FileName}");
-                    using (var reader = new StreamReader(stream))
+                    var path = name.Split(':');
+
+                    JToken node = _secrets[path[0]];
+                    for (int index = 1; index < path.Length; index++)
                     {
-                        var json = reader.ReadToEnd();
-                        _secrets = JObject.Parse(json);
+                        node = node[path[index]];
                     }
+
+                    return node.ToString();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Debug.WriteLine("Unable to load secrets file");
-                }
-            }
-
-            public static AppSettingsManager Settings
-            {
-                get
-                {
-                    if (_instance == null)
-                    {
-                        _instance = new AppSettingsManager();
-                    }
-
-                    return _instance;
-                }
-            }
-
-            public string this[string name]
-            {
-                get
-                {
-                    try
-                    {
-                        var path = name.Split(':');
-
-                        JToken node = _secrets[path[0]];
-                        for (int index = 1; index < path.Length; index++)
-                        {
-                            node = node[path[index]];
-                        }
-
-                        return node.ToString();
-                    }
-                    catch (Exception)
-                    {
-                        Debug.WriteLine($"Unable to retrieve secret '{name}'");
-                        return string.Empty;
-                    }
+                    Debug.WriteLine($"Unable to retrieve secret '{name}'");
+                    return string.Empty;
                 }
             }
         }
     }
+}
 

@@ -1,9 +1,7 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Cook_Book_Mobile.Helpers;
 using Cook_Book_Mobile.Services;
 using Cook_Book_Mobile.Views;
-using Cook_Book_Mobile.Helpers;
+using Xamarin.Forms;
 
 namespace Cook_Book_Mobile
 {

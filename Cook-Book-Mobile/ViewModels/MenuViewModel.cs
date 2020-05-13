@@ -4,11 +4,8 @@ using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -56,7 +53,7 @@ namespace Cook_Book_Mobile.ViewModels
                 MessagingCenter.Subscribe<MenuPage>(this, EventMessages.DeactivateSubscriptions, (sender) => Deactivate());
             }
 
-  
+
         }
 
         #region props
@@ -99,7 +96,7 @@ namespace Cook_Book_Mobile.ViewModels
                 //SetProperty(ref _selectedItem, value);
                 OnPropertyChanged(nameof(SelectedItem));
 
-                if(SelectedItem == MenuItems.Where(x => x.Id == MenuItemType.PublicRecipes).FirstOrDefault())
+                if (SelectedItem == MenuItems.Where(x => x.Id == MenuItemType.PublicRecipes).FirstOrDefault())
                 {
                     MessagingCenter.Send(this, EventMessages.ReloadPublicRecipesEvent);
                 }
@@ -125,7 +122,7 @@ namespace Cook_Book_Mobile.ViewModels
                 if (string.IsNullOrWhiteSpace(_loggedUser.Token) == false)
                 {
                     output = true;
-                    HelloText = _loggedUser.UserName;             
+                    HelloText = _loggedUser.UserName;
                 }
                 else
                 {

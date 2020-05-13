@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Cook_Book_Mobile.API
@@ -74,18 +73,18 @@ namespace Cook_Book_Mobile.API
                         if (!string.IsNullOrEmpty(message))
                         {
                             Exception ex = new Exception(message);
-                          // _logger.Error("Got exception", ex);
+                            // _logger.Error("Got exception", ex);
                             throw ex;
                         }
                         Exception exc = new Exception(response.ReasonPhrase);
-                       // _logger.Error("Got exception", exc);
+                        // _logger.Error("Got exception", exc);
                         throw exc;
                     }
                 }
             }
             catch (Exception ex)
             {
-               // _logger.Error("Got exception", ex);
+                // _logger.Error("Got exception", ex);
                 throw;
             }
 
@@ -114,7 +113,7 @@ namespace Cook_Book_Mobile.API
                 else
                 {
                     Exception ex = new Exception(response.ReasonPhrase);
-                   // _logger.Error("Got exception", ex);
+                    // _logger.Error("Got exception", ex);
                     throw ex;
                 }
             }
@@ -139,7 +138,7 @@ namespace Cook_Book_Mobile.API
                         throw ex;
                     }
                     Exception exc = new Exception(response.ReasonPhrase);
-                   // _logger.Error("Got exception", exc);
+                    // _logger.Error("Got exception", exc);
                     throw exc;
                 }
             }
@@ -179,7 +178,7 @@ namespace Cook_Book_Mobile.API
             }
             catch (Exception ex)
             {
-               // _logger.Error("Got exception", ex);
+                // _logger.Error("Got exception", ex);
                 throw;
             }
 

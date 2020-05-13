@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Cook_Book_Mobile.Helpers
 {
-   public static class TempData
+    public static class TempData
     {
         public static string GetTempFolderPath()
         {
             try
             {
                 return Path.GetTempPath();
-               // string directory = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Android.OS.Environment.DirectoryDownloads);
-               // return directory;
+                // string directory = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Android.OS.Environment.DirectoryDownloads);
+                // return directory;
             }
             catch (Exception ex)
             {
@@ -84,7 +83,7 @@ namespace Cook_Book_Mobile.Helpers
             }
             catch (IOException ex)
             {
-               // _logger.Warn("Cannot delete images", ex);
+                // _logger.Warn("Cannot delete images", ex);
             }
 
             catch (Exception ex)

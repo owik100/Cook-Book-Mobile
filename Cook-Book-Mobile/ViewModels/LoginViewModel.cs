@@ -1,16 +1,12 @@
-﻿using Cook_Book_Mobile.API;
+﻿using Cook_Book_Mobile.Helpers;
 using Cook_Book_Mobile.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Forms;
-using Xamarin.Essentials;
-using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
-using Cook_Book_Mobile.Helpers;
+using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace Cook_Book_Mobile.ViewModels
 {
@@ -50,7 +46,7 @@ namespace Cook_Book_Mobile.ViewModels
                 _userName = value;
                 //SetProperty(ref _userName, value);
                 OnPropertyChanged(nameof(UserName));
-                OnPropertyChanged(nameof(CanLogin));             
+                OnPropertyChanged(nameof(CanLogin));
             }
         }
 
@@ -100,7 +96,7 @@ namespace Cook_Book_Mobile.ViewModels
         {
             try
             {
-                if(!IsBusy && !AlreadyLogged())
+                if (!IsBusy && !AlreadyLogged())
                 {
                     IsBusy = true;
                     OnPropertyChanged(nameof(CanLogin));
@@ -121,7 +117,7 @@ namespace Cook_Book_Mobile.ViewModels
                     MessagingCenter.Send(this, EventMessages.LogOnEvent);
                     Clear();
                 }
-              
+
             }
             catch (Exception ex)
             {
@@ -141,7 +137,7 @@ namespace Cook_Book_Mobile.ViewModels
 
             try
             {
-                if(!string.IsNullOrEmpty(_loggedUser.UserName))
+                if (!string.IsNullOrEmpty(_loggedUser.UserName))
                 {
                     output = true;
                 }

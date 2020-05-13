@@ -1,13 +1,11 @@
-﻿using System;
+﻿using Cook_Book_Mobile.Helpers;
+using Cook_Book_Mobile.Models;
+using Cook_Book_Mobile.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using Xamarin.Forms;
-
-using Cook_Book_Mobile.Models;
-using Cook_Book_Mobile.Services;
-using Cook_Book_Mobile.Helpers;
 
 namespace Cook_Book_Mobile.ViewModels
 {
