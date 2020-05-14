@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using FormsToolkit.Droid;
 using System;
 using System.Threading.Tasks;
 
@@ -30,6 +31,9 @@ namespace Cook_Book_Mobile.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Window.SetStatusBarColor(Android.Graphics.Color.Rgb(237, 184, 121));
+
+            Toolkit.Init();
+
             LoadApplication(new App());
         }
 

@@ -3,6 +3,7 @@ using Cook_Book_Mobile.Services;
 using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
+using FormsToolkit;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using System;
@@ -51,7 +52,9 @@ namespace Cook_Book_Mobile.ViewModels
             ImagePath = ImageConstants.LoadDefaultImage;
             SubmitText = "Dodaj";
 
-            MessagingCenter.Subscribe<RecipePreviewPage, RecipeModel>(this, EventMessages.EditRecipeEvent, (sender, arg) =>
+            MessagingService.Current.Unsubscribe<RecipeModel>(EventMessages.EditRecipeEvent);
+
+            MessagingService.Current.Subscribe<RecipeModel>(EventMessages.EditRecipeEvent, (sender, arg) => 
             {
                 Title = "Edytuj";
                 _addOrEdit = AddOrEdit.Edit;

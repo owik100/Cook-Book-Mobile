@@ -1,6 +1,7 @@
 ﻿using Cook_Book_Mobile.Helpers;
 using Cook_Book_Mobile.Models;
 using Cook_Book_Shared_Code.Models;
+using FormsToolkit;
 using System;
 using System.Linq;
 
@@ -30,7 +31,8 @@ namespace Cook_Book_Mobile.Views
 
             RecipeAndTitlePage recipeAndTitlePage = new RecipeAndTitlePage(item, Title);
 
-            MessagingCenter.Send(this, EventMessages.RecipesPreviewEvent, recipeAndTitlePage);
+            MessagingService.Current.SendMessage(EventMessages.RecipesPreviewEvent, recipeAndTitlePage);
+
         }
 
         private async void AddRecipe_Clicked(object sender, EventArgs e)

@@ -4,6 +4,7 @@ using Cook_Book_Mobile.Models;
 using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
+using FormsToolkit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +54,9 @@ namespace Cook_Book_Mobile.ViewModels
 
             CanEdit = false;
 
-            MessagingCenter.Subscribe<RecipesPage, RecipeAndTitlePage>(this, EventMessages.RecipesPreviewEvent, async (sender, arg) =>
+            MessagingService.Current.Unsubscribe<RecipeAndTitlePage>(EventMessages.RecipesPreviewEvent);
+
+            MessagingService.Current.Subscribe<RecipeAndTitlePage>(EventMessages.RecipesPreviewEvent, async (sender, arg) =>
             {
 
                 if (arg.Title == "Moje przepisy")
@@ -129,7 +132,7 @@ namespace Cook_Book_Mobile.ViewModels
 
         private void Edit()
         {
-            MessagingCenter.Send(this, EventMessages.EditRecipeEvent, currentRecipe);
+            MessagingService.Current.SendMessage(EventMessages.EditRecipeEvent, currentRecipe);
         }
 
         #region Props
