@@ -2,6 +2,7 @@
 using Cook_Book_Mobile.Models;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
+using FormsToolkit;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -31,7 +32,9 @@ namespace Cook_Book_Mobile.ViewModels
             _apiHelper = APIHelper;
             _loggedUser = loggedUser;
 
-            MessagingCenter.Subscribe<App>(this, EventMessages.AppStartEvent, async (sender) =>
+
+            MessagingService.Current.Unsubscribe(EventMessages.AppStartEvent);
+            MessagingService.Current.Subscribe(EventMessages.AppStartEvent, async (sender) =>
             {
                 await TryLoginOnStart();
             });
@@ -96,7 +99,7 @@ namespace Cook_Book_Mobile.ViewModels
         {
             try
             {
-                if (!IsBusy && !AlreadyLogged())
+                if (!IsBusy)
                 {
                     IsBusy = true;
                     OnPropertyChanged(nameof(CanLogin));
@@ -114,7 +117,7 @@ namespace Cook_Book_Mobile.ViewModels
                         SecureStorage.RemoveAll();
                     }
 
-                    MessagingCenter.Send(this, EventMessages.LogOnEvent);
+                    MessagingService.Current.SendMessage(EventMessages.LogOnEvent);
                     Clear();
                 }
 
@@ -130,29 +133,9 @@ namespace Cook_Book_Mobile.ViewModels
                 OnPropertyChanged(nameof(CanLogin));
             }
         }
-
-        private bool AlreadyLogged()
-        {
-            bool output = false;
-
-            try
-            {
-                if (!string.IsNullOrEmpty(_loggedUser.UserName))
-                {
-                    output = true;
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-            return output;
-        }
-
         private void GoRegister()
         {
-            MessagingCenter.Send(this, EventMessages.BasicNavigationEvent, MenuItemType.Register);
+            MessagingService.Current.SendMessage(EventMessages.BasicNavigationEvent, MenuItemType.Register);
         }
 
         private async Task TryLoginOnStart()
@@ -193,8 +176,6 @@ namespace Cook_Book_Mobile.ViewModels
                 // Possible that device doesn't support secure storage on device.
             }
         }
-
-
 
     }
 }

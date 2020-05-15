@@ -11,7 +11,7 @@
         public static readonly string ReloadFavouritesRecipesEvent = "ReloadFavouritesRecipesEvent";
         public static readonly string RecipesPreviewEvent = "RecipesPreviewEvent";
         public static readonly string EditRecipeEvent = "EditRecipeEvent";
-        public static readonly string ActiveSubscriptions = "ActiveSubscriptions";
-        public static readonly string DeactivateSubscriptions = "DeactivateSubscriptions";
+        public static readonly string AddOrEditViewModelPage = "AddOrEditViewModelPage";
+        public static readonly string RecipePreviewViewModelPage = "RecipePreviewViewModelPage";
     }
 }

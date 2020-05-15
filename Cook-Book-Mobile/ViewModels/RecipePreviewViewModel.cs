@@ -120,7 +120,7 @@ namespace Cook_Book_Mobile.ViewModels
                 {
                     var result = await _recipesEndPointAPI.DeleteRecipe(currentRecipe.RecipeId.ToString());
 
-                    MessagingCenter.Send(this, EventMessages.BasicNavigationEvent);
+                    MessagingService.Current.SendMessage(EventMessages.RecipePreviewViewModelPage);
                 }
             }
             catch (Exception ex)
@@ -255,11 +255,11 @@ namespace Cook_Book_Mobile.ViewModels
 
                     if (lastVised == UserOrPublicOrFavouritesRecipes.PublicResipes)
                     {
-                        MessagingCenter.Send(this, EventMessages.ReloadPublicRecipesEvent);
+                        MessagingService.Current.SendMessage(EventMessages.ReloadPublicRecipesEvent);
                     }
                     else if (lastVised == UserOrPublicOrFavouritesRecipes.FavouritesRecipes)
                     {
-                        MessagingCenter.Send(this, EventMessages.ReloadFavouritesRecipesEvent);
+                        MessagingService.Current.SendMessage(EventMessages.ReloadFavouritesRecipesEvent);
                     }
 
                 }

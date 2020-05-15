@@ -3,6 +3,7 @@ using Cook_Book_Mobile.Helpers;
 using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
+using FormsToolkit;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -56,49 +57,32 @@ namespace Cook_Book_Mobile.ViewModels
             _loggedUser = loggedUser;
             _mapper = mapper;
 
-            MessagingCenter.Subscribe<MenuViewModel>(this, EventMessages.ReloadUserRecipesEvent, async (sender) =>
+          
+
+            MessagingService.Current.Unsubscribe(EventMessages.ReloadUserRecipesEvent);
+            MessagingService.Current.Subscribe(EventMessages.ReloadUserRecipesEvent, async (sender) =>
             {
                 _currentRecipes = UserOrPublicOrFavouritesRecipes.UserRecipes;
                 await RefreshData(_currentRecipes);
             });
 
-            MessagingCenter.Subscribe<MenuViewModel>(this, EventMessages.ReloadPublicRecipesEvent, async (sender) =>
+            MessagingService.Current.Unsubscribe(EventMessages.ReloadPublicRecipesEvent);
+            MessagingService.Current.Subscribe(EventMessages.ReloadPublicRecipesEvent, async (sender) =>
             {
                 _currentRecipes = UserOrPublicOrFavouritesRecipes.PublicResipes;
                 await RefreshData(_currentRecipes);
-            });
-
-            MessagingCenter.Subscribe<MenuViewModel>(this, EventMessages.ReloadFavouritesRecipesEvent, async (sender) =>
+            }); 
+            
+            
+            MessagingService.Current.Unsubscribe(EventMessages.ReloadFavouritesRecipesEvent);
+            MessagingService.Current.Subscribe(EventMessages.ReloadFavouritesRecipesEvent, async (sender) =>
             {
                 _currentRecipes = UserOrPublicOrFavouritesRecipes.FavouritesRecipes;
                 await RefreshData(_currentRecipes);
             });
 
-            MessagingCenter.Subscribe<AddOrEditPage>(this, EventMessages.ReloadUserRecipesEvent, async (sender) =>
-            {
-                _currentRecipes = UserOrPublicOrFavouritesRecipes.UserRecipes;
-                await RefreshData(_currentRecipes);
-            });
-
-            MessagingCenter.Subscribe<RecipePreviewPage>(this, EventMessages.ReloadUserRecipesEvent, async (sender) =>
-            {
-                _currentRecipes = UserOrPublicOrFavouritesRecipes.UserRecipes;
-                await RefreshData(_currentRecipes);
-            });
-
-            MessagingCenter.Subscribe<RecipePreviewViewModel>(this, EventMessages.ReloadPublicRecipesEvent, async (sender) =>
-            {
-                _currentRecipes = UserOrPublicOrFavouritesRecipes.PublicResipes;
-                await RefreshData(_currentRecipes);
-            });
-
-            MessagingCenter.Subscribe<RecipePreviewViewModel>(this, EventMessages.ReloadFavouritesRecipesEvent, async (sender) =>
-            {
-                _currentRecipes = UserOrPublicOrFavouritesRecipes.FavouritesRecipes;
-                await RefreshData(_currentRecipes);
-            });
-
-            MessagingCenter.Subscribe<MenuViewModel>(this, EventMessages.LogOffEvent, (sender) =>
+            MessagingService.Current.Unsubscribe(EventMessages.LogOffEvent);
+            MessagingService.Current.Subscribe(EventMessages.LogOffEvent, (sender) =>
             {
                 LogOffUser();
             });

@@ -1,6 +1,7 @@
 ﻿using Cook_Book_Mobile.Helpers;
 using Cook_Book_Mobile.Services;
 using Cook_Book_Mobile.Views;
+using FormsToolkit;
 using Xamarin.Forms;
 
 namespace Cook_Book_Mobile
@@ -17,7 +18,7 @@ namespace Cook_Book_Mobile
 
             MainPage = new MainPage();
 
-            MessagingCenter.Send(this, EventMessages.AppStartEvent);
+            MessagingService.Current.SendMessage(EventMessages.AppStartEvent);
         }
 
         protected override void OnStart()

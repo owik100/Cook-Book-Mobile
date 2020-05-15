@@ -14,28 +14,13 @@ namespace Cook_Book_Mobile.Views
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<RecipePreviewViewModel>(this, EventMessages.BasicNavigationEvent, async (sender) =>
+            MessagingService.Current.Unsubscribe(EventMessages.RecipePreviewViewModelPage);
+
+            MessagingService.Current.Subscribe(EventMessages.RecipePreviewViewModelPage, async (sender) =>
             {
                 await Navigation.PopAsync(true);
-                MessagingCenter.Send(this, EventMessages.ReloadUserRecipesEvent);
+                MessagingService.Current.SendMessage(EventMessages.ReloadUserRecipesEvent);
             });
-
-            //MessagingCenter.Subscribe<RecipePreviewViewModel, RecipeModel>(this, EventMessages.EditRecipeEvent, async (sender, arg) =>
-            //{
-            //    await Navigation.PushAsync(new AddOrEditPage(), true);
-            //    MessagingCenter.Send(this, EventMessages.EditRecipeEvent, arg);
-            //});
-
-
-            //MessagingService.Current.Unsubscribe(EventMessages.BasicNavigationEvent);
-
-            //MessagingService.Current.Subscribe(EventMessages.BasicNavigationEvent, async (sender) => 
-            //{
-            //    await Navigation.PopAsync(true);
-            //    MessagingCenter.Send(this, EventMessages.ReloadUserRecipesEvent);
-            //});
-
-
 
             MessagingService.Current.Unsubscribe<RecipeModel>(EventMessages.EditRecipeEvent);
 

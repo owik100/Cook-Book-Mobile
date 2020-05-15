@@ -16,7 +16,7 @@ namespace Cook_Book_Mobile
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterType<RegisterViewModel>().AsSelf();
             builder.RegisterType<LoginViewModel>().AsSelf();
-            builder.RegisterType<RecipesViewModel>().SingleInstance();
+            builder.RegisterType<RecipesViewModel>().AsSelf();
             builder.RegisterType<MenuViewModel>().AsSelf();
             builder.RegisterType<RecipePreviewViewModel>().AsSelf();
             builder.RegisterType<AddOrEditViewModel>().AsSelf();

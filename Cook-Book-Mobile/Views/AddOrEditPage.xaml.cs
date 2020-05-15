@@ -1,6 +1,6 @@
 ﻿using Cook_Book_Mobile.Helpers;
 using Cook_Book_Mobile.ViewModels;
-
+using FormsToolkit;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,11 +13,14 @@ namespace Cook_Book_Mobile.Views
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<AddOrEditViewModel>(this, EventMessages.BasicNavigationEvent, async (sender) =>
+            MessagingService.Current.Unsubscribe(EventMessages.AddOrEditViewModelPage);
+
+            MessagingService.Current.Subscribe(EventMessages.AddOrEditViewModelPage, async (sender) =>
             {
                 await Navigation.PopToRootAsync(true);
-                MessagingCenter.Send(this, EventMessages.BasicNavigationEvent);
+                MessagingService.Current.SendMessage(EventMessages.ReloadUserRecipesEvent);
             });
+
         }
     }
 }

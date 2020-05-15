@@ -3,6 +3,7 @@ using Cook_Book_Mobile.Models;
 using Cook_Book_Mobile.Views;
 using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
+using FormsToolkit;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -29,30 +30,33 @@ namespace Cook_Book_Mobile.ViewModels
             _apiHelper = apiHelper;
             LogOutCommand = new Command(() => LogOut());
 
-
-            if (!AlreadyLogged())
-            {
                 NotLoggedMenu();
 
                 SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.Login).FirstOrDefault();
-            }
-            else
-            {
-                LoggedMenu();
 
+            MessagingService.Current.Unsubscribe(EventMessages.BasicNavigationEvent);
+            MessagingService.Current.Subscribe(EventMessages.BasicNavigationEvent, (sender) =>
+            {
                 SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.UserRecipes).FirstOrDefault();
-            }
+                //Wywola sie event w code behind, przekierowujacy do wybranej strony
+            });
 
-
-
-            if (!once)
+            MessagingService.Current.Unsubscribe(EventMessages.LogOnEvent);
+            MessagingService.Current.Subscribe( EventMessages.LogOnEvent, (sender) =>
             {
-                once = true;
+                OnPropertyChanged(nameof(Logged));
+                LoggedMenu();
+                SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.UserRecipes).FirstOrDefault();
 
-                MessagingCenter.Subscribe<MenuPage>(this, EventMessages.ActiveSubscriptions, (sender) => Active());
-                MessagingCenter.Subscribe<MenuPage>(this, EventMessages.DeactivateSubscriptions, (sender) => Deactivate());
-            }
+                //MessagingCenter.Send(this, EventMessages.ReloadUserRecipesEvent);
+            });
 
+            MessagingService.Current.Unsubscribe<MenuItemType>(EventMessages.BasicNavigationEvent);
+            MessagingService.Current.Subscribe<MenuItemType>(EventMessages.BasicNavigationEvent, (sender, arg) =>
+            {
+                SelectedItem = MenuItems.Where(x => x.Id == arg).FirstOrDefault();
+                //Wywola sie event w code behind, przekierowujacy do wybranej strony
+            });
 
         }
 
@@ -98,17 +102,17 @@ namespace Cook_Book_Mobile.ViewModels
 
                 if (SelectedItem == MenuItems.Where(x => x.Id == MenuItemType.PublicRecipes).FirstOrDefault())
                 {
-                    MessagingCenter.Send(this, EventMessages.ReloadPublicRecipesEvent);
+                    MessagingService.Current.SendMessage(EventMessages.ReloadPublicRecipesEvent);
                 }
 
                 if (SelectedItem == MenuItems.Where(x => x.Id == MenuItemType.UserRecipes).FirstOrDefault())
                 {
-                    MessagingCenter.Send(this, EventMessages.ReloadUserRecipesEvent);
+                    MessagingService.Current.SendMessage(EventMessages.ReloadUserRecipesEvent);
                 }
 
                 if (SelectedItem == MenuItems.Where(x => x.Id == MenuItemType.FavouritesRecipes).FirstOrDefault())
                 {
-                    MessagingCenter.Send(this, EventMessages.ReloadFavouritesRecipesEvent);
+                    MessagingService.Current.SendMessage(EventMessages.ReloadFavouritesRecipesEvent);
                 }
             }
         }
@@ -135,38 +139,6 @@ namespace Cook_Book_Mobile.ViewModels
 
         #endregion
 
-        public void Active()
-        {
-            MessagingCenter.Subscribe<LoginViewModel>(this, EventMessages.LogOnEvent, (sender) =>
-            {
-                OnPropertyChanged(nameof(Logged));
-                LoggedMenu();
-                SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.UserRecipes).FirstOrDefault();
-
-                //MessagingCenter.Send(this, EventMessages.ReloadUserRecipesEvent);
-            });
-
-            MessagingCenter.Subscribe<LoginViewModel, MenuItemType>(this, EventMessages.BasicNavigationEvent, (sender, arg) =>
-            {
-                SelectedItem = MenuItems.Where(x => x.Id == arg).FirstOrDefault();
-                //Wywola sie event w code behind, przekierowujacy do wybranej strony
-            });
-
-            MessagingCenter.Subscribe<AddOrEditViewModel>(this, EventMessages.BasicNavigationEvent, (sender) =>
-            {
-                SelectedItem = MenuItems.Where(x => x.Id == MenuItemType.UserRecipes).FirstOrDefault();
-                //Wywola sie event w code behind, przekierowujacy do wybranej strony
-            });
-        }
-
-        public void Deactivate()
-        {
-
-            MessagingCenter.Unsubscribe<LoginViewModel>(this, EventMessages.LogOnEvent);
-            MessagingCenter.Unsubscribe<LoginViewModel>(this, EventMessages.BasicNavigationEvent);
-            MessagingCenter.Unsubscribe<AddOrEditViewModel>(this, EventMessages.BasicNavigationEvent);
-        }
-
         private void NotLoggedMenu()
         {
             MenuItems = new ObservableCollection<HomeMenuItem>
@@ -190,31 +162,12 @@ namespace Cook_Book_Mobile.ViewModels
             OnPropertyChanged(nameof(MenuItems));
         }
 
-        private bool AlreadyLogged()
-        {
-            bool output = false;
-
-            try
-            {
-                if (!string.IsNullOrEmpty(_loggedUser.UserName))
-                {
-                    output = true;
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-            return output;
-        }
-
         private void LogOut()
         {
             _loggedUser.LogOffUser();
             _apiHelper.LogOffUser();
             SecureStorage.RemoveAll();
-            MessagingCenter.Send(this, EventMessages.LogOffEvent);
+            MessagingService.Current.SendMessage(EventMessages.LogOffEvent);
 
             OnPropertyChanged(nameof(Logged));
 
