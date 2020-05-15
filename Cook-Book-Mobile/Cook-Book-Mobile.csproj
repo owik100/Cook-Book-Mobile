@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <RootNamespace>Cook_Book_Mobile</RootNamespace>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
