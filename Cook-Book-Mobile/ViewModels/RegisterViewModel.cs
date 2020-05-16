@@ -1,5 +1,8 @@
-﻿using Cook_Book_Shared_Code.API;
+﻿using Cook_Book_Mobile.Helpers;
+using Cook_Book_Mobile.Models;
+using Cook_Book_Shared_Code.API;
 using Cook_Book_Shared_Code.Models;
+using FormsToolkit;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -131,7 +134,8 @@ namespace Cook_Book_Mobile.ViewModels
 
                 var result = await _apiHelper.Register(user);
 
-                await Application.Current.MainPage.DisplayAlert("Sukces", "Rejestracja pomyślna. Możesz się teraz zalogować", "Ok");
+                DependencyService.Get<IMessage>().LongAlert("Rejestracja pomyślna. Możesz się teraz zalogować!");
+                GoLogin();
 
                 Clear();
             }
@@ -146,6 +150,11 @@ namespace Cook_Book_Mobile.ViewModels
                 IsBusy = false;
                 OnPropertyChanged(nameof(CanRegister));
             }
+        }
+
+        private void GoLogin()
+        {
+            MessagingService.Current.SendMessage(EventMessages.BasicNavigationEvent, MenuItemType.Login);
         }
 
         private void Clear()
